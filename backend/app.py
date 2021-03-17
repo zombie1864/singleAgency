@@ -14,7 +14,7 @@ def index():
     data = json.loads(open('fixture.json').read()) # sends json file 
     return data
 
-@app.route('/<index>')
+@app.route('/<index>', methods=['GET'])
 def getItem(index):
     with open("fixture.json", "r") as read_file:
         fixture = json.load(read_file)
