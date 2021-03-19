@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SearchComp from '../SearchComp'
+import appPropType from '../../types/appPropType'
 
 interface Istate {
     isLoaded: boolean, 
@@ -12,7 +13,7 @@ interface PropsFromState {
 
 type Props = PropsFromState
 
-export class ListComp extends Component<{}, Istate> {
+export class ListComp extends Component<appPropType> {
     // constructor(props:any){
     //     super(props)
     //     this.state = {
@@ -32,28 +33,28 @@ export class ListComp extends Component<{}, Istate> {
     }
     
     render() {
-        // console.log(this.props.fixture);
+        console.log("inside ListComp",this.props.fixture);
         
-        if (!this.state.isLoaded) {
-            return <p>Loading...</p>
-        } else {
-            return (
-                <div>
-                    <SearchComp/>
-                    <h1>LIST COMP</h1>
-                    <p>Data has been loaded</p>
-                    <ul>
-                        {/* {
-                            this.state.items.map( (item, idx) => (
-                                <li key={idx}>
-                                    {item.results[0].building_name}
-                                </li>
-                            ))
-                        } */}
-                    </ul>
-                </div>
-            )
-        }
+        // if (!this.state.isLoaded) {
+            return <p>Loading...{this.props.fixture}</p>
+        // } else {
+        //     return (
+        //         <div>
+        //             <SearchComp/>
+        //             <h1>LIST COMP</h1>
+        //             <p>Data has been loaded</p>
+        //             <ul>
+        //                 {/* {
+        //                     this.state.items.map( (item, idx) => (
+        //                         <li key={idx}>
+        //                             {item.results[0].building_name}
+        //                         </li>
+        //                     ))
+        //                 } */}
+        //             </ul>
+        //         </div>
+        //     )
+        // }
     }
 }
 
