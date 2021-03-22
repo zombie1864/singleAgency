@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import GoogleMaps from './components/GoogleMaps'
-import ListComp from './components/ListComp/ListComp'
+import ListComp from './components/ListComp/ListCompContainer'
 import appPropType from './types/appPropType'
 import storeType from './types/storeType'
+import {fetchData} from './actions/fetchDataAction'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
@@ -13,12 +14,15 @@ const tableCss:React.CSSProperties = {
   width:"100vw"
 }
 
-class HomePage extends Component<appPropType>{
+interface connectDispatchProps{ // intestigate into why this works 
+  fetchData: any
+}
+
+type props = appPropType & connectDispatchProps
+
+class HomePage extends Component<props>{
   
   render() {
-    console.log(this.props);
-    console.log(this.props.fixture);
-    console.log(Object.values(this.props.fixture)[0]);
     const comps = [<GoogleMaps/>, <ListComp/>]
     return (
       <div className="HomePage">
@@ -42,4 +46,4 @@ const msp = (state:storeType) => ({
   fixture: state.setDataReducer
 })
 
-export default connect(msp, {})(HomePage);
+export default connect(msp, {fetchData})(HomePage);
