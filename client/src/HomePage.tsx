@@ -26,7 +26,6 @@ class HomePage extends Component<props>{
   
   render() {
     const comps = [<GoogleMaps/>, <ListComp/>]
-    console.log('homePage', this.props.coord);
     
     return (
       <div className="HomePage">
