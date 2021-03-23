@@ -1,9 +1,6 @@
 import {fetchDataAction, updateCoordAction} from './actionTypes'
 
-export interface Ipayload {
-    lng: number, 
-    lat: number
-}
+export type Ipayload = any
 
 export type fetchDataActionCreator = () => fetchDataAction | void
 

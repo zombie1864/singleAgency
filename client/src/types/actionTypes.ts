@@ -4,8 +4,5 @@ export interface fetchDataAction {
 
 export interface updateCoordAction {
     type: "UPDATE_LNG_LAT", 
-    payload: {
-        lng: number, 
-        lat: number
-    }
+    payload: any
 }

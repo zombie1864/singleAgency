@@ -5,8 +5,3 @@ export const fetchData = (response:any) => ({
     type: FETCH_DATA,
     response
 })
-
-// export const setData = (response:any) => ({
-//     type: SET_DATA, 
-//     response
-// })

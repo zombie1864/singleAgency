@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import {SET_DATA} from '../../actions/fetchDataAction'
+import {UPDATE_COORD} from '../../actions/updateCoordAction'
 import ListComp from './ListComp'
 import storeType from '../../types/storeType'
-import {updateCoords} from '../../actions/updateCoordAction'
 
 const msp = (state:storeType) => ({
     data: state.setDataReducer, 
-    coord: state.coord
+    coord: state.setCoordReducer
 })
 
 const mdp = (dispatch:any) => ({
@@ -19,7 +19,12 @@ const mdp = (dispatch:any) => ({
                 dispatch({type: SET_DATA, fixture:data.results})
             })
     }, 
-    updateCoords
+    updateCoords: (payload:any) => {
+        dispatch({
+            type: UPDATE_COORD,
+            payload
+        })
+    }
 })
 
 export default connect( msp, mdp )(ListComp)

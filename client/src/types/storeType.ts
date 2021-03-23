@@ -4,7 +4,7 @@ export type Icoord = any
 
 interface storeType {
     setDataReducer: fixture
-    coord: Icoord
+    setCoordReducer: Icoord
 }
 
 export default storeType

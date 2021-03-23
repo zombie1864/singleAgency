@@ -4,7 +4,7 @@ const initialState =  {
     fixture: []
 }
 
-const setDataReducer = ( state = initialState, action:any) => {
+const setData = ( state = initialState, action:any) => {
     switch (action.type) {
         case SET_DATA:
             return { ...state, fixture: action.fixture}
@@ -13,4 +13,4 @@ const setDataReducer = ( state = initialState, action:any) => {
     }
 }
 
-export default setDataReducer
+export default setData

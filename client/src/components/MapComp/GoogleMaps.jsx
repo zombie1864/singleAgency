@@ -1,6 +1,5 @@
-import {Map, Marker, GoogleApiWrapper} from 'google-maps-react';
+import {Map, Marker} from 'google-maps-react';
 import React, { Component } from 'react'
-import key from './GKey'
 
 const containerStyle = {
   position: 'relative',  
@@ -12,6 +11,7 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
+      reRender: false 
     };
    
     onMarkerClick = (props, marker, e) =>
@@ -29,23 +29,29 @@ export class MapContainer extends Component {
         })
       }
     };
-   
+    
+    componentDidUpdate(prevProps, prevState) {
+      return prevProps.coord.lat !== this.props.coord.lat ? this.setState({...this.state, reRender: !this.state.reRender}) : null 
+    }
+    
+
     render() {
       return (
-        <Map google={this.props.google}
-            onClick={this.onMapClicked}
-            containerStyle={containerStyle}
-            initialCenter={{
-              lat: 40.818417,
-              lng: -73.950318
-            }}
-          >
-          <Marker onClick={this.onMarkerClick} name={'Current location'} />
-        </Map>
+        <div>
+          <p>currCoords: {this.props.coord.lat}, {this.props.coord.lng}</p>
+          <Map google={this.props.google}
+              onClick={this.onMapClicked}
+              containerStyle={containerStyle}
+              initialCenter={{
+                lat: this.props.coord.lat,
+                lng: this.props.coord.lng
+              }}
+            >
+            <Marker onClick={this.onMarkerClick} name={'Current location'} />
+          </Map>
+        </div>
       )
     }
 }
 
-export default GoogleApiWrapper({
-apiKey: (key)
-})(MapContainer)
+export default MapContainer

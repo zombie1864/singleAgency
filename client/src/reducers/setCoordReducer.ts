@@ -6,6 +6,8 @@ const initialState = {
 }
 
 const setCoordReducer = (state = initialState, action:any) => {
+    console.log("action",action);
+    
     switch (action.type) {
         case UPDATE_COORD:
             return {
@@ -14,7 +16,7 @@ const setCoordReducer = (state = initialState, action:any) => {
                 lng: action.payload.lng
             }
         default:
-            return state;
+            return {...state};
     }
 }
 

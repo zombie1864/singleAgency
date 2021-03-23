@@ -6,3 +6,5 @@ export const updateCoords = (payload:Ipayload) => ({
     type: UPDATE_COORD, 
     payload
 })
+
+export default updateCoords

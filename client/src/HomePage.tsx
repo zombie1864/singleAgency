@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import GoogleMaps from './components/MapComp/GoogleMaps'
+import GoogleMaps from './components/MapComp/GoogleMapContainer'
 import ListComp from './components/ListComp/ListCompContainer'
 import PropsFromState from './types/PropsFromState'
 import storeType from './types/storeType'
@@ -26,6 +26,8 @@ class HomePage extends Component<props>{
   
   render() {
     const comps = [<GoogleMaps/>, <ListComp/>]
+    console.log('homePage', this.props.coord);
+    
     return (
       <div className="HomePage">
         <h2>Single Agency</h2>
@@ -46,7 +48,7 @@ class HomePage extends Component<props>{
 
 const msp = (state:storeType) => ({
   data: state.setDataReducer, 
-  coord: state.coord
+  coord: state.setCoordReducer
 })
 
 export default connect(msp, {fetchData, updateCoords})(HomePage);
