@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import GoogleMaps from './components/GoogleMaps'
+import GoogleMaps from './components/MapComp/GoogleMaps'
 import ListComp from './components/ListComp/ListCompContainer'
-import appPropType from './types/appPropType'
+import PropsFromState from './types/PropsFromState'
 import storeType from './types/storeType'
 import {fetchData} from './actions/fetchDataAction'
+import {updateCoords} from './actions/updateCoordAction'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
@@ -14,11 +15,12 @@ const tableCss:React.CSSProperties = {
   width:"100vw"
 }
 
-interface connectDispatchProps{ // intestigate into why this works 
-  fetchData: any
+interface connectDispatchProps{ 
+  fetchData: any, 
+  updateCoords: any 
 }
 
-type props = appPropType & connectDispatchProps
+type props = PropsFromState & connectDispatchProps
 
 class HomePage extends Component<props>{
   
@@ -43,7 +45,8 @@ class HomePage extends Component<props>{
 }
 
 const msp = (state:storeType) => ({
-  fixture: state.setDataReducer
+  data: state.setDataReducer, 
+  coord: state.coord
 })
 
-export default connect(msp, {fetchData})(HomePage);
+export default connect(msp, {fetchData, updateCoords})(HomePage);

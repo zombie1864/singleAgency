@@ -2,13 +2,14 @@ import { connect } from 'react-redux'
 import {SET_DATA} from '../../actions/fetchDataAction'
 import ListComp from './ListComp'
 import storeType from '../../types/storeType'
+import {updateCoords} from '../../actions/updateCoordAction'
 
 const msp = (state:storeType) => ({
-    fixture: state.setDataReducer 
+    data: state.setDataReducer, 
+    coord: state.coord
 })
 
 const mdp = (dispatch:any) => ({
-    // fetchData: () => dispatch(fetchData),
     fetchData: () => { 
         fetch("http://127.0.0.1:5000/")
             .then( (response:any) => {
@@ -17,7 +18,8 @@ const mdp = (dispatch:any) => ({
             .then( (data:any) => {
                 dispatch({type: SET_DATA, fixture:data.results})
             })
-    }
+    }, 
+    updateCoords
 })
 
 export default connect( msp, mdp )(ListComp)

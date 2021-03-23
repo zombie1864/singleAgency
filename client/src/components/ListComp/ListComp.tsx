@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SearchComp from '../SearchComp'
-import appPropType from '../../types/appPropType'
+import PropsFromState from '../../types/PropsFromState'
 import Pagination from './Pagination'
 
 interface Istate {
@@ -8,12 +8,19 @@ interface Istate {
     itemsPerPage: number 
 }
 
-export class ListComp extends Component<appPropType, Istate> {
+interface connectDispatchProps{ 
+    fetchData: any, 
+    updateCoords: any 
+}
+
+type Allprops = PropsFromState & connectDispatchProps
+
+export class ListComp extends Component<Allprops, Istate> {
     constructor(props:any){
         super(props) 
         this.state = {
             currPage: 1, 
-            itemsPerPage:10 
+            itemsPerPage:5 
         }
     }
 
@@ -22,11 +29,20 @@ export class ListComp extends Component<appPropType, Istate> {
     }
 
     private paginate = (pageNumbers:any) => this.setState({...this.state, currPage: pageNumbers})
+
+    private showLngAndLat = (latitude:number, longitude:number):any => { 
+        // console.log('lat: ' + latitude, 'lon: ' + longitude)
+    } 
     
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
-        const currItems = this.props.fixture.fixture.slice(indexOfFirstItem, indexOfLastItem)
+        const currItems = this.props.data.fixture.slice(indexOfFirstItem, indexOfLastItem)
+        console.log(this.props.data.fixture[0])
+        console.log(this.props.updateCoords.payload);
+        console.log("coord", this.props.coord);
+        
+        
         return (
             <div>
                 <SearchComp/>
@@ -35,7 +51,14 @@ export class ListComp extends Component<appPropType, Istate> {
                     {
                         currItems.map( (obj:any, idx:any) => (//[{},...,{}]
                             <li key={idx}>
-                                {obj.address}
+                                <p onClick={()=>{
+                                    const payload = {lng: obj.longitude,lat:obj.latitude}
+                                    this.props.updateCoords(payload)
+                                    console.log(payload);
+                                    // console.log(
+                                    // 'lat: ' + obj.latitude, 'lon: ' + obj.longitude
+                                    // )
+                                }}>Address: {obj.address}</p>
                                 <p>bdbid: {obj.bdbid}</p>
                                 <p>building name: {obj.building_name}</p>
                             </li>
@@ -44,7 +67,7 @@ export class ListComp extends Component<appPropType, Istate> {
                 </ul>
                 <Pagination 
                     itemsPerPage={this.state.itemsPerPage}
-                    totalItems={this.props.fixture.fixture.length}
+                    totalItems={this.props.data.fixture.length}
                     paginate={this.paginate}
                 />
             </div>

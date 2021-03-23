@@ -34,9 +34,11 @@ export class MapContainer extends Component {
       return (
         <Map google={this.props.google}
             onClick={this.onMapClicked}
-            // visible={true}
-            // style={mapCss}
             containerStyle={containerStyle}
+            initialCenter={{
+              lat: 40.818417,
+              lng: -73.950318
+            }}
           >
           <Marker onClick={this.onMarkerClick} name={'Current location'} />
         </Map>
