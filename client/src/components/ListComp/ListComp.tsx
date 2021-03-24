@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import SearchComp from '../SearchComp'
+import SearchComp from '../SearchComp/SearchComp'
+import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
 import PropsFromState from '../../types/PropsFromState'
 import Pagination from './Pagination'
 
@@ -37,30 +38,41 @@ export class ListComp extends Component<Allprops, Istate> {
         
         return (
             <div>
-                <SearchComp/>
-                <h1>LIST COMP</h1>
-                <p>currCoords: {this.props.coord.lat}, {this.props.coord.lng}</p>
-                <ul>
-                    {
-                        currItems.map( (obj:any, idx:any) => (//[{},...,{}]
-                            <li key={idx}>
-                                <p onClick={()=>{
-                                    this.props.updateCoords({
-                                        lng: obj.longitude,
-                                        lat:obj.latitude
-                                    })
-                                }}>Address: {obj.address}</p>
-                                <p>bdbid: {obj.bdbid}</p>
-                                <p>building name: {obj.building_name}</p>
-                            </li>
-                        ))
-                    }
-                </ul>
-                <Pagination 
-                    itemsPerPage={this.state.itemsPerPage}
-                    totalItems={this.props.data.fixture.length}
-                    paginate={this.paginate}
-                />
+                <table>
+                    <tbody>
+                        <tr>
+                            <th><SearchComp/></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    {
+                                        currItems.map( (obj:any, idx:any) => (//[{},...,{}]
+                                            <li key={idx}>
+                                                <p onClick={()=>{
+                                                    this.props.updateCoords({
+                                                        lng: obj.longitude,
+                                                        lat:obj.latitude
+                                                    })
+                                                }}>Address: {obj.address}</p>
+                                                <p>bdbid: {obj.bdbid}</p>
+                                                <p>building name: {obj.building_name}</p>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                                <Pagination 
+                                    itemsPerPage={this.state.itemsPerPage}
+                                    totalItems={this.props.data.fixture.length}
+                                    paginate={this.paginate}
+                                />
+                            </td>
+                            <td>
+                                <MaxMiniBLDGArea fixture={this.props.data.fixture}/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
 

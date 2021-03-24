@@ -1,7 +1,6 @@
 import {connect} from 'react-redux'
 import {GoogleApiWrapper} from 'google-maps-react';
 import {MapContainer} from './GoogleMaps'
-import storeType from '../../types/storeType'
 import key from './GKey'
 
 const msp = (state) => ({
