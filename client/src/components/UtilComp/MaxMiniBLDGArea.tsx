@@ -27,10 +27,10 @@ export class MaxMiniBLDGArea extends Component<Iprops> {
             <div>
                 <h4>Biggest and Smallest BLDG Area</h4>
                 <h5>by sq ft</h5>
-                <p>MAX BLDG AREA: {this.maxMinTotalBLDGArea(this.props.fixture)[0]}</p>
-                <p>MAX BLDG ADDRESS: {maxBLDGAddress}</p>
-                <p>MIN BLDG AREA: {this.maxMinTotalBLDGArea(this.props.fixture)[1]}</p>
-                <p>MIN BLDG ADDRESS: {minBLDGAddress}</p>
+                <p>Max BLDG Area: {this.maxMinTotalBLDGArea(this.props.fixture)[0]} sq ft</p>
+                <p>Max BLDG Address: {maxBLDGAddress}</p>
+                <p>Min BLDG Area: {this.maxMinTotalBLDGArea(this.props.fixture)[1]} sq ft</p>
+                <p>Min BLDG Address: {minBLDGAddress}</p>
             </div>
         )
     }

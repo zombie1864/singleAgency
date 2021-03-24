@@ -49,12 +49,19 @@ export class ListComp extends Component<Allprops, Istate> {
                                     {
                                         currItems.map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx}>
-                                                <p onClick={()=>{
-                                                    this.props.updateCoords({
-                                                        lng: obj.longitude,
-                                                        lat:obj.latitude
-                                                    })
-                                                }}>Address: {obj.address}</p>
+                                                <a 
+                                                    onClick={()=>{
+                                                        this.props.updateCoords({
+                                                            lng: obj.longitude,
+                                                            lat:obj.latitude
+                                                        })
+                                                    }}
+                                                    href="#"
+                                                    className="alert alert-primary" 
+                                                    role="alert"
+                                                >Address: {obj.address}</a>
+                                                <br></br>
+                                                <br></br>
                                                 <p>bdbid: {obj.bdbid}</p>
                                                 <p>building name: {obj.building_name}</p>
                                             </li>
