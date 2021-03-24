@@ -1,13 +1,16 @@
-import { setData, SET_DATA } from '../actions/fetchDataAction'
+import { SET_DATA } from '../actions/fetchDataAction'
 
-const setDataReducer = ( state = {}, action:any) => {
+const initialState =  {
+    fixture: []
+}
+
+const setData = ( state = initialState, action:any) => {
     switch (action.type) {
         case SET_DATA:
-            const { response } = action
-            return { ...state, fixture: response}
+            return { ...state, fixture: action.fixture}
         default:
             return state 
     }
 }
 
-export default setDataReducer
+export default setData
