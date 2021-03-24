@@ -70,11 +70,6 @@ export class ListComp extends Component<Allprops, Istate> {
                                                         <button
                                                             type="button" 
                                                             className="btn btn-info" 
-                                                            // onClick={() => {
-                                                            //     // console.log(obj);
-                                                                
-                                                            //     <DetailsPage item={obj.address}/>
-                                                            // }}
                                                         >Details</button>
                                                     </Link>
                                                 </div>
