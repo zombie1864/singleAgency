@@ -1,8 +1,10 @@
+import {Link} from 'react-router-dom'
 import React, { Component } from 'react'
 import SearchComp from '../SearchComp/SearchComp'
 import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
 import PropsFromState from '../../types/PropsFromState'
 import Pagination from './Pagination'
+import DetailsPage from '../DetailsPage'
 
 interface Istate {
     currPage: number, 
@@ -49,19 +51,33 @@ export class ListComp extends Component<Allprops, Istate> {
                                     {
                                         currItems.map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx}>
-                                                <a 
-                                                    onClick={()=>{
-                                                        this.props.updateCoords({
-                                                            lng: obj.longitude,
-                                                            lat:obj.latitude
-                                                        })
+                                                <div>
+                                                    <a 
+                                                        onClick={()=>{
+                                                            this.props.updateCoords({
+                                                                lng: obj.longitude,
+                                                                lat:obj.latitude
+                                                            })
+                                                        }}
+                                                        href="!#"
+                                                        className="alert alert-primary" 
+                                                    >Address: {obj.address}</a>
+                                                    <Link to={{
+                                                        pathname:"/details",
+                                                        state: obj
                                                     }}
-                                                    href="#"
-                                                    className="alert alert-primary" 
-                                                    role="alert"
-                                                >Address: {obj.address}</a>
-                                                <br></br>
-                                                <br></br>
+                                                    >
+                                                        <button
+                                                            type="button" 
+                                                            className="btn btn-info" 
+                                                            // onClick={() => {
+                                                            //     // console.log(obj);
+                                                                
+                                                            //     <DetailsPage item={obj.address}/>
+                                                            // }}
+                                                        >Details</button>
+                                                    </Link>
+                                                </div>
                                                 <p>bdbid: {obj.bdbid}</p>
                                                 <p>building name: {obj.building_name}</p>
                                             </li>
