@@ -22,12 +22,32 @@ interface Iprops {
 
 export class DetailsPage extends Component<Iprops> {
     render() {
-        console.log(this.props);
+        console.log( Object.entries(this.props.location.state) );
         
         return (
             <div>
                 <h1>DETAILS PAGE</h1>
-                <h2>{this.props.location.state.address}</h2>
+                <table className="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td colSpan={2}>header</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                <ul>
+                                    {Object.entries(this.props.location.state).map( (pair, idx) => {
+                                        return pair[0] === "co2eui_breakdown" ? null :
+                                         pair[0] === "energy_breakdown" ? null : 
+                                         <li key={idx}>{pair[0]} : {pair[1]}</li>
+                                    })}
+                                </ul>
+                            </th>
+                            <td> render details </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
