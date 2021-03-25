@@ -4,7 +4,6 @@ import SearchComp from '../SearchComp/SearchComp'
 import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
 import PropsFromState from '../../types/PropsFromState'
 import Pagination from './Pagination'
-import DetailsPage from '../DetailsPage'
 
 interface Istate {
     currPage: number, 
