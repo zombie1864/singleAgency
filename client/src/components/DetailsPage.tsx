@@ -34,8 +34,23 @@ export class DetailsPage extends Component<Iprops, Istate> {
         }
     }
 
+    private toggleBTWNbreakdown = (value:string):any => {
+        return value === "co2" ? this.setState({
+            ...this.state, renderCo2eui_breakdown: !this.state.renderCo2eui_breakdown
+        }) : 
+        value === "energy" ? this.setState({
+            ...this.state, renderEnergy_breakdown: !this.state.renderEnergy_breakdown
+        }) : null 
+    }
+
     private renderBreakdown = ():JSX.Element => {
-        return <p>hello</p>
+        return (
+            <p>{
+                this.state.renderCo2eui_breakdown ? 'co2 breakdown' : 
+                this.state.renderEnergy_breakdown ? 'energy breakdown' : 
+                "no data"
+            }</p>
+        )
     }
 
     render() {        
@@ -57,11 +72,15 @@ export class DetailsPage extends Component<Iprops, Istate> {
                                          pair[0] === "energy_breakdown" ? null : 
                                          <li key={idx}>{pair[0]} : {pair[1]}</li>
                                     })}
-                                    <li onClick={()=> this.renderBreakdown()}>co2eui_breakdown</li>
-                                    <li onClick={()=> this.renderBreakdown()}>energy_breakdown</li>
+                                    <li 
+                                        onClick={()=> this.toggleBTWNbreakdown("co2")}
+                                    >co2eui_breakdown</li>
+                                    <li 
+                                        onClick={()=> this.toggleBTWNbreakdown("energy")}
+                                    >energy_breakdown</li>
                                 </ul>
                             </th>
-                            <td> render details </td>
+                            <td>{this.renderBreakdown()}</td>
                         </tr>
                     </tbody>
                 </table>
