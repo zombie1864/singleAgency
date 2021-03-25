@@ -20,10 +20,25 @@ interface Iprops {
     }
 }
 
-export class DetailsPage extends Component<Iprops> {
-    render() {
-        console.log( Object.entries(this.props.location.state) );
-        
+interface Istate {
+    renderCo2eui_breakdown: boolean,
+    renderEnergy_breakdown: boolean
+}
+
+export class DetailsPage extends Component<Iprops, Istate> {
+    constructor(props:any) {
+        super(props) 
+        this.state = {
+            renderCo2eui_breakdown: false,
+            renderEnergy_breakdown: false
+        }
+    }
+
+    private renderBreakdown = ():JSX.Element => {
+        return <p>hello</p>
+    }
+
+    render() {        
         return (
             <div>
                 <h1>DETAILS PAGE</h1>
@@ -42,6 +57,8 @@ export class DetailsPage extends Component<Iprops> {
                                          pair[0] === "energy_breakdown" ? null : 
                                          <li key={idx}>{pair[0]} : {pair[1]}</li>
                                     })}
+                                    <li onClick={()=> this.renderBreakdown()}>co2eui_breakdown</li>
+                                    <li onClick={()=> this.renderBreakdown()}>energy_breakdown</li>
                                 </ul>
                             </th>
                             <td> render details </td>
