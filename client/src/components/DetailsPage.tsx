@@ -53,33 +53,50 @@ export class DetailsPage extends Component<Iprops, Istate> {
 
     private renderBreakdown = ():JSX.Element => {
         return (
-            <ul>{
+            <div>{
                 this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown'): 
                 this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown') : 
-                "no data"
-            }</ul>
+                "Click on either breakdown to view details"
+            }</div>
         )
     }
 
     private iterateThrBreakdown = (typeOfBreakdown:string):any => {
-        let breakdownType = 
+        let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
             this.props.location.state.co2eui_breakdown : 
             this.props.location.state.energy_breakdown
-
+            
         return (
-            <div>
-                <h5>{`${typeOfBreakdown}`}</h5>
-                {breakdownType.map( (obj:any, idx:number) => {
-                    return (
-                        <div key={idx}>
-                            {Object.entries( obj ).map( (pair, idx) => {
-                                return <li key={idx}>{pair[0]} : {pair[1]}</li>
+            <table>
+                <thead>
+                    <tr>
+                        <th colSpan={Object.keys(breakdownArr[0]).length}>
+                            <h5>{`${typeOfBreakdown}`}</h5> 
+                        </th>
+                    </tr>
+                </thead>
+                { 
+                    breakdownArr.length === 0 ?  <tbody><tr><td>No data</td></tr></tbody> : 
+                    <tbody>
+                        <tr>
+                            {Object.keys(breakdownArr[0]).map( (key:string, idx:number) => {
+                                return <th key={idx}>{`${key}`}</th>
                             })}
-                        </div>
-                    )
-                })}
-            </div>
+                        </tr>
+                        {
+                            breakdownArr.map( (obj:any, idx:number) => {
+                                return <tr key={idx}>{
+                                        Object.values(obj).map((value:any, idx:number) => {
+                                            return <td key={idx}>{`${value}`}</td>
+                                        })
+                                    }
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                }
+            </table>
         )
     }
 
