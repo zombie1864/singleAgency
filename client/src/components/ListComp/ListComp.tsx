@@ -1,13 +1,13 @@
 import {Link} from 'react-router-dom'
 import React, { Component } from 'react'
-import SearchComp from '../SearchComp/SearchComp'
 import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
 import PropsFromState from '../../types/PropsFromState'
 import Pagination from './Pagination'
 
 interface Istate {
     currPage: number, 
-    itemsPerPage: number 
+    itemsPerPage: number, 
+    searchTerm: string
 }
 
 interface connectDispatchProps{ 
@@ -22,7 +22,8 @@ export class ListComp extends Component<Allprops, Istate> {
         super(props) 
         this.state = {
             currPage: 1, 
-            itemsPerPage:5 
+            itemsPerPage:5, 
+            searchTerm: ''
         }
     }
 
@@ -42,13 +43,31 @@ export class ListComp extends Component<Allprops, Istate> {
                 <table>
                     <tbody>
                         <tr>
-                            <th><SearchComp/></th>
+                            <th>
+                                <input 
+                                    type="text" 
+                                    placeholder="search"
+                                    onChange={event=>{
+                                        if (event.target.value !== '' ) {
+                                            this.setState({...this.state, itemsPerPage: 100, searchTerm: event.target.value})
+
+                                        } else if (event.target.value === '') {
+                                            this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
+                                        } 
+                                    }}
+                                    />
+                                    <br/><br/><br/>  {/* PLACEHOLDER */}
+                            </th>
                         </tr>
                         <tr>
                             <td>
                                 <ul>
                                     {
-                                        currItems.map( (obj:any, idx:any) => (//[{},...,{}]
+                                        currItems.filter((obj:any) => {
+                                            return this.state.searchTerm === '' ? obj :
+                                            obj.address.toLowerCase().includes(this.state.searchTerm.toLowerCase()) ? obj : 
+                                            null
+                                        }).map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx}>
                                                 <div>
                                                     <a 
