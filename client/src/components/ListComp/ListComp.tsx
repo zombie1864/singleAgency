@@ -36,7 +36,7 @@ export class ListComp extends Component<Allprops, Istate> {
         this.props.fetchData()
     }
 
-    private paginate = (pageNumbers:any) => this.setState({...this.state, currPage: pageNumbers})
+    private paginate = (pageNumber:any) => this.setState({...this.state, currPage: pageNumber}) 
 
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage

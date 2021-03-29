@@ -7,7 +7,7 @@ interface Iprops {
 }
 
 interface Istate {
-  startIdx: number, 
+  firstIdx: number, 
   lastIdx: number, 
 }
 
@@ -15,7 +15,7 @@ class Pagination extends Component<Iprops, Istate> {
   constructor(props:any){
     super(props) 
     this.state = {
-      startIdx: 1, 
+      firstIdx: 1, 
       lastIdx: 6, 
     }
   }
@@ -25,22 +25,27 @@ class Pagination extends Component<Iprops, Istate> {
   }
 
   private cycle = (event:any) => {
-    return this.state.startIdx === 1 && event.target.name ==="prev" ? null :
-    this.state.lastIdx === 21 && event.target.name === "next" ? null : 
-    event.target.name === "prev" ? 
-    this.setState({
-      startIdx: this.state.startIdx - 5, 
-      lastIdx: this.state.lastIdx - 5
-    }) : 
-    event.target.name === "next" ? 
-    this.setState({
-      startIdx: this.state.startIdx + 5, 
-      lastIdx: this.state.lastIdx + 5
-    }) : null 
+    if ( (this.state.firstIdx === 1 && event.target.name ==="prev")  || (this.state.lastIdx === 21 && event.target.name === "next") ) return null 
+    if (event.target.name === "prev") {
+      this.props.paginate(this.state.firstIdx - 5)
+      return this.setState({
+        firstIdx: this.state.firstIdx - 5, 
+        lastIdx: this.state.lastIdx - 5
+      })  
+
+    } else if (event.target.name === "next") {
+      this.props.paginate(this.state.firstIdx + 5)
+      return this.setState({
+        firstIdx: this.state.firstIdx + 5, 
+        lastIdx: this.state.lastIdx + 5
+      }) 
+    } 
   }
   
   render() {
-    const pageNumbers = [];
+    const pageNumbers = [],
+          initialStartingIdx = 1,
+          initialEndingIdx = 6 
     
     for (let i = 1; i <= Math.ceil(this.props.totalItems / this.props.itemsPerPage); i++) {
       pageNumbers.push(i);
@@ -51,14 +56,21 @@ class Pagination extends Component<Iprops, Istate> {
         <ul className='pagination'>
           <button name="prev" onClick={this.cycle}
           >prev</button>
-            {this.range(this.state.startIdx, this.state.lastIdx).map(number => (
-              number === this.state.lastIdx ? <li key={number}>...</li> :
-              <li key={number} className='page-item'>
+          <li>{this.state.firstIdx !== initialStartingIdx ? '...' : null}</li>
+          { 
+            this.range(this.state.firstIdx, this.state.lastIdx -1).map(number => {
+              return <li key={number} className='page-item'>
                 <a onClick={() => this.props.paginate(number)} href='!#' className='page-link'>
                   {number}
                 </a>
               </li>
-            ))}
+            })
+          }
+          <li>{
+            ( this.state.lastIdx === initialEndingIdx )  || 
+            ( this.state.lastIdx !== initialEndingIdx  && this.state.lastIdx < 20 )
+            ? '...' : null
+          }</li>
           <button name="next" onClick={this.cycle}>next</button>
         </ul>
       </nav>
