@@ -73,35 +73,37 @@ export class DetailsPage extends Component<Iprops, Istate> {
             this.props.location.state.energy_breakdown
             
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th colSpan={Object.keys(breakdownArr[0]).length}>
-                            <h5>{`${typeOfBreakdown}`}</h5> 
-                        </th>
-                    </tr>
-                </thead>
+            <div>
                 { 
-                    breakdownArr.length === 0 ?  <tbody><tr><td>No data</td></tr></tbody> : 
-                    <tbody>
+                    breakdownArr.length === 0 ? <p>No data</p> : 
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colSpan={Object.keys(breakdownArr[0]).length}>
+                                <h5>{`${typeOfBreakdown}`}</h5> 
+                                </th>
+                            </tr>
+                        </thead> 
+                        <tbody>
                         <tr className="table-danger">
                             {Object.keys(breakdownArr[0]).map( (key:string, idx:number) => {
                                 return <th key={idx}>{`${key}`}</th>
                             })}
                         </tr>
-                        {
-                            breakdownArr.map( (obj:any, idx:number) => {
-                                return <tr key={idx}>{
-                                        Object.values(obj).map((value:any, idx:number) => {
-                                            return <td key={idx}>{`${value}`}</td>
-                                        })
-                                    }
-                                </tr>
-                            })
-                        }
-                    </tbody>
+                            {
+                                breakdownArr.map( (obj:any, idx:number) => {
+                                    return <tr key={idx}>{
+                                            Object.values(obj).map((value:any, idx:number) => {
+                                                return <td key={idx}>{`${value}`}</td>
+                                            })
+                                        }
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+                    </table>
                 }
-            </table>
+            </div>
         )
     }
 
