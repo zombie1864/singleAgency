@@ -17,6 +17,11 @@ interface connectDispatchProps{
 
 type Allprops = PropsFromState & connectDispatchProps
 
+const searchCss:React.CSSProperties = {
+    overflowY: "scroll", 
+    height: "600px",
+}
+
 export class ListComp extends Component<Allprops, Istate> {
     constructor(props:any){
         super(props) 
@@ -43,7 +48,7 @@ export class ListComp extends Component<Allprops, Istate> {
                 <table>
                     <tbody>
                         <tr>
-                            <th>
+                            <th> {/* search feature */}
                                 <input 
                                     type="text" 
                                     placeholder="search"
@@ -59,9 +64,9 @@ export class ListComp extends Component<Allprops, Istate> {
                                     <br/><br/><br/>  {/* PLACEHOLDER */}
                             </th>
                         </tr>
-                        <tr>
+                        <tr >
                             <td>
-                                <ul>
+                                <ul style={searchCss}>
                                     {
                                         currItems.filter((obj:any) => {
                                             return this.state.searchTerm === '' ? obj :
