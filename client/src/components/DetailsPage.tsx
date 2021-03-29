@@ -31,6 +31,11 @@ const breakDownLiCss:React.CSSProperties = {
     color: "blue"
 }
 
+const breakdownCss:React.CSSProperties = {
+    width: "1500px", 
+    overflowX: "scroll", 
+}
+
 export class DetailsPage extends Component<Iprops, Istate> {
     constructor(props:any) {
         super(props) 
@@ -53,7 +58,7 @@ export class DetailsPage extends Component<Iprops, Istate> {
 
     private renderBreakdown = ():JSX.Element => {
         return (
-            <div>{
+            <div style={breakdownCss}>{
                 this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown'): 
                 this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown') : 
                 "Click on either breakdown to view details"
@@ -79,7 +84,7 @@ export class DetailsPage extends Component<Iprops, Istate> {
                 { 
                     breakdownArr.length === 0 ?  <tbody><tr><td>No data</td></tr></tbody> : 
                     <tbody>
-                        <tr>
+                        <tr className="table-danger">
                             {Object.keys(breakdownArr[0]).map( (key:string, idx:number) => {
                                 return <th key={idx}>{`${key}`}</th>
                             })}
@@ -107,15 +112,15 @@ export class DetailsPage extends Component<Iprops, Istate> {
                     <button>Home Page</button>
                 </Link>
                 <h1>DETAILS PAGE</h1>
-                <table className="table table-bordered table-hover">
-                    <thead>
+                <table className="table table-bordered table-hover ">
+                    <thead className="thead-dark">
                         <tr>
-                            <td colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></td>
+                            <th colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">
+                            <th scope="row" style={{width:"450px"}}>
                                 <ul>
                                     {Object.entries(this.props.location.state).map( (pair, idx) => {
                                         return pair[0] === "co2eui_breakdown" ? null :
