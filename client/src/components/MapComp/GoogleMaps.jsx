@@ -1,3 +1,6 @@
+import {connect} from 'react-redux'
+import {GoogleApiWrapper} from 'google-maps-react'
+import key from './GKey'
 import {Map, Marker} from 'google-maps-react';
 import React, { Component } from 'react'
 
@@ -59,4 +62,8 @@ export class MapContainer extends Component {
     }
 }
 
-export default MapContainer
+const msp = (state) => ({
+  coord: state.setCoordReducer
+})
+
+export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
