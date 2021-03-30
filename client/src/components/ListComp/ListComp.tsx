@@ -85,10 +85,7 @@ export class ListComp extends Component<Allprops, Istate> {
                                                         href="!#"
                                                         className="alert alert-primary" 
                                                     >Address: {obj.address}</a>
-                                                    <Link to={{
-                                                        pathname:"/details",
-                                                        state: obj
-                                                    }}
+                                                    <Link to={`/details/${obj.bdbid}`}
                                                     >
                                                         <button
                                                             type="button" 

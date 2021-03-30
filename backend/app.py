@@ -14,12 +14,19 @@ def index():
     data = json.loads(open('fixture.json').read()) # sends json file 
     return data
 
-@app.route('/<index>', methods=['GET'])
-def getItem(index):
+@app.route('/<bdbid>', methods=['GET'])
+def getItem(bdbid):
     with open("fixture.json", "r") as read_file:
         fixture = json.load(read_file)
-    res = fixture["results"][int(index)]
+    res = next((item for item in fixture["results"] if item["bdbid"] == int(bdbid) ), None)
     return jsonify(res)
+
+# @app.route('/<index>', methods=['GET'])
+# def getItem(index):
+#     with open("fixture.json", "r") as read_file:
+#         fixture = json.load(read_file)
+#     res = fixture["results"][int(index)]
+#     return jsonify(res)
 
 if __name__ == "__main__":
     app.run(debug=True)

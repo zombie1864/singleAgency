@@ -6,7 +6,7 @@ const App = () => (
     <div>
         <Switch>
             <Route exact path="/!" component={HomePage}/>
-            <Route path="/details" component={DetailsPage}/>
+            <Route path="/details/:id" component={DetailsPage}/>
         </Switch>
     </div>
 )
