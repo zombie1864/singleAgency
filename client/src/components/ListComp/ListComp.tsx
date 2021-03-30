@@ -36,7 +36,7 @@ export class ListComp extends Component<Allprops, Istate> {
         this.props.fetchData()
     }
 
-    private paginate = (pageNumbers:any) => this.setState({...this.state, currPage: pageNumbers})
+    private paginate = (pageNumber:any) => this.setState({...this.state, currPage: pageNumber}) 
 
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
@@ -85,10 +85,7 @@ export class ListComp extends Component<Allprops, Istate> {
                                                         href="!#"
                                                         className="alert alert-primary" 
                                                     >Address: {obj.address}</a>
-                                                    <Link to={{
-                                                        pathname:"/details",
-                                                        state: obj
-                                                    }}
+                                                    <Link to={`/details/${obj.bdbid}`}
                                                     >
                                                         <button
                                                             type="button" 

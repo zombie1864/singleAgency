@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 interface Iprops {
+    match:any, 
     location: {
         state: {
             address: string,
@@ -23,7 +24,8 @@ interface Iprops {
 
 interface Istate {
     renderCo2eui_breakdown: boolean,
-    renderEnergy_breakdown: boolean
+    renderEnergy_breakdown: boolean, 
+    data: any 
 }
 
 const breakDownLiCss:React.CSSProperties = {
@@ -31,14 +33,32 @@ const breakDownLiCss:React.CSSProperties = {
     color: "blue"
 }
 
+const breakdownCss:React.CSSProperties = {
+    width: "1500px", 
+    overflowX: "scroll", 
+}
+
 export class DetailsPage extends Component<Iprops, Istate> {
     constructor(props:any) {
         super(props) 
         this.state = {
             renderCo2eui_breakdown: false,
-            renderEnergy_breakdown: false
+            renderEnergy_breakdown: false, 
+            data: null
         }
     }
+
+    componentDidMount() {
+        const {id} = this.props.match.params 
+        fetch(`http://127.0.0.1:5000/${id}`)
+            .then( (response:any) => {
+                return response.json()
+            })
+            .then( (data:any) => {
+                this.setState({ ...this.state, data})
+            })
+    }
+    
 
     private toggleBTWNbreakdown = (value:string):any => {
         return value === "co2" ? this.setState({
@@ -53,7 +73,7 @@ export class DetailsPage extends Component<Iprops, Istate> {
 
     private renderBreakdown = ():JSX.Element => {
         return (
-            <div>{
+            <div style={breakdownCss}>{
                 this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown'): 
                 this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown') : 
                 "Click on either breakdown to view details"
@@ -64,60 +84,73 @@ export class DetailsPage extends Component<Iprops, Istate> {
     private iterateThrBreakdown = (typeOfBreakdown:string):any => {
         let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
-            this.props.location.state.co2eui_breakdown : 
-            this.props.location.state.energy_breakdown
+            this.state.data.co2eui_breakdown : 
+            this.state.data.energy_breakdown
             
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th colSpan={Object.keys(breakdownArr[0]).length}>
-                            <h5>{`${typeOfBreakdown}`}</h5> 
-                        </th>
-                    </tr>
-                </thead>
+            <div>
                 { 
-                    breakdownArr.length === 0 ?  <tbody><tr><td>No data</td></tr></tbody> : 
-                    <tbody>
-                        <tr>
+                    breakdownArr.length === 0 ? <p>No data</p> : 
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colSpan={Object.keys(breakdownArr[0]).length}>
+                                <h5>{`${typeOfBreakdown}`}</h5> 
+                                </th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                        <tr className="table-danger">
                             {Object.keys(breakdownArr[0]).map( (key:string, idx:number) => {
                                 return <th key={idx}>{`${key}`}</th>
                             })}
                         </tr>
-                        {
-                            breakdownArr.map( (obj:any, idx:number) => {
-                                return <tr key={idx}>{
-                                        Object.values(obj).map((value:any, idx:number) => {
-                                            return <td key={idx}>{`${value}`}</td>
-                                        })
-                                    }
-                                </tr>
-                            })
-                        }
-                    </tbody>
+                            {
+                                breakdownArr.map( (obj:any, idx:number) => {
+                                    return <tr key={idx}>{
+                                            Object.values(obj).map((value:any, idx:number) => {
+                                                return <td key={idx}>{`${value}`}</td>
+                                            })
+                                        }
+                                    </tr>
+                                })
+                            }
+                        </tbody>
+                    </table>
                 }
-            </table>
+            </div>
         )
     }
 
-    render() {        
+    render() {     
+        let bdbid = this.state.data  
+        const data = this.state.data
+        
+        if (!bdbid) {
+            return null 
+        } else {
+            bdbid = this.state.data.bdbid
+        }
+        if (!data) {
+            return null 
+        }
         return (
             <div>
                 <Link to={"/!"}>
                     <button>Home Page</button>
                 </Link>
                 <h1>DETAILS PAGE</h1>
-                <table className="table table-bordered table-hover">
-                    <thead>
+                <table className="table table-bordered table-hover ">
+                    <thead className="thead-dark">
                         <tr>
-                            <td colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></td>
+                            <th colSpan={2}><h3>Viewing bdbid#: {bdbid}</h3></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">
+                            <th scope="row" style={{width:"450px"}}>
                                 <ul>
-                                    {Object.entries(this.props.location.state).map( (pair, idx) => {
+                                    {Object.entries(data).map( (pair, idx) => {
                                         return pair[0] === "co2eui_breakdown" ? null :
                                          pair[0] === "energy_breakdown" ? null : 
                                          <li key={idx}>{pair[0]} : {pair[1]}</li>
