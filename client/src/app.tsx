@@ -5,7 +5,7 @@ import DetailsPage from './components/DetailsPage'
 const App = () => (
     <div>
         <Switch>
-            <Route exact path="/!" component={HomePage}/>
+            <Route exact path="/" component={HomePage}/>
             <Route path="/details/:id" component={DetailsPage}/>
         </Switch>
     </div>

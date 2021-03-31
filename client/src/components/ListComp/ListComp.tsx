@@ -26,6 +26,12 @@ const searchCss:React.CSSProperties = {
     height: "600px",
 }
 
+const addressCss:React.CSSProperties = {
+    cursor:"pointer", 
+    color: "darkblue", 
+    textDecoration: "underline" , 
+}
+
 export class ListComp extends Component<Allprops, Istate> {
     constructor(props:any){
         super(props) 
@@ -80,16 +86,19 @@ export class ListComp extends Component<Allprops, Istate> {
                                             <li key={idx}>
                                                 <div>
                                                     <a 
+                                                        style={addressCss}
                                                         onClick={()=>{
                                                             this.props.updateCoords({
                                                                 lng: obj.longitude,
                                                                 lat:obj.latitude
                                                             })
                                                         }}
-                                                        href="!#"
                                                         className="alert alert-primary" 
                                                     >Address: {obj.address}</a>
-                                                    <Link to={`/details/${obj.bdbid}`}
+                                                    <Link to={{
+                                                        pathname: `/details/${obj.bdbid}`,
+                                                        state: obj
+                                                    }}
                                                     >
                                                         <button
                                                             type="button" 
