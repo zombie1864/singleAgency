@@ -60,7 +60,7 @@ class Pagination extends Component<Iprops, Istate> {
           { 
             this.range(this.state.firstIdx, this.state.lastIdx -1).map(number => {
               return <li key={number} className='page-item'>
-                <a onClick={() => this.props.paginate(number)} href='!#' className='page-link'>
+                <a onClick={() => this.props.paginate(number)} className='page-link'>
                   {number}
                 </a>
               </li>
