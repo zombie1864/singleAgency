@@ -21,7 +21,7 @@ interface connectDispatchProps{
 
 type Allprops = PropsFromState & connectDispatchProps
 
-const searchCss:React.CSSProperties = {
+const listCss:React.CSSProperties = {
     overflowY: "scroll", 
     height: "600px",
     width: "500px"
@@ -31,6 +31,10 @@ const addressCss:React.CSSProperties = {
     cursor:"pointer", 
     color: "darkblue", 
     textDecoration: "underline" , 
+}
+
+const searchCss:React.CSSProperties = { 
+    margin: "20px"
 }
 
 export class ListComp extends Component<Allprops, Istate> {
@@ -59,11 +63,12 @@ export class ListComp extends Component<Allprops, Istate> {
                 <table>
                     <tbody>
                         <tr>
-                            <th> {/* search feature */}
+                            <th> 
                                 <input 
-                                className="form-control"
+                                    className="form-control"
                                     type="text" 
                                     placeholder="search"
+                                    style={searchCss}
                                     onChange={event=>{
                                         if (event.target.value !== '' ) {
                                             this.setState({...this.state, itemsPerPage: 100, searchTerm: event.target.value})
@@ -73,12 +78,11 @@ export class ListComp extends Component<Allprops, Istate> {
                                         } 
                                     }}
                                     />
-                                    <br/><br/><br/>  {/* PLACEHOLDER */}
                             </th>
                         </tr>
                         <tr >
                             <td>
-                                <ul style={searchCss}>
+                                <ul style={listCss}>
                                     {
                                         currItems.filter((obj:any) => {
                                             return this.state.searchTerm === '' ? obj :
