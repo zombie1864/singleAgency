@@ -36,6 +36,10 @@ const breakdownCss:React.CSSProperties = {
     overflowX: "scroll", 
 }
 
+const homeBtnCss:React.CSSProperties = {
+    margin: "10px"
+}
+
 export class DetailsPage extends Component<Iprops, Istate> {
     constructor(props:any) {
         super(props) 
@@ -111,9 +115,9 @@ export class DetailsPage extends Component<Iprops, Istate> {
         return (
             <div>
                 <Link to={"/"}>
-                    <button>Home Page</button>
+                    <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
                 </Link>
-                <h1>DETAILS PAGE</h1>
+                <h1 className="text-center">DETAILS PAGE</h1>
                 <table className="table table-bordered table-hover ">
                     <thead className="thead-dark">
                         <tr>

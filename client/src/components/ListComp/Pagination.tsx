@@ -58,7 +58,7 @@ class Pagination extends Component<Iprops, Istate> {
     return (
       <nav>
         <ul className='pagination'>
-          <button name="prev" onClick={this.cycle}
+          <button className="btn btn-default" name="prev" onClick={this.cycle}
           >prev</button>
           <li>{this.state.firstIdx !== initialStartingIdx ? '...' : null}</li>
           { 
@@ -75,7 +75,7 @@ class Pagination extends Component<Iprops, Istate> {
             ( this.state.lastIdx !== initialEndingIdx  && this.state.lastIdx < 20 )
             ? '...' : null
           }</li>
-          <button name="next" onClick={this.cycle}>next</button>
+          <button className="btn btn-default" name="next" onClick={this.cycle}>next</button>
         </ul>
       </nav>
     );

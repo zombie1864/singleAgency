@@ -24,13 +24,13 @@ type Allprops = PropsFromState & connectDispatchProps
 const searchCss:React.CSSProperties = {
     overflowY: "scroll", 
     height: "600px",
+    width: "500px"
 }
 
 const addressCss:React.CSSProperties = {
     cursor:"pointer", 
     color: "darkblue", 
     textDecoration: "underline" , 
-    // width: "250px"
 }
 
 export class ListComp extends Component<Allprops, Istate> {
@@ -61,6 +61,7 @@ export class ListComp extends Component<Allprops, Istate> {
                         <tr>
                             <th> {/* search feature */}
                                 <input 
+                                className="form-control"
                                     type="text" 
                                     placeholder="search"
                                     onChange={event=>{

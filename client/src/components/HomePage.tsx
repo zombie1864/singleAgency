@@ -16,8 +16,8 @@ class HomePage extends Component{
     const comps = [<GoogleMaps/>, <ListComp/>]
     
     return (
-      <div className="HomePage">
-        <h2>Single Agency</h2>
+      <div>
+        <h2 className="text-center">Single Agency</h2>
         <table>
           <tbody>
             <tr>
