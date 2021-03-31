@@ -30,6 +30,7 @@ const addressCss:React.CSSProperties = {
     cursor:"pointer", 
     color: "darkblue", 
     textDecoration: "underline" , 
+    // width: "250px"
 }
 
 export class ListComp extends Component<Allprops, Istate> {
@@ -85,7 +86,7 @@ export class ListComp extends Component<Allprops, Istate> {
                                         }).map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx}>
                                                 <div>
-                                                    <a 
+                                                    <span 
                                                         style={addressCss}
                                                         onClick={()=>{
                                                             this.props.updateCoords({
@@ -94,7 +95,7 @@ export class ListComp extends Component<Allprops, Istate> {
                                                             })
                                                         }}
                                                         className="alert alert-primary" 
-                                                    >Address: {obj.address}</a>
+                                                    >Address: {obj.address}</span>
                                                     <Link to={{
                                                         pathname: `/details/${obj.bdbid}`,
                                                         state: obj

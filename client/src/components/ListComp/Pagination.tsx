@@ -11,6 +11,10 @@ interface Istate {
   lastIdx: number, 
 }
 
+const paginationCss:React.CSSProperties = {
+  cursor: "pointer", 
+}
+
 class Pagination extends Component<Iprops, Istate> {
   constructor(props:any){
     super(props) 
@@ -60,9 +64,9 @@ class Pagination extends Component<Iprops, Istate> {
           { 
             this.range(this.state.firstIdx, this.state.lastIdx -1).map(number => {
               return <li key={number} className='page-item'>
-                <a onClick={() => this.props.paginate(number)} className='page-link'>
+                <span style={paginationCss} onClick={() => this.props.paginate(number)} className='page-link'>
                   {number}
-                </a>
+                </span>
               </li>
             })
           }
