@@ -110,7 +110,7 @@ export class DetailsPage extends Component<Iprops, Istate> {
     render() {        
         return (
             <div>
-                <Link to={"/!"}>
+                <Link to={"/"}>
                     <button>Home Page</button>
                 </Link>
                 <h1>DETAILS PAGE</h1>

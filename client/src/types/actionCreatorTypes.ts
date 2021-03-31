@@ -1,7 +1,10 @@
 import {fetchDataAction, updateCoordAction} from './actionTypes'
 
-export type Ipayload = any
+export type Ipayload = {
+    lat:number, 
+    lng:number 
+}
 
-export type fetchDataActionCreator = () => fetchDataAction | void
+export type fetchDataActionCreator = () => fetchDataAction 
 
-export type updateCoordActionCreator = (payload:Ipayload) => updateCoordAction | void 
+export type updateCoordActionCreator = (payload:Ipayload) => updateCoordAction 
