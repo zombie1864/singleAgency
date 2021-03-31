@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 interface Iprops {
-    match:any, 
     location: {
         state: {
             address: string,
@@ -24,8 +23,7 @@ interface Iprops {
 
 interface Istate {
     renderCo2eui_breakdown: boolean,
-    renderEnergy_breakdown: boolean, 
-    data: any 
+    renderEnergy_breakdown: boolean
 }
 
 const breakDownLiCss:React.CSSProperties = {
@@ -43,22 +41,9 @@ export class DetailsPage extends Component<Iprops, Istate> {
         super(props) 
         this.state = {
             renderCo2eui_breakdown: false,
-            renderEnergy_breakdown: false, 
-            data: null
+            renderEnergy_breakdown: false
         }
     }
-
-    componentDidMount() {
-        const {id} = this.props.match.params 
-        fetch(`http://127.0.0.1:5000/${id}`)
-            .then( (response:any) => {
-                return response.json()
-            })
-            .then( (data:any) => {
-                this.setState({ ...this.state, data})
-            })
-    }
-    
 
     private toggleBTWNbreakdown = (value:string):any => {
         return value === "co2" ? this.setState({
@@ -84,8 +69,8 @@ export class DetailsPage extends Component<Iprops, Istate> {
     private iterateThrBreakdown = (typeOfBreakdown:string):any => {
         let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
-            this.state.data.co2eui_breakdown : 
-            this.state.data.energy_breakdown
+            this.props.location.state.co2eui_breakdown : 
+            this.props.location.state.energy_breakdown
             
         return (
             <div>
@@ -122,18 +107,7 @@ export class DetailsPage extends Component<Iprops, Istate> {
         )
     }
 
-    render() {     
-        let bdbid = this.state.data  
-        const data = this.state.data
-        
-        if (!bdbid) {
-            return null 
-        } else {
-            bdbid = this.state.data.bdbid
-        }
-        if (!data) {
-            return null 
-        }
+    render() {        
         return (
             <div>
                 <Link to={"/!"}>
@@ -143,14 +117,14 @@ export class DetailsPage extends Component<Iprops, Istate> {
                 <table className="table table-bordered table-hover ">
                     <thead className="thead-dark">
                         <tr>
-                            <th colSpan={2}><h3>Viewing bdbid#: {bdbid}</h3></th>
+                            <th colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row" style={{width:"450px"}}>
                                 <ul>
-                                    {Object.entries(data).map( (pair, idx) => {
+                                    {Object.entries(this.props.location.state).map( (pair, idx) => {
                                         return pair[0] === "co2eui_breakdown" ? null :
                                          pair[0] === "energy_breakdown" ? null : 
                                          <li key={idx}>{pair[0]} : {pair[1]}</li>
