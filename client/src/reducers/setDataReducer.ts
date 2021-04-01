@@ -1,4 +1,4 @@
-import { FETCH_DATA } from '../actions/fetchDataAction'
+import { FETCH_DATA,SET_DATA,FETCH_ERR } from '../actions/fetchDataAction'
 
 const initialState =  {
     fixture: []
@@ -6,8 +6,18 @@ const initialState =  {
 
 const setData = ( state = initialState, action:any) => {
     switch (action.type) {
-        case FETCH_DATA:
-            return { ...state, fixture: action.fixture}
+        case SET_DATA:
+            let newState = { ...state, fixture: action.fixture}
+            console.log("set data",state, newState);
+            return newState 
+        case FETCH_DATA: 
+            console.log("fetch data",state);
+            return state 
+        case FETCH_ERR:
+            console.log("err!");
+            return { fixture: [
+                {dummy:"dummy"}
+            ]}
         default:
             return state 
     }

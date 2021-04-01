@@ -57,6 +57,7 @@ export class ListComp extends Component<Allprops, Istate> {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.fixture.slice(indexOfFirstItem, indexOfLastItem)
+        console.log("render",this.props);
         
         return (
             <div>
@@ -141,16 +142,8 @@ const msp = (state:storeType) => ({
     coord: state.setCoordReducer
 })
 
-const mdp = (dispatch:any) => ({
-    fetchData: () => { 
-        fetch("http://127.0.0.1:5000/")
-            .then( (response:any) => {
-                return response.json()
-            })
-            .then( (data:any) => {
-                dispatch(fetchData(data))
-            })
-    }, 
+const mdp =(dispatch:any) => ({
+    fetchData: () => dispatch(fetchData()), 
     updateCoords: (payload:any) => {
         dispatch({
             type: UPDATE_COORD,
