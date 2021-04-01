@@ -1,4 +1,4 @@
-import {SET_DATA} from '../actions/fetchDataAction'
+import {FETCH_DATA} from '../actions/fetchDataAction'
 import setData from '../reducers/setDataReducer'
 
 describe('setDataReducer', () => {
@@ -7,14 +7,30 @@ describe('setDataReducer', () => {
         expect(newState).toEqual({fixture:[]})
     })
 
-    it('Should return new state if receiving SET_DATA', () => {
-        const result = {}
-        // for (let i = 0; i < 100; i++) {
-        //     result.fixture.push()
-        // }
+    it('Should return new state if receiving FETCH_DATA', () => {
+
+        const data = {
+            count: 100, 
+            next: null, 
+            previous: null, 
+            results: [
+                {test1: 'test'},
+                {test2: 'test'},
+                {test3: 'test'}
+            ]
+        }
+
+        const result = {
+            fixture: [
+                {test1: 'test'},
+                {test2: 'test'},
+                {test3: 'test'}
+            ]
+        }
+
         const newState = setData(undefined, {
-            type: SET_DATA, 
-            response:result
+            type: FETCH_DATA, 
+            fixture:data.results
         })
 
         expect(newState).toEqual(result)

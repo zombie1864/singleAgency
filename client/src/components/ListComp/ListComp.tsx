@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchData,SET_DATA} from '../../actions/fetchDataAction'
+import {fetchData} from '../../actions/fetchDataAction'
 import {UPDATE_COORD} from '../../actions/updateCoordAction'
 import storeType from '../../types/storeType'
 import React, { Component } from 'react'

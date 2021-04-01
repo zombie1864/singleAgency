@@ -1,4 +1,4 @@
-import { SET_DATA } from '../actions/fetchDataAction'
+import { FETCH_DATA } from '../actions/fetchDataAction'
 
 const initialState =  {
     fixture: []
@@ -6,7 +6,7 @@ const initialState =  {
 
 const setData = ( state = initialState, action:any) => {
     switch (action.type) {
-        case SET_DATA:
+        case FETCH_DATA:
             return { ...state, fixture: action.fixture}
         default:
             return state 
