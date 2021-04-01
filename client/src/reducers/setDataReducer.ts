@@ -7,14 +7,8 @@ const initialState =  {
 const setData = ( state = initialState, action:any) => {
     switch (action.type) {
         case SET_DATA:
-            let newState = { ...state, fixture: action.fixture}
-            console.log("set data",state, newState);
-            return newState 
-        case FETCH_DATA: 
-            console.log("fetch data",state);
-            return state 
+            return { ...state, fixture: action.fixture}
         case FETCH_ERR:
-            console.log("err!");
             return { fixture: [
                 {dummy:"dummy"}
             ]}

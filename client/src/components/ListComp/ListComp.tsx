@@ -57,11 +57,13 @@ export class ListComp extends Component<Allprops, Istate> {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.fixture.slice(indexOfFirstItem, indexOfLastItem)
-        console.log("render",this.props);
+        console.log("render",this.props.data.fixture.length);
         
         return (
             <div>
-                <table>
+                {
+                    this.props.data.fixture.length === 1 ? <p>Err w Server</p> : 
+                    <table>
                     <tbody>
                         <tr>
                             <th> 
@@ -131,6 +133,7 @@ export class ListComp extends Component<Allprops, Istate> {
                         </tr>
                     </tbody>
                 </table>
+                }
             </div>
         )
 

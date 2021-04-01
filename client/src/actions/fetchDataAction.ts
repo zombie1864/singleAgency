@@ -17,8 +17,8 @@ export const setData = (data:any) => ({
 
 export const fetchData = () => {
     return (dispatch:any) => {
-        // dispatch(fetchDataRequest())
-        fetch("http://127.0.0.1:5000/MM")
+        // dispatch(fetchDataRequest()) // useful for loading 
+        fetch("http://127.0.0.1:5000/")
         .then( (response:any) => {
             if (response.status === 200) {
                 return response.json()
