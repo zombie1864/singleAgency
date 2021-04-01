@@ -14,3 +14,6 @@ const setData = ( state = initialState, action:any) => {
 }
 
 export default setData
+
+// action = {type: SET_DATA, fixture:(100)[]}
+// ⮑ comes from dispatch, ListComp line 151 

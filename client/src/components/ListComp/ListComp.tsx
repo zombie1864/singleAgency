@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {SET_DATA} from '../../actions/fetchDataAction'
+import {fetchData,SET_DATA} from '../../actions/fetchDataAction'
 import {UPDATE_COORD} from '../../actions/updateCoordAction'
 import storeType from '../../types/storeType'
 import React, { Component } from 'react'
@@ -148,7 +148,7 @@ const mdp = (dispatch:any) => ({
                 return response.json()
             })
             .then( (data:any) => {
-                dispatch({type: SET_DATA, fixture:data.results})
+                dispatch(fetchData(data))
             })
     }, 
     updateCoords: (payload:any) => {
