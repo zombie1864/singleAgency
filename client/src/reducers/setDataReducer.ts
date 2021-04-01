@@ -1,4 +1,4 @@
-import { FETCH_DATA,SET_DATA,FETCH_ERR } from '../actions/fetchDataAction'
+import {SET_DATA,FETCH_ERR } from '../actions/fetchDataAction'
 
 const initialState =  {
     fixture: []
