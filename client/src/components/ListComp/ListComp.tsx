@@ -89,6 +89,12 @@ export class ListComp extends Component<Allprops, Istate> {
                                         currItems.filter((obj:any) => {
                                             return this.state.searchTerm === '' ? obj :
                                             obj.address.toLowerCase().includes(this.state.searchTerm.toLowerCase()) ? obj : 
+                                            obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
+                                            obj.building_name.includes(this.state.searchTerm) ? obj : 
+                                            obj.year_built.includes(this.state.searchTerm) ? obj : 
+                                            obj.co2eui_breakdown.length === 0 && "no data".includes(this.state.searchTerm.toLowerCase()) ? obj : 
+                                            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(this.state.searchTerm) ? obj : 
+                                            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
                                             null
                                         }).map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx}>
@@ -115,7 +121,10 @@ export class ListComp extends Component<Allprops, Istate> {
                                                     </Link>
                                                 </div>
                                                 <p>bdbid: {obj.bdbid}</p>
-                                                <p>building name: {obj.building_name}</p>
+                                                <p>Building Name: {obj.building_name}</p>
+                                                <p>Year Built: {obj.year_built.slice(0,-2)}</p>
+                                                <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
+                                                <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "no data" : Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)} Kg</p>
                                             </li>
                                         ))
                                     }

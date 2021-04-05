@@ -43,19 +43,15 @@ describe('setDataReducer', () => {
     })
 })
 
-const middlewares = [ thunk ]
-const mockStore = configureMockStore(middlewares)
+//testing api calls 
+const mockStore = configureMockStore([thunk])
 
 // different from fetchData in fetchDataActions.ts
 // requires THIS function signature 
-const fetchData = () => (dispatch:any) => {
- return fetch("http://127.0.0.1:5000/")
-  .then(response => {
-    return response.json()
-  })
-  .then(json => {
-    dispatch(setData(json));
-  })
+const fetchData = () => async (dispatch:any) => {
+    const response = await fetch("http://127.0.0.1:5000/")
+    const json = await response.json()
+    dispatch(setData(json))
 }
 
 describe('testing async action creator', () => {
@@ -70,13 +66,9 @@ describe('testing async action creator', () => {
             ]
         }
     ]
-  beforeEach(() => {
-    store = mockStore({});
-  });
-  afterEach(() => {
-    // clear all HTTP mocks after each test
-    nock.cleanAll();
-  });
+  beforeEach(() => store = mockStore({}));
+  afterEach(() => nock.cleanAll() // clear all HTTP mocks after each test
+  );
 
   it('dispatch setData on succesful api call', () => {
     // Simulate a successful response
@@ -86,9 +78,8 @@ describe('testing async action creator', () => {
 
     // Dispatch action to fetch to-dos
     return store.dispatch(fetchData())
-      .then(() => { // return of async actions
-        expect(store.getActions()).toMatchSnapshot();
-      })
+      .then(() => expect(store.getActions()).toMatchSnapshot() // return of async actions
+    )
   })
 });
 

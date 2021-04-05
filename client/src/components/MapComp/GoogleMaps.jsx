@@ -40,8 +40,8 @@ export class MapContainer extends Component {
               onClick={this.onMapClicked}
               containerStyle={containerStyle}
               initialCenter={{
-                lat: 25.761681, 
-                lng: -80.191788
+                lat: 40.818417, 
+                lng: -73.950318
               }}
               center={{
                 lat: this.props.coord.lat, 
