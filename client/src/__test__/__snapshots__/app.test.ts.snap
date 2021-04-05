@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing async action creator dispatch setData on succesful api call 1`] = `
+Array [
+  Object {
+    "fixture": undefined,
+    "type": "SET_DATA",
+  },
+]
+`;

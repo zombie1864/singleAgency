@@ -60,7 +60,9 @@ export class ListComp extends Component<Allprops, Istate> {
         
         return (
             <div>
-                <table>
+                {
+                    this.props.data.fixture.length === 1 ? <p>Err w Server</p> : 
+                    <table>
                     <tbody>
                         <tr>
                             <th> 
@@ -130,6 +132,7 @@ export class ListComp extends Component<Allprops, Istate> {
                         </tr>
                     </tbody>
                 </table>
+                }
             </div>
         )
 
@@ -141,16 +144,8 @@ const msp = (state:storeType) => ({
     coord: state.setCoordReducer
 })
 
-const mdp = (dispatch:any) => ({
-    fetchData: () => { 
-        fetch("http://127.0.0.1:5000/")
-            .then( (response:any) => {
-                return response.json()
-            })
-            .then( (data:any) => {
-                dispatch(fetchData(data))
-            })
-    }, 
+const mdp =(dispatch:any) => ({
+    fetchData: () => dispatch(fetchData()), 
     updateCoords: (payload:any) => {
         dispatch({
             type: UPDATE_COORD,
