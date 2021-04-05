@@ -1,9 +1,14 @@
 import {FETCH_DATA} from '../actions/fetchDataAction'
-import setData from '../reducers/setDataReducer'
+import setDataReducer from '../reducers/setDataReducer'
+import configureMockStore from 'redux-mock-store'
+import nock from 'nock'
+import thunk from 'redux-thunk'
+import {setData} from '../actions/fetchDataAction'
 
+// testing reducer for state change 
 describe('setDataReducer', () => {
     it('should return default state', () => {
-        const newState = setData(undefined, {}) // pure func, returns new piece of state 
+        const newState = setDataReducer(undefined, {}) // pure func, returns new piece of state 
         expect(newState).toEqual({fixture:[]})
     })
 
@@ -28,7 +33,7 @@ describe('setDataReducer', () => {
             ]
         }
 
-        const newState = setData(undefined, {
+        const newState = setDataReducer(undefined, {
             type: FETCH_DATA, 
             fixture:data.results
         })
@@ -36,5 +41,8 @@ describe('setDataReducer', () => {
         expect(newState).toEqual(result)
     })
 })
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
 
 export default test 

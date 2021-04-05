@@ -4,7 +4,7 @@ const initialState =  {
     fixture: []
 }
 
-const setData = ( state = initialState, action:any) => {
+const setDataReducer = ( state = initialState, action:any) => {
     switch (action.type) {
         case SET_DATA:
             return { ...state, fixture: action.fixture}
@@ -17,7 +17,7 @@ const setData = ( state = initialState, action:any) => {
     }
 }
 
-export default setData
+export default setDataReducer
 
 // action = {type: SET_DATA, fixture:(100)[]}
 // ⮑ comes from dispatch, ListComp line 151 

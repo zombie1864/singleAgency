@@ -57,7 +57,6 @@ export class ListComp extends Component<Allprops, Istate> {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.fixture.slice(indexOfFirstItem, indexOfLastItem)
-        console.log("render",this.props.data.fixture.length);
         
         return (
             <div>
