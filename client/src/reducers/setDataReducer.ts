@@ -19,5 +19,3 @@ const setDataReducer = ( state = initialState, action:any) => {
 
 export default setDataReducer
 
-// action = {type: SET_DATA, fixture:(100)[]}
-// ⮑ comes from dispatch, ListComp line 151 
