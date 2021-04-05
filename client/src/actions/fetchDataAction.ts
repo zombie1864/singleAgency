@@ -26,8 +26,6 @@ export const fetchData = () => {
                 return dispatch(fetchErrMsg())
             }
         }).then(data =>{
-            console.log("data",data);
-            
             return data.type === FETCH_ERR ? null : dispatch(setData(data))
         }
         )

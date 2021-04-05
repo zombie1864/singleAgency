@@ -1,11 +1,12 @@
-import {FETCH_DATA} from '../actions/fetchDataAction'
+import {SET_DATA} from '../actions/fetchDataAction'
 import setDataReducer from '../reducers/setDataReducer'
 import configureMockStore from 'redux-mock-store'
 import nock from 'nock'
 import thunk from 'redux-thunk'
+import fetch from 'isomorphic-fetch'
 import {setData} from '../actions/fetchDataAction'
 
-// testing reducer for state change 
+//testing reducer for state change 
 describe('setDataReducer', () => {
     it('should return default state', () => {
         const newState = setDataReducer(undefined, {}) // pure func, returns new piece of state 
@@ -34,7 +35,7 @@ describe('setDataReducer', () => {
         }
 
         const newState = setDataReducer(undefined, {
-            type: FETCH_DATA, 
+            type: SET_DATA, 
             fixture:data.results
         })
 
@@ -42,7 +43,53 @@ describe('setDataReducer', () => {
     })
 })
 
-const middlewares = [thunk]
+const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
+
+// different from fetchData in fetchDataActions.ts
+// requires THIS function signature 
+const fetchData = () => (dispatch:any) => {
+ return fetch("http://127.0.0.1:5000/")
+  .then(response => {
+    return response.json()
+  })
+  .then(json => {
+    dispatch(setData(json));
+  })
+}
+
+describe('testing async action creator', () => {
+  let store:any;
+  let fetchDataDemoData = [
+        {
+            count: 100, 
+            next: null, 
+            previous:null, 
+            results: [
+                {test1: 'test'},
+            ]
+        }
+    ]
+  beforeEach(() => {
+    store = mockStore({});
+  });
+  afterEach(() => {
+    // clear all HTTP mocks after each test
+    nock.cleanAll();
+  });
+
+  it('dispatch setData on succesful api call', () => {
+    // Simulate a successful response
+    nock("http://127.0.0.1:5000/")
+      .get('/') // Route to catch and mock
+      .reply(200, fetchDataDemoData); // Mock reponse code and data
+
+    // Dispatch action to fetch to-dos
+    return store.dispatch(fetchData())
+      .then(() => { // return of async actions
+        expect(store.getActions()).toMatchSnapshot();
+      })
+  })
+});
 
 export default test 
