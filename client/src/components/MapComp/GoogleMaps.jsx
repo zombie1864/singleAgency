@@ -17,6 +17,7 @@ export class MapContainer extends Component {
     };
    
     onMarkerClick = (props, marker, e) => {
+      console.log('from onClick',props);
       this.setState({
         selectedPlace: props,
         activeMarker: marker,
@@ -34,6 +35,7 @@ export class MapContainer extends Component {
     };
     
     render() {
+      console.log(this.props.stuff.fixture);
       return (
         <div>
           <Map google={this.props.google}
@@ -53,10 +55,22 @@ export class MapContainer extends Component {
                   lat: this.props.coord.lat, 
                   lng: this.props.coord.lng
                 }}
-                title={'tooltip.'}
                 onClick={this.onMarkerClick} 
                 name={'Current location'} 
-              />  
+              />
+              {this.state.showingInfoWindow ? (
+                <InfoWindow
+                visible={this.state.showingInfoWindow}
+                position={{
+                  lat: this.props.coord.lat, 
+                  lng: this.props.coord.lng
+                }}
+                >
+                  <div>
+                    <p>{this.props.coord.lat}</p>
+                  </div>
+                </InfoWindow> 
+              ) : null }
           </Map>
         </div>
       )
@@ -64,7 +78,8 @@ export class MapContainer extends Component {
 }
 
 const msp = (state) => ({
-  coord: state.setCoordReducer
+  coord: state.setCoordReducer, 
+  stuff: state.setDataReducer
 })
 
 export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
