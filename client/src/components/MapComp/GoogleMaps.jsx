@@ -41,6 +41,7 @@ export class MapContainer extends Component {
     }
     
     render() {
+      console.log(this.props.obj.latitude);
       return (
         <div>
           <Map google={this.props.google}
@@ -50,9 +51,9 @@ export class MapContainer extends Component {
                 lat: 40.818417, 
                 lng: -73.950318
               }}
-              center={{
-                lat: this.props.obj.latitude, 
-                lng: this.props.obj.longitude
+              center={{ 
+                lat: this.props.obj.latitude === undefined ? 40.818417 : this.props.obj.latitude,
+                lng: this.props.obj.longitude === undefined ? -73.950318 : this.props.obj.longitude
               }}
               >
               <Marker 
@@ -77,7 +78,7 @@ export class MapContainer extends Component {
                       return (
                         <div key={idx}>
                           {
-                            pair.includes("co2eui_breakdown") || 
+                            pair.includes("co2eui_breakdown" ) || 
                             pair.includes("energy_breakdown") || 
                             pair.includes("latitude") || 
                             pair.includes("longitude") || 
