@@ -17,7 +17,6 @@ export class MapContainer extends Component {
     };
    
     onMarkerClick = (props, marker, e) => {
-      console.log('from onClick',props);
       this.setState({
         selectedPlace: props,
         activeMarker: marker,
@@ -35,7 +34,7 @@ export class MapContainer extends Component {
     };
     
     render() {
-      console.log(this.props.stuff.fixture);
+      console.log(this.props.data.fixture);
       return (
         <div>
           <Map google={this.props.google}
@@ -79,7 +78,7 @@ export class MapContainer extends Component {
 
 const msp = (state) => ({
   coord: state.setCoordReducer, 
-  stuff: state.setDataReducer
+  data: state.setDataReducer
 })
 
 export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
