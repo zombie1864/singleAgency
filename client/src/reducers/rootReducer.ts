@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import setDataReducer from './setDataReducer' 
-import setCoordReducer from './setCoordReducer'
+import setObjReducer from './setObjReducer'
 
 const rootReducer = combineReducers({
     setDataReducer, 
-    setCoordReducer
+    setObjReducer
 })
 
 export default rootReducer

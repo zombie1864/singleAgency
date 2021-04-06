@@ -32,9 +32,15 @@ export class MapContainer extends Component {
         })
       }
     };
+
+    InfoWindowClose = () => {
+      this.setState({
+        ...this.state, 
+        showingInfoWindow: !this.state.showingInfoWindow
+      })
+    }
     
     render() {
-      console.log(this.props.data.fixture);
       return (
         <div>
           <Map google={this.props.google}
@@ -45,14 +51,14 @@ export class MapContainer extends Component {
                 lng: -73.950318
               }}
               center={{
-                lat: this.props.coord.lat, 
-                lng: this.props.coord.lng
+                lat: this.props.obj.latitude, 
+                lng: this.props.obj.longitude
               }}
               >
               <Marker 
                 position={{
-                  lat: this.props.coord.lat, 
-                  lng: this.props.coord.lng
+                  lat: this.props.obj.latitude, 
+                  lng: this.props.obj.longitude
                 }}
                 onClick={this.onMarkerClick} 
                 name={'Current location'} 
@@ -61,12 +67,29 @@ export class MapContainer extends Component {
                 <InfoWindow
                 visible={this.state.showingInfoWindow}
                 position={{
-                  lat: this.props.coord.lat, 
-                  lng: this.props.coord.lng
+                  lat: this.props.obj.latitude, 
+                  lng: this.props.obj.longitude
                 }}
+                onClose={this.InfoWindowClose}
                 >
                   <div>
-                    <p>{this.props.coord.lat}</p>
+                    <h5>{Object.entries(this.props.obj).map( (pair, idx) => {
+                      return (
+                        <div key={idx}>
+                          {
+                            pair.includes("co2eui_breakdown") || 
+                            pair.includes("energy_breakdown") || 
+                            pair.includes("latitude") || 
+                            pair.includes("longitude") || 
+                            pair.includes("oper_agency_acronym") || 
+                            pair.includes("outofservice") || 
+                            pair.includes("parent_record_id") ? 
+                            null : 
+                            <span>{`${pair[0]}: ${pair[1]}`}</span> 
+                          }
+                        </div>
+                      )
+                    })}</h5>
                   </div>
                 </InfoWindow> 
               ) : null }
@@ -77,8 +100,7 @@ export class MapContainer extends Component {
 }
 
 const msp = (state) => ({
-  coord: state.setCoordReducer, 
-  data: state.setDataReducer
+  obj: state.setObjReducer, 
 })
 
 export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
