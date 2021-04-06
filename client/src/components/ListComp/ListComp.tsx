@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {fetchData} from '../../actions/fetchDataAction'
-import {UPDATE_COORD} from '../../actions/updateCoordAction'
+import {UPDATE_OBJ} from '../../actions/dispatchObjAction'
 import storeType from '../../types/storeType'
 import React, { Component } from 'react'
 import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
@@ -16,7 +16,7 @@ interface Istate {
 
 interface connectDispatchProps{ 
     fetchData: any, 
-    updateCoords: any 
+    updateObj: any 
 }
 
 type Allprops = PropsFromState & connectDispatchProps
@@ -102,10 +102,7 @@ export class ListComp extends Component<Allprops, Istate> {
                                                     <span 
                                                         style={addressCss}
                                                         onClick={()=>{
-                                                            this.props.updateCoords({
-                                                                lng: obj.longitude,
-                                                                lat:obj.latitude
-                                                            })
+                                                            this.props.updateObj(obj)
                                                         }}
                                                         className="alert alert-primary" 
                                                     >Address: {obj.address}</span>
@@ -150,14 +147,14 @@ export class ListComp extends Component<Allprops, Istate> {
 
 const msp = (state:storeType) => ({
     data: state.setDataReducer, 
-    coord: state.setCoordReducer
+    obj: state.setObjReducer // pay attention here same name comes from propsFromState must match 
 })
 
 const mdp =(dispatch:any) => ({
     fetchData: () => dispatch(fetchData()), 
-    updateCoords: (payload:any) => {
+    updateObj: (payload:any) => {
         dispatch({
-            type: UPDATE_COORD,
+            type: UPDATE_OBJ,
             payload
         })
     }

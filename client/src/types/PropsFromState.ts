@@ -1,11 +1,11 @@
-import {fixture, Icoord} from './storeType'
-import {fetchDataActionCreator, updateCoordActionCreator} from './actionCreatorTypes'
+import {fixture, Iobj} from './storeType'
+import {fetchDataActionCreator,dispatchObjActionCreator} from './actionCreatorTypes'
 
 interface PropsFromState {
     data: fixture, 
-    coord: Icoord, 
+    obj: Iobj, 
     fetchData: fetchDataActionCreator, 
-    updateCoords: updateCoordActionCreator
-}
+    updateObj: dispatchObjActionCreator
+} // state shape of app 
 
 export default PropsFromState
