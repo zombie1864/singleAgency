@@ -1,13 +1,13 @@
 import {connect} from 'react-redux'
 import {GoogleApiWrapper} from 'google-maps-react'
 import key from './GKey'
-import {Map, Marker} from 'google-maps-react';
+import {Map, Marker, InfoWindow} from 'google-maps-react';
 import React, { Component } from 'react'
 
 const containerStyle = {
   position: 'relative',  
-  width: '100%',
-  height: '400px'
+  width: '110%',
+  height: '750px'
 }
 export class MapContainer extends Component {
     state = {
@@ -47,15 +47,16 @@ export class MapContainer extends Component {
                 lat: this.props.coord.lat, 
                 lng: this.props.coord.lng
               }}
-            >
-            <Marker 
-              position={{
-                lat: this.props.coord.lat, 
-                lng: this.props.coord.lng
-              }}
-              onClick={this.onMarkerClick} 
-              name={'Current location'} 
-            />
+              >
+              <Marker 
+                position={{
+                  lat: this.props.coord.lat, 
+                  lng: this.props.coord.lng
+                }}
+                title={'tooltip.'}
+                onClick={this.onMarkerClick} 
+                name={'Current location'} 
+              />  
           </Map>
         </div>
       )

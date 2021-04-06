@@ -8,7 +8,7 @@ interface Iprops {
 
 interface Istate {
   firstIdx: number, 
-  lastIdx: number, 
+  lastIdx: number
 }
 
 const paginationCss:React.CSSProperties = {
@@ -20,7 +20,7 @@ class Pagination extends Component<Iprops, Istate> {
     super(props) 
     this.state = {
       firstIdx: 1, 
-      lastIdx: 6, 
+      lastIdx: 6
     }
   }
   
@@ -45,37 +45,32 @@ class Pagination extends Component<Iprops, Istate> {
       }) 
     } 
   }
+
+  private activePagination = (number:number) => {
+    return number === 2 ? "active" : null 
+  }
   
   render() {
-    const pageNumbers = [],
-          initialStartingIdx = 1,
-          initialEndingIdx = 6 
+    const pageNumbers = []
     
     for (let i = 1; i <= Math.ceil(this.props.totalItems / this.props.itemsPerPage); i++) {
       pageNumbers.push(i);
     }
 
     return (
-      <nav>
+      <nav className="px-5">
         <ul className='pagination'>
-          <button className="btn btn-default" name="prev" onClick={this.cycle}
-          >prev</button>
-          <li>{this.state.firstIdx !== initialStartingIdx ? '...' : null}</li>
+          <button className="page-link" name="prev" onClick={this.cycle}>prev</button>
           { 
             this.range(this.state.firstIdx, this.state.lastIdx -1).map(number => {
-              return <li key={number} className='page-item'>
+              return <li key={number} className={`${this.activePagination}`}>
                 <span style={paginationCss} onClick={() => this.props.paginate(number)} className='page-link'>
                   {number}
                 </span>
               </li>
             })
           }
-          <li>{
-            ( this.state.lastIdx === initialEndingIdx )  || 
-            ( this.state.lastIdx !== initialEndingIdx  && this.state.lastIdx < 20 )
-            ? '...' : null
-          }</li>
-          <button className="btn btn-default" name="next" onClick={this.cycle}>next</button>
+          <button className="page-link" name="next" onClick={this.cycle}>next</button>
         </ul>
       </nav>
     );

@@ -4,6 +4,12 @@ interface Iprops {
     fixture: any 
 }
 
+const utilCompCss:React.CSSProperties = {
+    position: "relative",
+    top: "-100px", 
+    left: "25px"
+}
+
 export class MaxMiniBLDGArea extends Component<Iprops> {
 
     private BLDGAddress = (idx:number): null | string => {
@@ -24,13 +30,13 @@ export class MaxMiniBLDGArea extends Component<Iprops> {
         const maxBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.fixture)[2] )
         const minBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.fixture)[3] )
         return (
-            <div>
-                <h4>Biggest and Smallest BLDG Area</h4>
+            <div style={utilCompCss}>
+                <h4>Biggest and Smallest Building Area</h4>
                 <h5>by sq ft</h5>
-                <p>Max BLDG Area: {this.maxMinTotalBLDGArea(this.props.fixture)[0]} sq ft</p>
-                <p>Max BLDG Address: {maxBLDGAddress}</p>
-                <p>Min BLDG Area: {this.maxMinTotalBLDGArea(this.props.fixture)[1]} sq ft</p>
-                <p>Min BLDG Address: {minBLDGAddress}</p>
+                <p>Max Building Area: {this.maxMinTotalBLDGArea(this.props.fixture)[0]} sq ft</p>
+                <p>Max Building Address: {maxBLDGAddress}</p>
+                <p>Min Building Area: {this.maxMinTotalBLDGArea(this.props.fixture)[1]} sq ft</p>
+                <p>Min Building Address: {minBLDGAddress}</p>
             </div>
         )
     }

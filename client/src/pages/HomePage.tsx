@@ -4,7 +4,6 @@ import ListComp from '../components/ListComp/ListComp'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
-  border:'1px solid #000000',  
   padding:'0 50px', 
   height:"80vh", 
   width:"100vw"

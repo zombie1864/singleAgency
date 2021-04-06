@@ -84,7 +84,7 @@ export class ListComp extends Component<Allprops, Istate> {
                         </tr>
                         <tr >
                             <td>
-                                <ul style={listCss}>
+                                <ul style={listCss} className="list-unstyled pl-5">
                                     {
                                         currItems.filter((obj:any) => {
                                             return this.state.searchTerm === '' ? obj :
