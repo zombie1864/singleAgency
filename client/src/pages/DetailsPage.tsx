@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import PropsFromState from '../types/PropsFromState'
+import {connect} from 'react-redux'
+import storeType from '../types/storeType'
+import {fetchData} from '../actions/fetchDataAction'
 
 interface Iprops {
     match:any, 
@@ -22,7 +26,7 @@ interface Iprops {
     }
 }
 
-interface Istate {
+interface Istate { 
     renderCo2eui_breakdown: boolean,
     renderEnergy_breakdown: boolean
 }
@@ -41,7 +45,9 @@ const homeBtnCss:React.CSSProperties = {
     margin: "10px"
 }
 
-export class DetailsPage extends Component<Iprops, Istate> {
+type Allprops = PropsFromState & Iprops
+
+export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
         super(props) 
         this.state = {
@@ -61,21 +67,21 @@ export class DetailsPage extends Component<Iprops, Istate> {
         }) : null 
     }
 
-    private renderBreakdown = ():JSX.Element => {
+    private renderBreakdown = (state:any):JSX.Element => {
         return (
             <div style={breakdownCss}>{
-                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown'): 
-                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown') : 
+                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown',state): 
+                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown',state) : 
                 "Click on either breakdown to view details"
             }</div>
         )
     }
 
-    private iterateThrBreakdown = (typeOfBreakdown:string):any => {
+    private iterateThrBreakdown = (typeOfBreakdown:string, state:any):any => {
         let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
-            this.props.location.state.co2eui_breakdown : 
-            this.props.location.state.energy_breakdown
+            state.co2eui_breakdown : 
+            state.energy_breakdown
             
         return (
             <div>
@@ -112,13 +118,22 @@ export class DetailsPage extends Component<Iprops, Istate> {
         )
     }
 
+    public componentDidMount() { 
+        this.props.fetchData()
+    }
+    
+    private sliceOfData = (id:number) => {
+        return this.props.data.fixture.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
+    }
+
     render() {     
-        console.log("detials-render",this.props.match, this.props.location);
-           
+        let slicedData = this.sliceOfData(+this.props.match.params.id)
+        let {state} = this.props.location
+        if (state === undefined) state = slicedData
         return (
             <div>
                 {
-                    this.props.location.state === undefined? <p>NOPE</p> : 
+                    state === undefined ? null : 
                     <div>
                         <Link to={"/"}>
                             <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
@@ -127,14 +142,14 @@ export class DetailsPage extends Component<Iprops, Istate> {
                         <table className="table table-bordered table-hover ">
                             <thead className="thead-dark">
                                 <tr>
-                                    <th colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></th>
+                                    <th colSpan={2}><h3>Viewing bdbid#: {state.bdbid}</h3></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <th scope="row" style={{width:"450px"}}>
                                         <ul>
-                                            {Object.entries(this.props.location.state).map( (pair, idx) => {
+                                            {Object.entries(state).map( (pair, idx) => {
                                                 return pair[0] === "co2eui_breakdown" ? null :
                                                 pair[0] === "energy_breakdown" ? null : 
                                                 <li key={idx}>{pair[0]} : {pair[1]}</li>
@@ -149,17 +164,23 @@ export class DetailsPage extends Component<Iprops, Istate> {
                                             >energy_breakdown</li>
                                         </ul>
                                     </th>
-                                    <td>{this.renderBreakdown()}</td>
+                                    <td>{this.renderBreakdown(state)}</td>
                                 </tr>
                             </tbody>
                         </table>
-
-                    </div>
-                    
+                    </div>  
                 }
             </div>
         )
     }
 }
 
-export default DetailsPage
+const msp = (state:storeType) => ({
+    data: state.setDataReducer
+})
+
+const mdp =(dispatch:any) => ({
+    fetchData: () => dispatch(fetchData()), 
+})
+
+export default connect(msp, mdp)(DetailsPage)
