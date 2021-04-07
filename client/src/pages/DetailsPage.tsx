@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 interface Iprops {
+    match:any, 
     location: {
         state: {
             address: string,
@@ -111,42 +112,51 @@ export class DetailsPage extends Component<Iprops, Istate> {
         )
     }
 
-    render() {        
+    render() {     
+        console.log("detials-render",this.props.match, this.props.location);
+           
         return (
             <div>
-                <Link to={"/"}>
-                    <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
-                </Link>
-                <h1 className="text-center">DETAILS PAGE</h1>
-                <table className="table table-bordered table-hover ">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row" style={{width:"450px"}}>
-                                <ul>
-                                    {Object.entries(this.props.location.state).map( (pair, idx) => {
-                                        return pair[0] === "co2eui_breakdown" ? null :
-                                         pair[0] === "energy_breakdown" ? null : 
-                                         <li key={idx}>{pair[0]} : {pair[1]}</li>
-                                    })}
-                                    <li 
-                                        style={breakDownLiCss}
-                                        onClick={()=> this.toggleBTWNbreakdown("co2")}
-                                    >co2eui_breakdown</li>
-                                    <li 
-                                        style={breakDownLiCss}
-                                        onClick={()=> this.toggleBTWNbreakdown("energy")}
-                                    >energy_breakdown</li>
-                                </ul>
-                            </th>
-                            <td>{this.renderBreakdown()}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                {
+                    this.props.location.state === undefined? <p>NOPE</p> : 
+                    <div>
+                        <Link to={"/"}>
+                            <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
+                        </Link>
+                        <h1 className="text-center">DETAILS PAGE</h1>
+                        <table className="table table-bordered table-hover ">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th colSpan={2}><h3>Viewing bdbid#: {this.props.location.state.bdbid}</h3></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" style={{width:"450px"}}>
+                                        <ul>
+                                            {Object.entries(this.props.location.state).map( (pair, idx) => {
+                                                return pair[0] === "co2eui_breakdown" ? null :
+                                                pair[0] === "energy_breakdown" ? null : 
+                                                <li key={idx}>{pair[0]} : {pair[1]}</li>
+                                            })}
+                                            <li 
+                                                style={breakDownLiCss}
+                                                onClick={()=> this.toggleBTWNbreakdown("co2")}
+                                            >co2eui_breakdown</li>
+                                            <li 
+                                                style={breakDownLiCss}
+                                                onClick={()=> this.toggleBTWNbreakdown("energy")}
+                                            >energy_breakdown</li>
+                                        </ul>
+                                    </th>
+                                    <td>{this.renderBreakdown()}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    
+                }
             </div>
         )
     }

@@ -61,7 +61,7 @@ export class ListComp extends Component<Allprops, Istate> {
         return (
             <div>
                 {
-                    this.props.data.fixture.length === 1 ? <p>Err w Server</p> : 
+                    this.props.data.fixture.length === 1 ? <p>Error could not fetch data from server</p> : 
                     <table>
                     <tbody>
                         <tr>
@@ -147,7 +147,7 @@ export class ListComp extends Component<Allprops, Istate> {
 
 const msp = (state:storeType) => ({
     data: state.setDataReducer, 
-    obj: state.setObjReducer // pay attention here same name comes from propsFromState must match 
+    obj: state.setObjReducer  
 })
 
 const mdp =(dispatch:any) => ({
