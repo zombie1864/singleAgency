@@ -4,6 +4,7 @@ import PropsFromState from '../types/PropsFromState'
 import {connect} from 'react-redux'
 import storeType from '../types/storeType'
 import {fetchData} from '../actions/fetchDataAction'
+import {Redirect} from 'react-router-dom'
 
 interface Iprops {
     match:any, 
@@ -133,7 +134,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         return (
             <div>
                 {
-                    state === undefined ? null : 
+                    state === undefined ? <Redirect to="/404"/>: 
                     <div>
                         <Link to={"/"}>
                             <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
