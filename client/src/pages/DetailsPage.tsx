@@ -38,12 +38,17 @@ const breakDownLiCss:React.CSSProperties = {
 }
 
 const breakdownCss:React.CSSProperties = {
-    width: "1500px", 
+    maxWidth: "1400px", 
     overflowX: "scroll", 
 }
 
 const homeBtnCss:React.CSSProperties = {
-    margin: "10px"
+    marginLeft: "50px", 
+    marginTop: "10px"
+}
+
+const tableCSS:React.CSSProperties = {
+    width: "95%"
 }
 
 type Allprops = PropsFromState & Iprops
@@ -156,35 +161,38 @@ export class DetailsPage extends Component<Allprops, Istate> {
                             <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
                         </Link>
                         <h1 className="text-center">DETAILS PAGE</h1>
-                        <table className="table table-bordered table-hover ">
-                            <thead className="thead-dark">
-                                <tr>
-                                    <th colSpan={2}><h3>Viewing bdbid#: {state.bdbid}</h3></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row" style={{width:"450px"}}>
-                                        <ul>
-                                            {Object.entries(state).map( (pair, idx) => {
-                                                return pair[0] === "co2eui_breakdown" ? null :
-                                                pair[0] === "energy_breakdown" ? null : 
-                                                <li key={idx}>{pair[0]} : {pair[1]}</li>
-                                            })}
-                                            <li 
-                                                style={breakDownLiCss}
-                                                onClick={()=> this.toggleBTWNbreakdown("co2")}
-                                            >co2eui_breakdown</li>
-                                            <li 
-                                                style={breakDownLiCss}
-                                                onClick={()=> this.toggleBTWNbreakdown("energy")}
-                                            >energy_breakdown</li>
-                                        </ul>
-                                    </th>
-                                    <td>{this.renderBreakdown(state)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div style={{paddingLeft: "50px"}}>
+                            <table className="table table-bordered table-hover" style={tableCSS}>
+                                <thead className="thead-dark">
+                                    <tr>
+                                        <th colSpan={2}><h3>Viewing bdbid#: {state.bdbid}</h3></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" style={{width:"450px"}}>
+                                            <ul>
+                                                {Object.entries(state).map( (pair, idx) => {
+                                                    return pair[0] === "co2eui_breakdown" ? null :
+                                                    pair[0] === "energy_breakdown" ? null : 
+                                                    <li key={idx}>{pair[0]} : {pair[1]}</li>
+                                                })}
+                                                <li 
+                                                    style={breakDownLiCss}
+                                                    onClick={()=> this.toggleBTWNbreakdown("co2")}
+                                                >co2eui_breakdown</li>
+                                                <li 
+                                                    style={breakDownLiCss}
+                                                    onClick={()=> this.toggleBTWNbreakdown("energy")}
+                                                >energy_breakdown</li>
+                                            </ul>
+                                        </th>
+                                        <td>{this.renderBreakdown(state)}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
                     </div>  
                 }
             </div>
