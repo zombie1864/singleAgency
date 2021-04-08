@@ -1,4 +1,4 @@
-import {Ipayload} from '../types/actionCreatorTypes'
+import {Ipayload} from '../types/actionTypes'
 
 export const UPDATE_OBJ = 'UPDATE_OBJ'
 

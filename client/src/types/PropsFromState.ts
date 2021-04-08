@@ -1,9 +1,10 @@
-import {fixture, Iobj} from './storeType'
+import {fixture} from './storeType'
+import {Ipayload} from './actionTypes'
 import {fetchDataActionCreator,dispatchObjActionCreator} from './actionCreatorTypes'
 
 interface PropsFromState {
     data: fixture, 
-    obj: Iobj, 
+    obj: Ipayload, 
     fetchData: fetchDataActionCreator, 
     updateObj: dispatchObjActionCreator
 } // state shape of app 

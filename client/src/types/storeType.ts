@@ -1,11 +1,10 @@
-import { Ipayload } from './actionCreatorTypes'
+import { Ipayload } from './actionTypes'
 
 export type fixture = any
-export type Iobj = Ipayload 
 
 interface storeType {
     setDataReducer: fixture
-    setObjReducer: Iobj
+    setObjReducer: Ipayload
 }
 
 export default storeType
