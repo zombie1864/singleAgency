@@ -122,19 +122,39 @@ export class DetailsPage extends Component<Allprops, Istate> {
     public componentDidMount() { 
         this.props.fetchData()
     }
-    
-    private sliceOfData = (id:number) => {
+
+    public shouldComponentUpdate() {
+        if (!this.idMatchInFixture(+this.props.match.params.id)) { 
+            return false 
+        } else {
+            return true 
+        }
+    }
+     
+    private sliceOfData = (id:number) => { // this might be combined 
         return this.props.data.fixture.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
+    }
+
+    private urlIdFormatValidator = (urlId:string):boolean => {
+        const onlyNumbers = /^[0-9]+$/
+        return onlyNumbers.test(urlId) && urlId.length === 4 
+    }
+
+    private idMatchInFixture = (urlId:number):any => { // this might be combined 
+        return this.props.data.fixture.filter( (obj:any) => obj.bdbid === urlId ).length > 0
     }
 
     render() {     
         let slicedData = this.sliceOfData(+this.props.match.params.id)
         let {state} = this.props.location
         if (state === undefined) state = slicedData
+
         return (
             <div>
                 {
-                    state === undefined ? <Redirect to="/404"/>: 
+                    state === undefined && !this.urlIdFormatValidator(this.props.match.params.id)? <Redirect to="/404"/> : 
+                    !this.shouldComponentUpdate() ? <Redirect to="/404"/> :
+                    state === undefined ? null: 
                     <div>
                         <Link to={"/"}>
                             <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
