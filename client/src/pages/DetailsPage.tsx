@@ -124,7 +124,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
     }
 
     public shouldComponentUpdate() {
-        if (!this.idMatchInFixture(+this.props.match.params.id)) { 
+        if ( !([this.sliceOfData(+this.props.match.params.id)].length > 0) ) { 
             return false 
         } else {
             return true 
@@ -138,10 +138,6 @@ export class DetailsPage extends Component<Allprops, Istate> {
     private urlIdFormatValidator = (urlId:string):boolean => {
         const onlyNumbers = /^[0-9]+$/
         return onlyNumbers.test(urlId) && urlId.length === 4 
-    }
-
-    private idMatchInFixture = (urlId:number):any => { // this might be combined 
-        return this.props.data.fixture.filter( (obj:any) => obj.bdbid === urlId ).length > 0
     }
 
     render() {     

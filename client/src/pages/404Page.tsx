@@ -5,10 +5,10 @@ export class ErrPage extends Component {
     render() {
         return (
             <div>
-                404 sorry! 
+                404 Invalid request  
                 <Link to={'/'}>
                     <button>
-                        time to go home bud
+                        Click to go to Home page
                     </button>
                 </Link>
             </div>
