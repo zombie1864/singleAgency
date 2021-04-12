@@ -122,9 +122,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         }
     }
      
-    private sliceOfData = (id:number) => { // this might be combined 
-        console.log(this.props.data.results);
-        
+    private sliceOfData = (id:number) => { 
         return this.props.data.results.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
     }
 

@@ -1,23 +1,21 @@
 import {combineReducers} from 'redux'
 import {Reducer} from 'redux'
 import {SET_DATA,UPDATE_OBJ} from '../actions/index'
-import {InitialStateResults} from '../types/appTypes'
+import {InitialState,updateObjAction,SetDataAction} from '../types/appTypes'
 
-const initialStateResults:InitialStateResults =  {
+const initialState:InitialState =  {
     results: [], 
     obj: undefined
 }
 
-const setDataReducer:Reducer<InitialStateResults> = ( state = initialStateResults, action:any) => {
+type Action = updateObjAction | SetDataAction
+
+const setDataReducer:Reducer<InitialState, Action> = ( state = initialState, action) => {
     switch (action.type) {
         case SET_DATA:
             return { ...state, results: action.results}
         case UPDATE_OBJ:
             return {...state, obj: action.payload}
-        // case FETCH_ERR:
-        //     return { results: [
-        //         {dummy:"dummy"}
-        //     ]}
         default:
             return state 
     }
