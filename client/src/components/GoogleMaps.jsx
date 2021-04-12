@@ -51,14 +51,14 @@ export class MapContainer extends Component {
                 lng: -73.950318
               }}
               center={{ 
-                lat: this.props.obj.latitude === undefined ? 40.818417 : this.props.obj.latitude,
-                lng: this.props.obj.longitude === undefined ? -73.950318 : this.props.obj.longitude
+                lat: this.props.store.obj === undefined ? 40.818417 : this.props.store.obj.latitude,
+                lng: this.props.store.obj === undefined ? -73.950318 : this.props.store.obj.longitude
               }}
               >
               <Marker 
                 position={{
-                  lat: this.props.obj.latitude, 
-                  lng: this.props.obj.longitude
+                  lat: this.props.store.obj === undefined ? null: this.props.store.obj.latitude, 
+                  lng: this.props.store.obj === undefined ? null: this.props.store.obj.longitude
                 }}
                 onClick={this.onMarkerClick} 
                 name={'Current location'} 
@@ -67,13 +67,13 @@ export class MapContainer extends Component {
                 <InfoWindow
                 visible={this.state.showingInfoWindow}
                 position={{
-                  lat: this.props.obj.latitude, 
-                  lng: this.props.obj.longitude
+                  lat: this.props.store.obj.latitude, 
+                  lng: this.props.store.obj.longitude
                 }}
                 onClose={this.InfoWindowClose}
                 >
                   <div>
-                    <h5>{Object.entries(this.props.obj).map( (pair, idx) => {
+                    <h5>{Object.entries(this.props.store.obj).map( (pair, idx) => {
                       return (
                         <div key={idx}>
                           {
@@ -100,7 +100,7 @@ export class MapContainer extends Component {
 }
 
 const msp = (state) => ({
-  obj: state.setObjReducer, 
+  store: state.setDataReducer, 
 })
 
 export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
