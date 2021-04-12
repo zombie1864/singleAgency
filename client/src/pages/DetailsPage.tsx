@@ -1,29 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import PropsFromState from '../types/PropsFromState'
+import {PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
 import storeType from '../types/storeType'
-import {fetchData} from '../actions/fetchDataAction'
+import {fetchData} from '../actions/index'
 import {Redirect} from 'react-router-dom'
 
 interface Iprops {
     match:any, 
     location: {
-        state: {
-            address: string,
-            bdbid: number,
-            building_name: string,
-            co2eui_breakdown: any[],
-            energy_breakdown: any[],
-            epapm_primary_function: string,
-            latitude: number,
-            longitude: number,
-            oper_agency_acronym: string,
-            outofservice: boolean,
-            parent_record_id: number,
-            total_bldg_gross_sq_ft: number,
-            year_built: string
-        }
+        state: any
     }
 }
 
@@ -137,7 +123,9 @@ export class DetailsPage extends Component<Allprops, Istate> {
     }
      
     private sliceOfData = (id:number) => { // this might be combined 
-        return this.props.data.fixture.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
+        console.log(this.props.data.results);
+        
+        return this.props.data.results.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
     }
 
     private urlIdFormatValidator = (urlId:string):boolean => {
