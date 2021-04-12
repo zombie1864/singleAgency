@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
 import PropsFromState from '../../types/PropsFromState'
 import Pagination from './Pagination'
+import {Ipayload} from '../../types/actionTypes'
 
 interface Istate {
     currPage: number, 
@@ -14,12 +15,17 @@ interface Istate {
     searchTerm: string
 }
 
-interface connectDispatchProps{ 
+interface connectDispatchProps{ // defining the props that will come from mapStateToProps
     fetchData: any, 
     updateObj: any 
 }
 
-type Allprops = PropsFromState & connectDispatchProps
+interface connectStateToProps { // defining the props that come from mapDispatchToProps
+    data: Ipayload,
+    obj: any 
+}
+
+type Allprops = PropsFromState & connectDispatchProps & connectStateToProps
 
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
