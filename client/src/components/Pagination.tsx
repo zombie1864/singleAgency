@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 interface Iprops {
-  itemsPerPage: any, 
-  totalItems: any, 
+  itemsPerPage: number, 
+  totalItems: number, 
   paginate: any 
 }
 
@@ -20,7 +20,7 @@ class Pagination extends Component<Iprops, Istate> {
     super(props) 
     this.state = {
       firstIdx: 1, 
-      lastIdx: 6
+      lastIdx: 6 
     }
   }
   

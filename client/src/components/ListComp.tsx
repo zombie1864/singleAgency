@@ -1,13 +1,12 @@
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchData} from '../../actions/fetchDataAction'
-import {UPDATE_OBJ} from '../../actions/dispatchObjAction'
-import storeType from '../../types/storeType'
+import {fetchData,UPDATE_OBJ} from '../actions/index'
+import {AppState} from '../store/store'
 import React, { Component } from 'react'
-import MaxMiniBLDGArea from '../UtilComp/MaxMiniBLDGArea'
-import PropsFromState from '../../types/PropsFromState'
+import MaxMiniBLDGArea from './MaxMiniBLDGArea'
+import {PropsFromState} from '../types/appTypes'
 import Pagination from './Pagination'
-import {Ipayload} from '../../types/actionTypes'
+import {Ipayload} from '../types/appTypes'
 
 interface Istate {
     currPage: number, 
@@ -21,7 +20,7 @@ interface connectDispatchProps{ // defining the props that will come from mapSta
 }
 
 interface connectStateToProps { // defining the props that come from mapDispatchToProps
-    data: Ipayload,
+    data: Ipayload[],
     obj: any 
 }
 
@@ -62,12 +61,12 @@ export class ListComp extends Component<Allprops, Istate> {
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
-        const currItems = this.props.data.fixture.slice(indexOfFirstItem, indexOfLastItem)
+        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)
         
         return (
             <div>
                 {
-                    this.props.data.fixture.length === 1 ? <p>Error could not fetch data from server</p> : 
+                    this.props.data.length === 1 ? <p>Error could not fetch data from server</p> : 
                     <table>
                     <tbody>
                         <tr>
@@ -134,12 +133,12 @@ export class ListComp extends Component<Allprops, Istate> {
                                 </ul>
                                 <Pagination 
                                     itemsPerPage={this.state.itemsPerPage}
-                                    totalItems={this.props.data.fixture.length}
+                                    totalItems={this.props.data.length}
                                     paginate={this.paginate}
                                 />
                             </td>
                             <td>
-                                <MaxMiniBLDGArea fixture={this.props.data.fixture}/>
+                                <MaxMiniBLDGArea results={this.props.data}/>
                             </td>
                         </tr>
                     </tbody>
@@ -151,14 +150,14 @@ export class ListComp extends Component<Allprops, Istate> {
     }
 }
 
-const msp = (state:storeType) => ({
-    data: state.setDataReducer, 
-    obj: state.setObjReducer  
+const msp = (state:AppState) => ({
+    data: state.setDataReducer.results, 
+    obj: state.setDataReducer.obj
 })
-
+    
 const mdp =(dispatch:any) => ({
     fetchData: () => dispatch(fetchData()), 
-    updateObj: (payload:any) => {
+    updateObj: (payload:Ipayload) => {
         dispatch({
             type: UPDATE_OBJ,
             payload

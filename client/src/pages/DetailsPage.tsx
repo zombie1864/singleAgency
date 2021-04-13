@@ -1,29 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import PropsFromState from '../types/PropsFromState'
+import {PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
-import storeType from '../types/storeType'
-import {fetchData} from '../actions/fetchDataAction'
+import {AppState} from '../store/store'
+import {fetchData} from '../actions/index'
 import {Redirect} from 'react-router-dom'
 
 interface Iprops {
     match:any, 
     location: {
-        state: {
-            address: string,
-            bdbid: number,
-            building_name: string,
-            co2eui_breakdown: any[],
-            energy_breakdown: any[],
-            epapm_primary_function: string,
-            latitude: number,
-            longitude: number,
-            oper_agency_acronym: string,
-            outofservice: boolean,
-            parent_record_id: number,
-            total_bldg_gross_sq_ft: number,
-            year_built: string
-        }
+        state: any
     }
 }
 
@@ -51,7 +37,7 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops
+type Allprops = PropsFromState & Iprops //& any 
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
@@ -128,33 +114,18 @@ export class DetailsPage extends Component<Allprops, Istate> {
         this.props.fetchData()
     }
 
-    public shouldComponentUpdate() {
-        if ( !([this.sliceOfData(+this.props.match.params.id)].length > 0) ) { 
-            return false 
-        } else {
-            return true 
-        }
-    }
-     
-    private sliceOfData = (id:number) => { // this might be combined 
-        return this.props.data.fixture.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
-    }
-
     private urlIdFormatValidator = (urlId:string):boolean => {
         const onlyNumbers = /^[0-9]+$/
         return onlyNumbers.test(urlId) && urlId.length === 4 
     }
 
     render() {     
-        let slicedData = this.sliceOfData(+this.props.match.params.id)
         let {state} = this.props.location
-        if (state === undefined) state = slicedData
-
+        
         return (
             <div>
                 {
                     state === undefined && !this.urlIdFormatValidator(this.props.match.params.id)? <Redirect to="/404"/> : 
-                    !this.shouldComponentUpdate() ? <Redirect to="/404"/> :
                     state === undefined ? null: 
                     <div>
                         <Link to={"/"}>
@@ -200,8 +171,8 @@ export class DetailsPage extends Component<Allprops, Istate> {
     }
 }
 
-const msp = (state:storeType) => ({
-    data: state.setDataReducer
+const msp = (state:AppState) => ({
+    data: state.setDataReducer.results, 
 })
 
 const mdp =(dispatch:any) => ({

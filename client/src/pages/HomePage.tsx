@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import GoogleMaps from '../components/MapComp/GoogleMaps'
-import ListComp from '../components/ListComp/ListComp'
+import GoogleMaps from '../components/GoogleMaps'
+import ListComp from '../components/ListComp'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
