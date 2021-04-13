@@ -114,33 +114,18 @@ export class DetailsPage extends Component<Allprops, Istate> {
         this.props.fetchData()
     }
 
-    public shouldComponentUpdate() {
-        if ( !([this.sliceOfData(+this.props.match.params.id)].length > 0) ) { 
-            return false 
-        } else {
-            return true 
-        }
-    }
-     
-    private sliceOfData = (id:number) => { 
-        return this.props.data.results.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
-    }
-
     private urlIdFormatValidator = (urlId:string):boolean => {
         const onlyNumbers = /^[0-9]+$/
         return onlyNumbers.test(urlId) && urlId.length === 4 
     }
 
     render() {     
-        let slicedData = this.sliceOfData(+this.props.match.params.id)
         let {state} = this.props.location
-        if (state === undefined) state = slicedData
-
+        
         return (
             <div>
                 {
                     state === undefined && !this.urlIdFormatValidator(this.props.match.params.id)? <Redirect to="/404"/> : 
-                    !this.shouldComponentUpdate() ? <Redirect to="/404"/> :
                     state === undefined ? null: 
                     <div>
                         <Link to={"/"}>
@@ -187,7 +172,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
 }
 
 const msp = (state:storeType) => ({
-    data: state.setDataReducer
+    data: state.setDataReducer.results, 
 })
 
 const mdp =(dispatch:any) => ({

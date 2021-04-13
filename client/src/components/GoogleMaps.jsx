@@ -51,14 +51,14 @@ export class MapContainer extends Component {
                 lng: -73.950318
               }}
               center={{ 
-                lat: this.props.store.obj === undefined ? 40.818417 : this.props.store.obj.latitude,
-                lng: this.props.store.obj === undefined ? -73.950318 : this.props.store.obj.longitude
+                lat: this.props.store.obj === null ? 40.818417 : this.props.store.obj.latitude,
+                lng: this.props.store.obj === null ? -73.950318 : this.props.store.obj.longitude
               }}
               >
               <Marker 
                 position={{
-                  lat: this.props.store.obj === undefined ? null: this.props.store.obj.latitude, 
-                  lng: this.props.store.obj === undefined ? null: this.props.store.obj.longitude
+                  lat: this.props.store.obj === null ? null: this.props.store.obj.latitude, 
+                  lng: this.props.store.obj === null ? null: this.props.store.obj.longitude
                 }}
                 onClick={this.onMarkerClick} 
                 name={'Current location'} 

@@ -5,7 +5,7 @@ import {InitialState,updateObjAction,SetDataAction} from '../types/appTypes'
 
 const initialState:InitialState =  {
     results: [], 
-    obj: undefined
+    obj: null
 }
 
 type Action = updateObjAction | SetDataAction

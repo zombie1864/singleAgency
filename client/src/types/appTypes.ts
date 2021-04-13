@@ -11,10 +11,11 @@ export interface SetDataAction {
 }
 
 export interface Ifixture {
+    // [x: string]: any
     count: number, 
     next:null, 
     previous:null, 
-    results: Ipayload[]
+    results: Ipayload[], 
 }
 
 export type Ipayload = {
@@ -30,7 +31,7 @@ export type Ipayload = {
     outofservice: boolean, 
     parent_record_id: any, 
     total_bldg_gross_sg_ft: number, 
-    year_built: string 
+    year_built: string , 
 }
 
 //actionCreatorTypes 
@@ -47,7 +48,6 @@ export interface InitialState { // used for defining slice of state in reducer
     results: Ipayload[], 
     obj: any
 } 
-
 
 export interface PropsFromState {
     data: Ifixture, 
