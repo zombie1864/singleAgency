@@ -2,7 +2,6 @@ import { Dispatch } from 'react'
 import {fetchDataActionCreator, setDataActionCreator,Ifixture,Ipayload,updateObjActionCreator} from '../types/appTypes'
 export const FETCH_DATA = 'FETCH_DATA'
 export const SET_DATA = "SET_DATA"
-export const FETCH_ERR = "FETCH_ERR"
 export const UPDATE_OBJ = 'UPDATE_OBJ'
 
 export const fetchData:fetchDataActionCreator = () => {

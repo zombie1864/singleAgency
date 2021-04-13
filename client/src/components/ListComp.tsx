@@ -12,19 +12,7 @@ interface Istate {
     currPage: number, 
     itemsPerPage: number, 
     searchTerm: string
-}
-
-interface connectDispatchProps{ // defining the props that will come from mapStateToProps
-    fetchData: any, 
-    updateObj: any 
-}
-
-interface connectStateToProps { // defining the props that come from mapDispatchToProps
-    data: Ipayload[],
-    obj: any 
-}
-
-type Allprops = PropsFromState & connectDispatchProps & connectStateToProps
+} 
 
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
@@ -42,7 +30,7 @@ const searchCss:React.CSSProperties = {
     margin: "20px"
 }
 
-export class ListComp extends Component<Allprops, Istate> {
+export class ListComp extends Component<PropsFromState, Istate> {
     constructor(props:any){
         super(props) 
         this.state = {
