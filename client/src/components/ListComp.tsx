@@ -118,12 +118,14 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                             </li>
                                         ))
                                     }
-                                </ul>
-                                <Pagination 
-                                    itemsPerPage={this.state.itemsPerPage}
-                                    totalItems={this.props.data.length}
-                                    paginate={this.paginate}
-                                />
+                                </ul>{
+                                    this.state.searchTerm === '' ? 
+                                    <Pagination 
+                                        itemsPerPage={this.state.itemsPerPage}
+                                        totalItems={this.props.data.length}
+                                        paginate={this.paginate}
+                                    /> : null 
+                                }
                             </td>
                             <td>
                                 <MaxMiniBLDGArea results={this.props.data}/>

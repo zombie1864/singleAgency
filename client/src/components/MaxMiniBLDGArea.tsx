@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import {Ipayload} from '../types/appTypes'
+
 
 interface Iprops {
-    results: any 
+    results: Ipayload[]
 }
 
 const utilCompCss:React.CSSProperties = {
