@@ -121,7 +121,6 @@ export class DetailsPage extends Component<Allprops, Istate> {
 
     render() {     
         let {state} = this.props.location
-        console.log(this.props.data.length);
         
         return (
             <div>
