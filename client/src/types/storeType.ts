@@ -1,10 +1,5 @@
-import {Ipayload} from './appTypes'
-
 interface storeType {
-    setDataReducer: {
-        results: Ipayload[] | {}, 
-        obj: Ipayload
-    }
+    setDataReducer: any
 }
 
 export default storeType
