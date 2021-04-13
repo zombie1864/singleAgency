@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import {PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
-import storeType from '../types/storeType'
+import {AppState} from '../store/store'
 import {fetchData} from '../actions/index'
 import {Redirect} from 'react-router-dom'
 
@@ -37,7 +37,7 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops
+type Allprops = PropsFromState & Iprops //& any 
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
@@ -121,6 +121,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
 
     render() {     
         let {state} = this.props.location
+        console.log(this.props.data.length);
         
         return (
             <div>
@@ -171,7 +172,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
     }
 }
 
-const msp = (state:storeType) => ({
+const msp = (state:AppState) => ({
     data: state.setDataReducer.results, 
 })
 

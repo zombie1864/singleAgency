@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {fetchData,UPDATE_OBJ} from '../actions/index'
-import storeType from '../types/storeType'
+import {AppState} from '../store/store'
 import React, { Component } from 'react'
 import MaxMiniBLDGArea from './MaxMiniBLDGArea'
 import {PropsFromState} from '../types/appTypes'
@@ -150,12 +150,11 @@ export class ListComp extends Component<Allprops, Istate> {
     }
 }
 
-const msp = (state:storeType) => ({
+const msp = (state:AppState) => ({
     data: state.setDataReducer.results, 
     obj: state.setDataReducer.obj
 })
     
-
 const mdp =(dispatch:any) => ({
     fetchData: () => dispatch(fetchData()), 
     updateObj: (payload:Ipayload) => {

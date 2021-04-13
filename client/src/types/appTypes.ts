@@ -11,7 +11,6 @@ export interface SetDataAction {
 }
 
 export interface Ifixture {
-    // [x: string]: any
     count: number, 
     next:null, 
     previous:null, 
@@ -50,7 +49,7 @@ export interface InitialState { // used for defining slice of state in reducer
 } 
 
 export interface PropsFromState {
-    data: Ifixture, 
+    data: Ipayload[], // data.results => (100)[{...},...,{...}]
     obj: Ipayload, 
     fetchData: fetchDataActionCreator, 
     updateObj: updateObjActionCreator
