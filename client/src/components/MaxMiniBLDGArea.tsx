@@ -1,25 +1,40 @@
 import React, { Component } from 'react'
 import {Ipayload} from '../types/appTypes'
 
-
 interface Iprops {
     results: Ipayload[]
 }
 
-const utilCompCss:React.CSSProperties = {
-    position: "relative",
-    top: "-100px", 
-    left: "25px"
+interface Istate {
+    hoverOnIdx: string | null, 
+    hover: boolean
 }
 
-export class MaxMiniBLDGArea extends Component<Iprops> {
+const utilCompCss:React.CSSProperties = {
+    position: "relative",
+    top: "-200px",  
+    textAlign: "center",
+}
+const ulCompCss:React.CSSProperties = {
+    display: "inline-flex", 
+    listStyle: 'none'
+}
 
-    private BLDGAddress = (idx:number): null | string => {
+export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
+    constructor(props:any) {
+        super(props) 
+        this.state = {
+            hoverOnIdx: null, 
+            hover: false
+        }
+    }
+
+    private BLDGAddress = (idx:number): null | string => { // returns building address 
         return this.props.results[idx] === undefined ? null : 
         this.props.results[idx].address
     }
 
-    private maxMinTotalBLDGArea = (results:any):number[] => {
+    private maxMinTotalBLDGArea = (results:any):number[] => { // returns the max or min BLDG area 
         const arrOfNumbers = results.map( (obj:any) => obj.total_bldg_gross_sq_ft ) 
         const minArea = Math.min.apply(null, arrOfNumbers.filter((number:any) => number !== 0 ));
         const maxArea = Math.max.apply(null, arrOfNumbers.filter((number:any) => number !== 0 ));
@@ -28,18 +43,57 @@ export class MaxMiniBLDGArea extends Component<Iprops> {
         return [maxArea, minArea, maxIdx, minIdx]
     }
 
-    render() {
+    private toggleHover = (event:any):any => {
+        (this.state.hoverOnIdx !== null) && (this.state.hoverOnIdx !== event.target.className) ? this.setState({hoverOnIdx: event.target.className, hover: true}) :
+        this.setState({hoverOnIdx: event.target.className, hover: !this.state.hover}) 
+    }
+
+    private renderMaxMinBLDGInfo = ():JSX.Element[] => {
         const maxBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.results)[2] )
         const minBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.results)[3] )
+        const volumeBLDGInfoText = ['Biggest Building info', 'Smallest Building info']
+        const BLDGSubInfoText = ['Building Area', 'Building Address']
+        
+        return (
+            volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
+                let volumeTypeTextStyling:React.CSSProperties = {
+                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "blue" :'', 
+                    position: 'fixed'
+                }
+
+                let subInfoTextStyling:React.CSSProperties = {
+                    display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
+                    position: "absolute", 
+                    marginTop: '15px', 
+                    marginLeft: "-15px", 
+                    background: '#0f84e8',
+                    textAlign: 'right'
+                }
+                
+                return (
+                    <div key={outterIdx} style={{margin: "100px"}}>
+                        <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
+                        {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
+                            return (
+                                <li key={innerIdx} style={subInfoTextStyling}>{subInfoText} : {
+                                    outterIdx === 0 && innerIdx === 0 ? this.maxMinTotalBLDGArea(this.props.results)[innerIdx] : 
+                                    outterIdx === 1 && innerIdx === 0 ? this.maxMinTotalBLDGArea(this.props.results)[outterIdx] : 
+                                    outterIdx === 0 && innerIdx === 1 ? maxBLDGAddress: minBLDGAddress} {innerIdx === 0 ? 'sq ft' : null
+                                    }
+                                </li>
+                            )
+                        })}
+                    </div>
+                )
+            })
+        )
+    }
+
+    render() {
         return (
             <div style={utilCompCss}>
-                <ul>
-                    <li>Biggest Building info</li>
-                    <li>Building Area: {this.maxMinTotalBLDGArea(this.props.results)[0]} sq ft</li>
-                    <li>Building Address: {maxBLDGAddress}</li>
-                    <li>Smallest Building info</li>
-                    <li>Building Area: {this.maxMinTotalBLDGArea(this.props.results)[1]} sq ft</li>
-                    <li>Building Address: {minBLDGAddress}</li>
+                <ul style={ulCompCss}>
+                    {this.renderMaxMinBLDGInfo()}
                 </ul>
             </div>
         )
