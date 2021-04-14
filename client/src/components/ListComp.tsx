@@ -11,8 +11,16 @@ import {Ipayload} from '../types/appTypes'
 interface Istate {
     currPage: number, 
     itemsPerPage: number, 
-    searchTerm: string
+    searchTerm: string, 
+    itemBackgroundColor: string, 
+    selected:string 
 } 
+
+declare module 'react' {
+    interface HTMLAttributes<T> extends DOMAttributes<T> {
+        custom?: string // <-- custom interface
+    }
+}
 
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
@@ -36,7 +44,9 @@ export class ListComp extends Component<PropsFromState, Istate> {
         this.state = {
             currPage: 1, 
             itemsPerPage:5, 
-            searchTerm: ''
+            searchTerm: '',
+            itemBackgroundColor: '', 
+            selected: ''
         }
     }
 
@@ -45,6 +55,11 @@ export class ListComp extends Component<PropsFromState, Istate> {
     }
 
     private paginate = (pageNumber:any) => this.setState({...this.state, currPage: pageNumber}) 
+
+    private itemClicked = (idx:number):void => {
+        console.log(idx);
+        this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selected: `${idx}`})
+    }
 
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
@@ -90,8 +105,8 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
                                             null
                                         }).map( (obj:any, idx:any) => (//[{},...,{}]
-                                            <li key={idx}>
-                                                <div>
+                                            <li key={idx} style={{cursor:"pointer"}}>
+                                                <div onClick={() => this.itemClicked(idx)}>
                                                     <span 
                                                         style={addressCss}
                                                         onClick={()=>{
@@ -109,12 +124,14 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                                             className="btn btn-info" 
                                                         >Details</button>
                                                     </Link>
+                                                    <div style={{background: this.state.selected === `${idx}` ? "red" : ""}}>
+                                                        <p>bdbid: {obj.bdbid}</p>
+                                                        <p>Building Name: {obj.building_name}</p>
+                                                        <p>Year Built: {obj.year_built.slice(0,-2)}</p>
+                                                        <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
+                                                        <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "no data" : Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)} Kg</p>
+                                                    </div>
                                                 </div>
-                                                <p>bdbid: {obj.bdbid}</p>
-                                                <p>Building Name: {obj.building_name}</p>
-                                                <p>Year Built: {obj.year_built.slice(0,-2)}</p>
-                                                <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
-                                                <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "no data" : Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)} Kg</p>
                                             </li>
                                         ))
                                     }
