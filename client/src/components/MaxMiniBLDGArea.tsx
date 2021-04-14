@@ -33,12 +33,14 @@ export class MaxMiniBLDGArea extends Component<Iprops> {
         const minBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.results)[3] )
         return (
             <div style={utilCompCss}>
-                <h4>Biggest and Smallest Building Area</h4>
-                <h5>by sq ft</h5>
-                <p>Max Building Area: {this.maxMinTotalBLDGArea(this.props.results)[0]} sq ft</p>
-                <p>Max Building Address: {maxBLDGAddress}</p>
-                <p>Min Building Area: {this.maxMinTotalBLDGArea(this.props.results)[1]} sq ft</p>
-                <p>Min Building Address: {minBLDGAddress}</p>
+                <ul>
+                    <li>Biggest Building info</li>
+                    <li>Building Area: {this.maxMinTotalBLDGArea(this.props.results)[0]} sq ft</li>
+                    <li>Building Address: {maxBLDGAddress}</li>
+                    <li>Smallest Building info</li>
+                    <li>Building Area: {this.maxMinTotalBLDGArea(this.props.results)[1]} sq ft</li>
+                    <li>Building Address: {minBLDGAddress}</li>
+                </ul>
             </div>
         )
     }

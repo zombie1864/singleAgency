@@ -13,14 +13,8 @@ interface Istate {
     itemsPerPage: number, 
     searchTerm: string, 
     itemBackgroundColor: string, 
-    selected:string 
+    selectedItem:number | null 
 } 
-
-declare module 'react' {
-    interface HTMLAttributes<T> extends DOMAttributes<T> {
-        custom?: string // <-- custom interface
-    }
-}
 
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
@@ -46,7 +40,7 @@ export class ListComp extends Component<PropsFromState, Istate> {
             itemsPerPage:5, 
             searchTerm: '',
             itemBackgroundColor: '', 
-            selected: ''
+            selectedItem: null
         }
     }
 
@@ -54,23 +48,24 @@ export class ListComp extends Component<PropsFromState, Istate> {
         this.props.fetchData()
     }
 
+    public componentDidUpdate(prevProps:any, prevState:Istate):void | null {
+        return prevState.currPage !== this.state.currPage ? this.setState({...this.state, itemBackgroundColor: ''}) : null 
+    }
+
     private paginate = (pageNumber:any) => this.setState({...this.state, currPage: pageNumber}) 
 
     private itemClicked = (idx:number):void => {
-        console.log(idx);
-        this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selected: `${idx}`})
+        this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
     }
 
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
-        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)
+        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)        
         
         return (
             <div>
-                {
-                    this.props.data.length === 1 ? <p>Error could not fetch data from server</p> : 
-                    <table>
+                <table>
                     <tbody>
                         <tr>
                             <th> 
@@ -124,7 +119,7 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                                             className="btn btn-info" 
                                                         >Details</button>
                                                     </Link>
-                                                    <div style={{background: this.state.selected === `${idx}` ? "red" : ""}}>
+                                                    <div style={{background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : ""}}>
                                                         <p>bdbid: {obj.bdbid}</p>
                                                         <p>Building Name: {obj.building_name}</p>
                                                         <p>Year Built: {obj.year_built.slice(0,-2)}</p>
@@ -150,10 +145,8 @@ export class ListComp extends Component<PropsFromState, Istate> {
                         </tr>
                     </tbody>
                 </table>
-                }
             </div>
         )
-
     }
 }
 
