@@ -8,11 +8,8 @@ interface Iprops {
 
 interface Istate {
   firstIdx: number, 
-  lastIdx: number
-}
-
-const paginationCss:React.CSSProperties = {
-  cursor: "pointer", 
+  lastIdx: number, 
+  activeKey: number | null 
 }
 
 class Pagination extends Component<Iprops, Istate> {
@@ -20,10 +17,11 @@ class Pagination extends Component<Iprops, Istate> {
     super(props) 
     this.state = {
       firstIdx: 1, 
-      lastIdx: 6 
+      lastIdx: 6, 
+      activeKey: null 
     }
   }
-  
+
   private range(start:number, end:number) {
     return Array(end - start + 1).fill(0, 0).map((_, idx) => start + idx)
   }
@@ -46,13 +44,12 @@ class Pagination extends Component<Iprops, Istate> {
     } 
   }
 
-  private activePagination = (number:number) => {
-    return number === 2 ? "active" : null 
+  private changeClassNameBasedOn = (number:any):void | null => {
+    this.setState({...this.state, activeKey: number})
   }
   
   render() {
     const pageNumbers = []
-    
     for (let i = 1; i <= Math.ceil(this.props.totalItems / this.props.itemsPerPage); i++) {
       pageNumbers.push(i);
     }
@@ -63,8 +60,11 @@ class Pagination extends Component<Iprops, Istate> {
           <button className="page-link" name="prev" onClick={this.cycle}>prev</button>
           { 
             this.range(this.state.firstIdx, this.state.lastIdx -1).map(number => {
-              return <li key={number} className={`${this.activePagination}`}>
-                <span style={paginationCss} onClick={() => this.props.paginate(number)} className='page-link'>
+              return <li key={number} className={this.state.activeKey === number ? 'page-item active' : ''}>
+                <span style={{cursor: "pointer",}} onClick={() => {
+                    this.props.paginate(number)
+                    this.changeClassNameBasedOn(number)
+                    }} className='page-link'> {/**this.props.paginate(number) => changing state to parent comp */}
                   {number}
                 </span>
               </li>

@@ -18,8 +18,8 @@ interface Istate {
 
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
-    height: "600px",
-    width: "500px"
+    height: "80vh",
+    width: "500px", 
 }
 
 const addressCss:React.CSSProperties = {
@@ -61,15 +61,15 @@ export class ListComp extends Component<PropsFromState, Istate> {
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
-        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)        
-        
+        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)    
+          
         return (
             <div>
                 <table>
                     <tbody>
                         <tr>
                             <th> 
-                                <input 
+                                <input // search bar 
                                     className="form-control"
                                     type="text" 
                                     placeholder="search"
@@ -85,7 +85,7 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                     />
                             </th>
                         </tr>
-                        <tr >
+                        <tr>
                             <td>
                                 <ul style={listCss} className="list-unstyled pl-5">
                                     {
