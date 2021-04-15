@@ -13,13 +13,15 @@ interface Istate {
 const utilCompCss:React.CSSProperties = {
     position: "relative",
     top: "-200px",  
+    left: '10vh',
     textAlign: "center",
 }
 const ulCss:React.CSSProperties = {
     position: "absolute", 
     left: "-125px",
-    display: "flex", 
-    listStyle: 'none'
+    display: "inline-flex", 
+    listStyle: 'none', 
+    cursor: "pointer"
 }
 
 export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
@@ -32,14 +34,13 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     }
 
     private BLDGAddress = (idx:number): null | string => { // returns building address 
-        return this.props.results[idx] === undefined ? null : 
-        this.props.results[idx].address
+        return this.props.results[idx] === undefined ? null : this.props.results[idx].address
     }
 
-    private maxMinTotalBLDGArea = (results:any):number[] => { // returns the max or min BLDG area 
-        const arrOfNumbers = results.map( (obj:any) => obj.total_bldg_gross_sq_ft ) 
-        const minArea = Math.min.apply(null, arrOfNumbers.filter((number:any) => number !== 0 ));
-        const maxArea = Math.max.apply(null, arrOfNumbers.filter((number:any) => number !== 0 ));
+    private maxMinTotalBLDGArea = (results:Ipayload[]):number[] => { // returns the max or min BLDG area 
+        const arrOfNumbers = results.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
+        const minArea = Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 ));
+        const maxArea = Math.max(...arrOfNumbers)
         const maxIdx = arrOfNumbers.indexOf(maxArea)
         const minIdx = arrOfNumbers.indexOf(minArea)
         return [maxArea, minArea, maxIdx, minIdx]
@@ -59,8 +60,9 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
         return (
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 let volumeTypeTextStyling:React.CSSProperties = {
-                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "blue" :'', 
-                    width: "150px"
+                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'', 
+                    width: "200px", 
+                    borderRadius: '5px'
                 }
 
                 let subInfoTextStyling:React.CSSProperties = {
@@ -68,7 +70,8 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
                     marginTop: '50px', 
                     width: "250px",
                     background: '#0f84e8',
-                    overflow: "hidden"
+                    borderRadius: '5px',
+                    color: "white"
                 }
                 
                 return (
@@ -93,6 +96,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     render() {
         return (
             <div style={utilCompCss}>
+                <h5>Hover to show more information</h5>
                 <ul style={ulCss}>
                     {this.renderMaxMinBLDGInfo()}
                 </ul>
