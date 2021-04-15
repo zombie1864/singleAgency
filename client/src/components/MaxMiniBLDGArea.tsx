@@ -15,8 +15,10 @@ const utilCompCss:React.CSSProperties = {
     top: "-200px",  
     textAlign: "center",
 }
-const ulCompCss:React.CSSProperties = {
-    display: "inline-flex", 
+const ulCss:React.CSSProperties = {
+    position: "absolute", 
+    left: "-125px",
+    display: "flex", 
     listStyle: 'none'
 }
 
@@ -58,20 +60,19 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 let volumeTypeTextStyling:React.CSSProperties = {
                     backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "blue" :'', 
-                    position: 'fixed'
+                    width: "150px"
                 }
 
                 let subInfoTextStyling:React.CSSProperties = {
                     display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
-                    position: "absolute", 
-                    marginTop: '15px', 
-                    marginLeft: "-15px", 
+                    marginTop: '50px', 
+                    width: "250px",
                     background: '#0f84e8',
-                    textAlign: 'right'
+                    overflow: "hidden"
                 }
                 
                 return (
-                    <div key={outterIdx} style={{margin: "100px"}}>
+                    <div key={outterIdx} style={{margin: "10px"}}>
                         <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
@@ -92,7 +93,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     render() {
         return (
             <div style={utilCompCss}>
-                <ul style={ulCompCss}>
+                <ul style={ulCss}>
                     {this.renderMaxMinBLDGInfo()}
                 </ul>
             </div>
