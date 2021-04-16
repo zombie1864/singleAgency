@@ -32,7 +32,7 @@ const ulCss:React.CSSProperties = {
 }
 
 export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
-    constructor(props:any) {
+    constructor(props:Iprops) {
         super(props) 
         this.state = {
             hoverOnIdx: null, 
