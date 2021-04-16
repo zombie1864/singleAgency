@@ -37,7 +37,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
         return this.props.results[idx] === undefined ? null : this.props.results[idx].address
     }
 
-    private maxMinTotalBLDGArea = (results:Ipayload[]):number[] => { // returns the max or min BLDG area 
+    private maxMinTotalBLDGArea = (results:Ipayload[]):number[] => { // returns the max or min BLDG area and index location 
         const arrOfNumbers = results.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
         const minArea = Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 ));
         const maxArea = Math.max(...arrOfNumbers)
@@ -60,9 +60,11 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
         return (
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 let volumeTypeTextStyling:React.CSSProperties = {
-                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'', 
+                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
                     width: "200px", 
-                    borderRadius: '5px'
+                    borderRadius: '5px', 
+                    display: "block",
+                    padding: "10px 30px"
                 }
 
                 let subInfoTextStyling:React.CSSProperties = {
@@ -75,7 +77,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
                 }
                 
                 return (
-                    <div key={outterIdx} style={{margin: "10px"}}>
+                    <div key={outterIdx} style={{width: "300px",padding: "10px 40px"}}>
                         <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
@@ -96,7 +98,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     render() {
         return (
             <div style={utilCompCss}>
-                <h5>Hover to show more information</h5>
+                <h5 style={{padding: "10px 40px"}}>Hover over to show more information</h5>
                 <ul style={ulCss}>
                     {this.renderMaxMinBLDGInfo()}
                 </ul>
