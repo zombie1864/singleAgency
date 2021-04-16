@@ -10,6 +10,13 @@ interface Istate {
     hover: boolean
 }
 
+interface ImaxMiniInfo {
+    maxArea: number,
+    minArea: number,
+    maxIdx: number,
+    minIdx: number
+}
+
 const utilCompCss:React.CSSProperties = {
     position: "relative",
     top: "-200px",  
@@ -37,23 +44,25 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
         return this.props.results[idx] === undefined ? null : this.props.results[idx].address
     }
 
-    private maxMinTotalBLDGArea = (results:Ipayload[]):number[] => { // returns the max or min BLDG area and index location 
+    private maxMinTotalBLDGArea = (results:Ipayload[]):ImaxMiniInfo => { // returns the max or min BLDG area and index location 
         const arrOfNumbers = results.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
-        const minArea = Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 ));
-        const maxArea = Math.max(...arrOfNumbers)
-        const maxIdx = arrOfNumbers.indexOf(maxArea)
-        const minIdx = arrOfNumbers.indexOf(minArea)
-        return [maxArea, minArea, maxIdx, minIdx]
+        return {
+            maxArea: Math.max(...arrOfNumbers), // Math.max(...arrOfNumbers)
+            minArea: Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 )),
+            maxIdx: arrOfNumbers.indexOf(Math.max(...arrOfNumbers)),
+            minIdx: arrOfNumbers.indexOf(Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 )))
+        }
     }
 
-    private toggleHover = (event:any):any => {
+    private toggleHover = (event:any):void | null => {
         (this.state.hoverOnIdx !== null) && (this.state.hoverOnIdx !== event.target.className) ? this.setState({hoverOnIdx: event.target.className, hover: true}) :
         this.setState({hoverOnIdx: event.target.className, hover: !this.state.hover}) 
     }
 
     private renderMaxMinBLDGInfo = ():JSX.Element[] => {
-        const maxBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.results)[2] )
-        const minBLDGAddress = this.BLDGAddress( this.maxMinTotalBLDGArea(this.props.results)[3] )
+        const maxMiniInfo = this.maxMinTotalBLDGArea(this.props.results)
+        const maxBLDGAddress = this.BLDGAddress( maxMiniInfo.maxIdx )
+        const minBLDGAddress = this.BLDGAddress( maxMiniInfo.minIdx )
         const volumeBLDGInfoText = ['Biggest Building info', 'Smallest Building info']
         const BLDGSubInfoText = ['Building Area', 'Building Address']
         
@@ -82,8 +91,8 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
                                 <li key={innerIdx} style={subInfoTextStyling}>{subInfoText} : {
-                                    outterIdx === 0 && innerIdx === 0 ? this.maxMinTotalBLDGArea(this.props.results)[innerIdx] : 
-                                    outterIdx === 1 && innerIdx === 0 ? this.maxMinTotalBLDGArea(this.props.results)[outterIdx] : 
+                                    outterIdx === 0 && innerIdx === 0 ? maxMiniInfo.maxArea : 
+                                    outterIdx === 1 && innerIdx === 0 ? maxMiniInfo.minArea : 
                                     outterIdx === 0 && innerIdx === 1 ? maxBLDGAddress: minBLDGAddress} {innerIdx === 0 ? 'sq ft' : null
                                     }
                                 </li>
