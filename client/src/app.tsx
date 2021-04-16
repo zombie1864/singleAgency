@@ -5,7 +5,7 @@ import ErrPage from './pages/404Page'
 
 const appCss:React.CSSProperties = {
     background: "linear-gradient(#d7fadc, #85bed4)",
-    height:"100vh"
+    height:"100vh",
 }
 
 const App = () => (

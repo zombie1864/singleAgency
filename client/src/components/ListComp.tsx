@@ -11,13 +11,15 @@ import {Ipayload} from '../types/appTypes'
 interface Istate {
     currPage: number, 
     itemsPerPage: number, 
-    searchTerm: string
+    searchTerm: string, 
+    itemBackgroundColor: string, 
+    selectedItem:number | null 
 } 
 
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
-    height: "600px",
-    width: "500px"
+    height: "80vh",
+    width: "500px", 
 }
 
 const addressCss:React.CSSProperties = {
@@ -36,7 +38,9 @@ export class ListComp extends Component<PropsFromState, Istate> {
         this.state = {
             currPage: 1, 
             itemsPerPage:5, 
-            searchTerm: ''
+            searchTerm: '',
+            itemBackgroundColor: '', 
+            selectedItem: null
         }
     }
 
@@ -44,22 +48,28 @@ export class ListComp extends Component<PropsFromState, Istate> {
         this.props.fetchData()
     }
 
+    public componentDidUpdate(prevProps:any, prevState:Istate):void | null {
+        return prevState.currPage !== this.state.currPage ? this.setState({...this.state, itemBackgroundColor: ''}) : null 
+    }
+
     private paginate = (pageNumber:any) => this.setState({...this.state, currPage: pageNumber}) 
+
+    private itemClicked = (idx:number):void => {
+        this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
+    }
 
     render() {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
-        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)
-        
+        const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem)    
+          
         return (
             <div>
-                {
-                    this.props.data.length === 1 ? <p>Error could not fetch data from server</p> : 
-                    <table>
+                <table>
                     <tbody>
                         <tr>
                             <th> 
-                                <input 
+                                <input // search bar 
                                     className="form-control"
                                     type="text" 
                                     placeholder="search"
@@ -75,7 +85,7 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                     />
                             </th>
                         </tr>
-                        <tr >
+                        <tr>
                             <td>
                                 <ul style={listCss} className="list-unstyled pl-5">
                                     {
@@ -90,8 +100,8 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
                                             null
                                         }).map( (obj:any, idx:any) => (//[{},...,{}]
-                                            <li key={idx}>
-                                                <div>
+                                            <li key={idx} style={{cursor:"pointer"}}>
+                                                <div onClick={() => this.itemClicked(idx)}>
                                                     <span 
                                                         style={addressCss}
                                                         onClick={()=>{
@@ -109,12 +119,14 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                                             className="btn btn-info" 
                                                         >Details</button>
                                                     </Link>
+                                                    <div style={{background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : ""}}>
+                                                        <p>bdbid: {obj.bdbid}</p>
+                                                        <p>Building Name: {obj.building_name}</p>
+                                                        <p>Year Built: {obj.year_built.slice(0,-2)}</p>
+                                                        <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
+                                                        <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "no data" : Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)} Kg</p>
+                                                    </div>
                                                 </div>
-                                                <p>bdbid: {obj.bdbid}</p>
-                                                <p>Building Name: {obj.building_name}</p>
-                                                <p>Year Built: {obj.year_built.slice(0,-2)}</p>
-                                                <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
-                                                <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "no data" : Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)} Kg</p>
                                             </li>
                                         ))
                                     }
@@ -133,10 +145,8 @@ export class ListComp extends Component<PropsFromState, Istate> {
                         </tr>
                     </tbody>
                 </table>
-                }
             </div>
         )
-
     }
 }
 

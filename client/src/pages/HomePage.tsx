@@ -5,8 +5,8 @@ import ListComp from '../components/ListComp'
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
   padding:'0 50px', 
-  height:"80vh", 
-  width:"100vw"
+  height:"90vh", 
+  width:"100vw", 
 }
 
 class HomePage extends Component{
@@ -17,7 +17,7 @@ class HomePage extends Component{
     return (
       <div>
         <h2 className="text-center">Single Agency</h2>
-        <table>
+        <table >
           <tbody>
             <tr>
               {comps.map( (comp, idx) => {
@@ -28,7 +28,6 @@ class HomePage extends Component{
         </table>
       </div>
     );
-
   }
 }
 

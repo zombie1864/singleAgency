@@ -29,7 +29,7 @@ export type Ipayload = {
     oper_agency_acronym: string, 
     outofservice: boolean, 
     parent_record_id: any, 
-    total_bldg_gross_sg_ft: number, 
+    total_bldg_gross_sq_ft: number, 
     year_built: string , 
 }
 
