@@ -37,7 +37,7 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops //& any 
+type Allprops = PropsFromState & Iprops
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
@@ -113,6 +113,10 @@ export class DetailsPage extends Component<Allprops, Istate> {
     public componentDidMount() { 
         this.props.fetchData()
     }
+     
+    private sliceOfData = (id:number) => { // this might be combined 
+        return this.props.data.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
+    }
 
     private urlIdFormatValidator = (urlId:string):boolean => {
         const onlyNumbers = /^[0-9]+$/
@@ -120,8 +124,10 @@ export class DetailsPage extends Component<Allprops, Istate> {
     }
 
     render() {     
+        let slicedData = this.sliceOfData(+this.props.match.params.id)
         let {state} = this.props.location
-        
+        if (state === undefined) state = slicedData
+
         return (
             <div>
                 {
