@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {PropsFromState} from '../types/appTypes'
+import {Ipayload, PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
 import {AppState} from '../store/store'
-import {fetchData} from '../actions/index'
 import {Redirect} from 'react-router-dom'
 
 interface Iprops {
     match:any, 
     location: {
-        state: any
-    }
+        state: {
+            obj: Ipayload
+        }
+    }, 
 }
 
 interface Istate { 
@@ -37,7 +38,7 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops
+type Allprops = PropsFromState & Iprops //& any
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
@@ -109,30 +110,29 @@ export class DetailsPage extends Component<Allprops, Istate> {
             </div>
         )
     }
-
-    public componentDidMount() { 
-        this.props.fetchData()
-    }
      
-    private sliceOfData = (id:number) => { // this might be combined 
-        return this.props.data.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
+    private sliceOfData = (id:number):Ipayload => { // this might be combined 
+        return this.props.data.filter( (obj:any) => obj.bdbid === id)[0]
     }
 
-    private urlIdFormatValidator = (urlId:string):boolean => {
-        const onlyNumbers = /^[0-9]+$/
-        return onlyNumbers.test(urlId) && urlId.length === 4 
+    private isIdFoundInData = (id:string):boolean => {
+
+        console.log( id, Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid) )
+        return Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) ? true : false 
     }
 
     render() {     
-        let slicedData = this.sliceOfData(+this.props.match.params.id)
-        let {state} = this.props.location
-        if (state === undefined) state = slicedData
-
+        const {id} = this.props.match.params
+        let slicedData = this.sliceOfData(+id)
+        let obj
+        (this.props.location.state === undefined) ? obj = slicedData : {obj} = this.props.location.state
+        console.log("details-render", id, this.isIdFoundInData(id), obj === undefined);
+        
         return (
             <div>
                 {
-                    state === undefined && !this.urlIdFormatValidator(this.props.match.params.id)? <Redirect to="/404"/> : 
-                    state === undefined ? null: 
+                    obj === undefined && !this.isIdFoundInData(id)? <Redirect to="/404"/> : 
+                    obj === undefined ? null: 
                     <div>
                         <Link to={"/"}>
                             <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
@@ -142,14 +142,14 @@ export class DetailsPage extends Component<Allprops, Istate> {
                             <table className="table table-bordered table-hover" style={tableCSS}>
                                 <thead className="thead-dark">
                                     <tr>
-                                        <th colSpan={2}><h3>Viewing bdbid#: {state.bdbid}</h3></th>
+                                        <th colSpan={2}><h3>Viewing bdbid#: {obj.bdbid}</h3></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="row" style={{width:"450px"}}>
                                             <ul>
-                                                {Object.entries(state).map( (pair, idx) => {
+                                                {Object.entries(obj).map( (pair, idx) => {
                                                     return pair[0] === "co2eui_breakdown" ? null :
                                                     pair[0] === "energy_breakdown" ? null : 
                                                     <li key={idx}>{pair[0]} : {pair[1]}</li>
@@ -164,7 +164,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
                                                 >energy_breakdown</li>
                                             </ul>
                                         </th>
-                                        <td>{this.renderBreakdown(state)}</td>
+                                        <td>{this.renderBreakdown(obj)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -181,8 +181,4 @@ const msp = (state:AppState) => ({
     data: state.setDataReducer.results, 
 })
 
-const mdp =(dispatch:any) => ({
-    fetchData: () => dispatch(fetchData()), 
-})
-
-export default connect(msp, mdp)(DetailsPage)
+export default connect(msp, null)(DetailsPage)

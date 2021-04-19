@@ -62,7 +62,7 @@ export class ListComp extends Component<PropsFromState, Istate> {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
-        const data = this.props.data
+        // const data = this.props.data
           
         return (
             <div>
@@ -112,10 +112,9 @@ export class ListComp extends Component<PropsFromState, Istate> {
                                                     >Address: {obj.address}</span>
                                                     <Link to={{
                                                         pathname: `/details/${obj.bdbid}`,
-                                                        state: //{ 
+                                                        state: {
                                                             obj,
-                                                            //data
-                                                       // }
+                                                        }
                                                     }}
                                                     >
                                                         <button
