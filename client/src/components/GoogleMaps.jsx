@@ -51,14 +51,14 @@ export class MapContainer extends Component {
                 lng: -73.950318
               }}
               center={{ 
-                lat: this.props.store.obj === null ? 40.818417 : this.props.store.obj.latitude,
-                lng: this.props.store.obj === null ? -73.950318 : this.props.store.obj.longitude
+                lat: this.props.obj === null ? 40.818417 : this.props.obj.latitude,
+                lng: this.props.obj === null ? -73.950318 : this.props.obj.longitude
               }}
               >
               <Marker 
                 position={{
-                  lat: this.props.store.obj === null ? null: this.props.store.obj.latitude, 
-                  lng: this.props.store.obj === null ? null: this.props.store.obj.longitude
+                  lat: this.props.obj === null ? null: this.props.obj.latitude, 
+                  lng: this.props.obj === null ? null: this.props.obj.longitude
                 }}
                 onClick={this.onMarkerClick} 
                 name={'Current location'} 
@@ -67,29 +67,27 @@ export class MapContainer extends Component {
                 <InfoWindow
                 visible={this.state.showingInfoWindow}
                 position={{
-                  lat: this.props.store.obj.latitude, 
-                  lng: this.props.store.obj.longitude
+                  lat: this.props.obj.latitude, 
+                  lng: this.props.obj.longitude
                 }}
                 onClose={this.InfoWindowClose}
-                >
-                  <div>
-                    <h5>{Object.entries(this.props.store.obj).map( (pair, idx) => {
-                      return (
-                        <div key={idx}>
-                          {
-                            pair.includes("co2eui_breakdown" ) || 
-                            pair.includes("energy_breakdown") || 
-                            pair.includes("latitude") || 
-                            pair.includes("longitude") || 
-                            pair.includes("oper_agency_acronym") || 
-                            pair.includes("outofservice") || 
-                            pair.includes("parent_record_id") ? 
-                            null : 
-                            <span>{`${pair[0]}: ${pair[1]}`}</span> 
-                          }
-                        </div>
-                      )
-                    })}</h5>
+                > 
+                  <div> 
+                    <h5> 
+                      {
+                      Object.entries(this.props.obj)
+                        .filter( function(pairs, idx) { return this.indexOf(idx) < 0 }, [3, 4, 6, 7, 8, 9, 10] ) 
+                        .map( (pair, idx) => {
+                          return (
+                            <div key={idx}>
+                              {
+                                <span>{`${pair[0]}: ${pair[1]}`}</span> 
+                              }
+                            </div>
+                          )
+                        })
+                      }
+                    </h5>
                   </div>
                 </InfoWindow> 
               ) : null }
@@ -100,7 +98,7 @@ export class MapContainer extends Component {
 }
 
 const msp = (state) => ({
-  store: state.setDataReducer, 
+  obj: state.setDataReducer.obj, 
 })
 
 export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
