@@ -15,8 +15,7 @@ interface Iprops {
 }
 
 interface Istate { 
-    renderCo2eui_breakdown: boolean,
-    renderEnergy_breakdown: boolean, 
+    renderBreakdown: string,
     shouldCompRender404: boolean 
 }
 
@@ -45,50 +44,21 @@ export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
         super(props) 
         this.state = {
-            renderCo2eui_breakdown: false,
-            renderEnergy_breakdown: false, 
+            renderBreakdown: "",
             shouldCompRender404: false 
         }
     }
 
-    private toggle = (breakDown:string):null | void => {
-        return breakDown === "co2eui_breakdown" ? this.setState({
-            renderEnergy_breakdown: false,
-            renderCo2eui_breakdown: true
-        }) : 
-        breakDown === "energy_breakdown" ? this.setState({
-            renderCo2eui_breakdown: false,
-            renderEnergy_breakdown: true
-        }) : null 
-    }
+    private toggle = (breakDownType:string):null | void => this.setState({ ...this.state, renderBreakdown: breakDownType })
 
-    private renderBreakdown = (obj:Ipayload):JSX.Element => {
-        return (
-            <div style={breakdownCss}>{
-                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown',obj): 
-                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown',obj) : 
-                "Click on either breakdown to view details"
-            }</div>
-        )
-    }
-     
-    private getObjFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
-
-    private isIdFoundInData = (id:string):boolean => Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
-
-    public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
-        if ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) {
-            return this.setState({...this.state, shouldCompRender404: true})
-        } else {
-            return null 
-        }
-    } // checking if user puts url address and if /:id !isIdFoundInData(id)
-
-    private iterateThrBreakdown = (typeOfBreakdown:string, obj:Ipayload):JSX.Element => {
-        let breakdownArr = // DT: [{},...,{}]
-            typeOfBreakdown === 'CO2 Breakdown' ? 
-            obj.co2eui_breakdown : 
-            obj.energy_breakdown
+    private renderBreakdown = (obj:Ipayload):JSX.Element => (
+        <div style={breakdownCss}>{
+            this.state.renderBreakdown.length !== 0 ? this.iterateThrBreakdown(obj): "Click on either breakdown to view details"
+        }</div>
+    )
+    
+    private iterateThrBreakdown = (obj:Ipayload):JSX.Element => {
+        let breakdownArr = this.state.renderBreakdown === "co2eui_breakdown" ? obj.co2eui_breakdown : obj.energy_breakdown // DT: [{},...,{}]
             
         return (
             <div>
@@ -98,7 +68,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
                         <thead>
                             <tr>
                                 <th colSpan={Object.keys(breakdownArr[0]).length}>
-                                <h5>{`${typeOfBreakdown}`}</h5> 
+                                <h5>{`${this.state.renderBreakdown}`}</h5> 
                                 </th>
                             </tr>
                         </thead> 
@@ -124,6 +94,18 @@ export class DetailsPage extends Component<Allprops, Istate> {
             </div>
         )
     }
+
+    private getObjFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
+
+    private isIdFoundInData = (id:string):boolean => Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
+
+    public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
+        if ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) {
+            return this.setState({...this.state, shouldCompRender404: true})
+        } else {
+            return null 
+        }
+    } // checking if user puts url address and if /:id !isIdFoundInData(id)
 
     render() {     
         const {id} = this.props.match.params
