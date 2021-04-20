@@ -13,7 +13,7 @@ const appCss:React.CSSProperties = {
     height:"100vh",
 }
 
-type Allprops = PropsFromState & any 
+type Allprops = PropsFromState & any // might need to define IpropsFromState like in ListComp
 
 class App extends Component<Allprops>{
 
@@ -45,3 +45,4 @@ const mdp = (dispatch:any) => ({
 })
 
 export default connect(msp, mdp)(App)
+// export default App

@@ -1,10 +1,10 @@
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchData,UPDATE_OBJ} from '../actions/index'
+import {UPDATE_OBJ} from '../actions/index'
 import {AppState} from '../store/store'
 import React, { Component } from 'react'
 import MaxMiniBLDGArea from './MaxMiniBLDGArea'
-import {PropsFromState} from '../types/appTypes'
+import {updateObjActionCreator} from '../types/appTypes'
 import Pagination from './Pagination'
 import {Ipayload} from '../types/appTypes'
 
@@ -32,7 +32,13 @@ const searchCss:React.CSSProperties = {
     margin: "20px"
 }
 
-export class ListComp extends Component<PropsFromState, Istate> {
+interface IPropsFromStore {
+    data: [] | Ipayload[], 
+    obj: null | Ipayload, 
+    updateObj: updateObjActionCreator
+}
+
+export class ListComp extends Component<IPropsFromStore, Istate> {
     constructor(props:any){
         super(props) 
         this.state = {
@@ -44,9 +50,9 @@ export class ListComp extends Component<PropsFromState, Istate> {
         }
     }
 
-    public componentDidMount() {
-        this.props.fetchData()
-    }
+    // public componentDidMount() {
+    //     this.props.fetchData()
+    // }
 
     public componentDidUpdate(prevProps:any, prevState:Istate):void | null {
         return prevState.currPage !== this.state.currPage ? this.setState({...this.state, itemBackgroundColor: ''}) : null 
@@ -159,7 +165,7 @@ const msp = (state:AppState) => ({
 })
     
 const mdp =(dispatch:any) => ({
-    fetchData: () => dispatch(fetchData()), 
+    // fetchData: () => dispatch(fetchData()), 
     updateObj: (payload:Ipayload) => {
         dispatch({
             type: UPDATE_OBJ,

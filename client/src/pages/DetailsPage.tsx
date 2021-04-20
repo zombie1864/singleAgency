@@ -16,7 +16,8 @@ interface Iprops {
 
 interface Istate { 
     renderCo2eui_breakdown: boolean,
-    renderEnergy_breakdown: boolean
+    renderEnergy_breakdown: boolean, 
+    shouldCompRender404: boolean 
 }
 
 const breakDownLiCss:React.CSSProperties = {
@@ -38,14 +39,15 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops //& any
+type Allprops = PropsFromState & Iprops 
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
         super(props) 
         this.state = {
             renderCo2eui_breakdown: false,
-            renderEnergy_breakdown: false
+            renderEnergy_breakdown: false, 
+            shouldCompRender404: false 
         }
     }
 
@@ -69,8 +71,22 @@ export class DetailsPage extends Component<Allprops, Istate> {
             }</div>
         )
     }
+     
+    private getDataFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
 
-    private iterateThrBreakdown = (typeOfBreakdown:string, state:any):any => {
+    private isIdFoundInData = (id:string):boolean => {
+        return Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
+    }
+
+    public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
+        if ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) {
+            return this.setState({...this.state, shouldCompRender404: true})
+        } else {
+            return null 
+        }
+    } // checking if user puts url address and if /:id !isIdFoundInData(id)
+
+    private iterateThrBreakdown = (typeOfBreakdown:string, state:any):JSX.Element => {
         let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
             state.co2eui_breakdown : 
@@ -110,28 +126,18 @@ export class DetailsPage extends Component<Allprops, Istate> {
             </div>
         )
     }
-     
-    private sliceOfData = (id:number):Ipayload => { // this might be combined 
-        return this.props.data.filter( (obj:any) => obj.bdbid === id)[0]
-    }
-
-    private isIdFoundInData = (id:string):boolean => {
-
-        console.log( id, Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid) )
-        return Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) ? true : false 
-    }
 
     render() {     
         const {id} = this.props.match.params
-        let slicedData = this.sliceOfData(+id)
+        const objFromReduxStore = this.getDataFromReduxStore(+id) 
         let obj
-        (this.props.location.state === undefined) ? obj = slicedData : {obj} = this.props.location.state
-        console.log("details-render", id, this.isIdFoundInData(id), obj === undefined);
+        (this.props.location.state === undefined) ? obj = objFromReduxStore : {obj} = this.props.location.state
+        // user injects details/:id directly to url bar <=> this.props.location.state === undefined
         
         return (
             <div>
                 {
-                    obj === undefined && !this.isIdFoundInData(id)? <Redirect to="/404"/> : 
+                    this.state.shouldCompRender404 ? <Redirect to="/404"/> : 
                     obj === undefined ? null: 
                     <div>
                         <Link to={"/"}>
