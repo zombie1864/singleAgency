@@ -13,7 +13,7 @@ const appCss:React.CSSProperties = {
     height:"100vh",
 }
 
-type Allprops = PropsFromState & any // might need to define IpropsFromState like in ListComp
+type Allprops = PropsFromState & any 
 
 class App extends Component<Allprops>{
 
@@ -28,7 +28,6 @@ class App extends Component<Allprops>{
                     <Route exact path="/" component={HomePage}/>
                     <Route path="/details/:id" component={DetailsPage}/>
                     <Route path="/404" component={ErrPage}/>
-                    <Route component={ErrPage}/>
                 </Switch>
             </div>
 

@@ -51,22 +51,22 @@ export class DetailsPage extends Component<Allprops, Istate> {
         }
     }
 
-    private toggleBTWNbreakdown = (value:string):any => {
-        return value === "co2" ? this.setState({
+    private toggle = (breakDown:string):null | void => {
+        return breakDown === "co2eui_breakdown" ? this.setState({
             renderEnergy_breakdown: false,
             renderCo2eui_breakdown: true
         }) : 
-        value === "energy" ? this.setState({
+        breakDown === "energy_breakdown" ? this.setState({
             renderCo2eui_breakdown: false,
             renderEnergy_breakdown: true
         }) : null 
     }
 
-    private renderBreakdown = (state:any):JSX.Element => {
+    private renderBreakdown = (obj:Ipayload):JSX.Element => {
         return (
             <div style={breakdownCss}>{
-                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown',state): 
-                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown',state) : 
+                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown',obj): 
+                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown',obj) : 
                 "Click on either breakdown to view details"
             }</div>
         )
@@ -162,11 +162,11 @@ export class DetailsPage extends Component<Allprops, Istate> {
                                                 })}
                                                 <li 
                                                     style={breakDownLiCss}
-                                                    onClick={()=> this.toggleBTWNbreakdown("co2")}
+                                                    onClick={()=> this.toggle("co2eui_breakdown")}
                                                 >co2eui_breakdown</li>
                                                 <li 
                                                     style={breakDownLiCss}
-                                                    onClick={()=> this.toggleBTWNbreakdown("energy")}
+                                                    onClick={()=> this.toggle("energy_breakdown")}
                                                 >energy_breakdown</li>
                                             </ul>
                                         </th>
@@ -174,7 +174,6 @@ export class DetailsPage extends Component<Allprops, Istate> {
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>  
                 }

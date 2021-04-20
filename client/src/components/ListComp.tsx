@@ -50,10 +50,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         }
     }
 
-    // public componentDidMount() {
-    //     this.props.fetchData()
-    // }
-
     public componentDidUpdate(prevProps:any, prevState:Istate):void | null {
         return prevState.currPage !== this.state.currPage ? this.setState({...this.state, itemBackgroundColor: ''}) : null 
     }
