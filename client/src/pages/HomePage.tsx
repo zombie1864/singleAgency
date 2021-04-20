@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
-// import { connect } from 'react-redux'
 import GoogleMaps from '../components/GoogleMaps'
 import ListComp from '../components/ListComp'
-// import { AppState } from '../store/store'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
@@ -33,10 +31,4 @@ class HomePage extends Component{
   }
 }
 
-// const msp = (state:AppState) => ({
-//   data: state.setDataReducer.results, 
-//   obj: state.setDataReducer.obj
-// })
-
-// export default connect(msp, null)(HomePage)
 export default HomePage

@@ -74,9 +74,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
      
     private getObjFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
 
-    private isIdFoundInData = (id:string):boolean => {
-        return Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
-    }
+    private isIdFoundInData = (id:string):boolean => Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
 
     public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
         if ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) {
@@ -86,11 +84,11 @@ export class DetailsPage extends Component<Allprops, Istate> {
         }
     } // checking if user puts url address and if /:id !isIdFoundInData(id)
 
-    private iterateThrBreakdown = (typeOfBreakdown:string, state:any):JSX.Element => {
+    private iterateThrBreakdown = (typeOfBreakdown:string, obj:Ipayload):JSX.Element => {
         let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
-            state.co2eui_breakdown : 
-            state.energy_breakdown
+            obj.co2eui_breakdown : 
+            obj.energy_breakdown
             
         return (
             <div>
