@@ -72,7 +72,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         )
     }
      
-    private getDataFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
+    private getObjFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
 
     private isIdFoundInData = (id:string):boolean => {
         return Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
@@ -129,7 +129,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
 
     render() {     
         const {id} = this.props.match.params
-        const objFromReduxStore = this.getDataFromReduxStore(+id) 
+        const objFromReduxStore = this.getObjFromReduxStore(+id) 
         let obj
         (this.props.location.state === undefined) ? obj = objFromReduxStore : {obj} = this.props.location.state
         // user injects details/:id directly to url bar <=> this.props.location.state === undefined
