@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {PropsFromState} from '../types/appTypes'
+import {Ipayload, PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
 import {AppState} from '../store/store'
-import {fetchData} from '../actions/index'
 import {Redirect} from 'react-router-dom'
 
 interface Iprops {
     match:any, 
     location: {
-        state: any
-    }
+        state: {
+            obj: Ipayload
+        }
+    }, 
 }
 
 interface Istate { 
     renderCo2eui_breakdown: boolean,
-    renderEnergy_breakdown: boolean
+    renderEnergy_breakdown: boolean, 
+    shouldCompRender404: boolean 
 }
 
 const breakDownLiCss:React.CSSProperties = {
@@ -37,39 +39,54 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops
+type Allprops = PropsFromState & Iprops 
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
         super(props) 
         this.state = {
             renderCo2eui_breakdown: false,
-            renderEnergy_breakdown: false
+            renderEnergy_breakdown: false, 
+            shouldCompRender404: false 
         }
     }
 
-    private toggleBTWNbreakdown = (value:string):any => {
-        return value === "co2" ? this.setState({
+    private toggle = (breakDown:string):null | void => {
+        return breakDown === "co2eui_breakdown" ? this.setState({
             renderEnergy_breakdown: false,
             renderCo2eui_breakdown: true
         }) : 
-        value === "energy" ? this.setState({
+        breakDown === "energy_breakdown" ? this.setState({
             renderCo2eui_breakdown: false,
             renderEnergy_breakdown: true
         }) : null 
     }
 
-    private renderBreakdown = (state:any):JSX.Element => {
+    private renderBreakdown = (obj:Ipayload):JSX.Element => {
         return (
             <div style={breakdownCss}>{
-                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown',state): 
-                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown',state) : 
+                this.state.renderCo2eui_breakdown ?  this.iterateThrBreakdown('CO2 Breakdown',obj): 
+                this.state.renderEnergy_breakdown ? this.iterateThrBreakdown('Energy Breakdown',obj) : 
                 "Click on either breakdown to view details"
             }</div>
         )
     }
+     
+    private getObjFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] // gets obj from redux store
 
-    private iterateThrBreakdown = (typeOfBreakdown:string, state:any):any => {
+    private isIdFoundInData = (id:string):boolean => {
+        return Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
+    }
+
+    public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
+        if ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) {
+            return this.setState({...this.state, shouldCompRender404: true})
+        } else {
+            return null 
+        }
+    } // checking if user puts url address and if /:id !isIdFoundInData(id)
+
+    private iterateThrBreakdown = (typeOfBreakdown:string, state:any):JSX.Element => {
         let breakdownArr = // DT: [{},...,{}]
             typeOfBreakdown === 'CO2 Breakdown' ? 
             state.co2eui_breakdown : 
@@ -110,29 +127,18 @@ export class DetailsPage extends Component<Allprops, Istate> {
         )
     }
 
-    public componentDidMount() { 
-        this.props.fetchData()
-    }
-     
-    private sliceOfData = (id:number) => { // this might be combined 
-        return this.props.data.filter( (obj:any) => obj.bdbid === id ? obj : null)[0]
-    }
-
-    private urlIdFormatValidator = (urlId:string):boolean => {
-        const onlyNumbers = /^[0-9]+$/
-        return onlyNumbers.test(urlId) && urlId.length === 4 
-    }
-
     render() {     
-        let slicedData = this.sliceOfData(+this.props.match.params.id)
-        let {state} = this.props.location
-        if (state === undefined) state = slicedData
-
+        const {id} = this.props.match.params
+        const objFromReduxStore = this.getObjFromReduxStore(+id) 
+        let obj
+        (this.props.location.state === undefined) ? obj = objFromReduxStore : {obj} = this.props.location.state
+        // user injects details/:id directly to url bar <=> this.props.location.state === undefined
+        
         return (
             <div>
                 {
-                    state === undefined && !this.urlIdFormatValidator(this.props.match.params.id)? <Redirect to="/404"/> : 
-                    state === undefined ? null: 
+                    this.state.shouldCompRender404 ? <Redirect to="/404"/> : 
+                    obj === undefined ? null: 
                     <div>
                         <Link to={"/"}>
                             <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
@@ -142,33 +148,32 @@ export class DetailsPage extends Component<Allprops, Istate> {
                             <table className="table table-bordered table-hover" style={tableCSS}>
                                 <thead className="thead-dark">
                                     <tr>
-                                        <th colSpan={2}><h3>Viewing bdbid#: {state.bdbid}</h3></th>
+                                        <th colSpan={2}><h3>Viewing bdbid#: {obj.bdbid}</h3></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="row" style={{width:"450px"}}>
                                             <ul>
-                                                {Object.entries(state).map( (pair, idx) => {
+                                                {Object.entries(obj).map( (pair, idx) => {
                                                     return pair[0] === "co2eui_breakdown" ? null :
                                                     pair[0] === "energy_breakdown" ? null : 
                                                     <li key={idx}>{pair[0]} : {pair[1]}</li>
                                                 })}
                                                 <li 
                                                     style={breakDownLiCss}
-                                                    onClick={()=> this.toggleBTWNbreakdown("co2")}
+                                                    onClick={()=> this.toggle("co2eui_breakdown")}
                                                 >co2eui_breakdown</li>
                                                 <li 
                                                     style={breakDownLiCss}
-                                                    onClick={()=> this.toggleBTWNbreakdown("energy")}
+                                                    onClick={()=> this.toggle("energy_breakdown")}
                                                 >energy_breakdown</li>
                                             </ul>
                                         </th>
-                                        <td>{this.renderBreakdown(state)}</td>
+                                        <td>{this.renderBreakdown(obj)}</td>
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>  
                 }
@@ -181,8 +186,4 @@ const msp = (state:AppState) => ({
     data: state.setDataReducer.results, 
 })
 
-const mdp =(dispatch:any) => ({
-    fetchData: () => dispatch(fetchData()), 
-})
-
-export default connect(msp, mdp)(DetailsPage)
+export default connect(msp, null)(DetailsPage)
