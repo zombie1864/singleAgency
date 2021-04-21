@@ -75,17 +75,9 @@ export class MapContainer extends Component {
                   <div> 
                     <h5> 
                       {
-                      Object.entries(this.props.obj)
-                        .filter( function(pairs, idx) { return this.indexOf(idx) < 0 }, [3, 4, 6, 7, 8, 9, 10] ) 
-                        .map( (pair, idx) => {
-                          return (
-                            <div key={idx}>
-                              {
-                                <span>{`${pair[0]}: ${pair[1]}`}</span> 
-                              }
-                            </div>
-                          )
-                        })
+                        Object.entries(this.props.obj)
+                          .filter( function(pairs, idx) { return this.indexOf(idx) < 0 }, [3, 4, 6, 7, 8, 9, 10] ) 
+                          .map( (pair, idx) => <div key={idx}>{<span>{`${pair[0]}: ${pair[1]}`}</span> }</div> )
                       }
                     </h5>
                   </div>
