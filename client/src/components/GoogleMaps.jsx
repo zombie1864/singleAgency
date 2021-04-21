@@ -1,6 +1,5 @@
 import {connect} from 'react-redux'
 import {GoogleApiWrapper} from 'google-maps-react'
-import key from './GKey'
 import {Map, Marker, InfoWindow} from 'google-maps-react';
 import React, { Component } from 'react'
 
@@ -93,4 +92,4 @@ const msp = (state) => ({
   obj: state.setDataReducer.obj, 
 })
 
-export default connect(msp, null)(GoogleApiWrapper({apiKey: key})(MapContainer))
+export default connect(msp, null)(GoogleApiWrapper({apiKey:process.env.REACT_APP_API_KEY})(MapContainer))
