@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { AppState } from '../store/store'
 import {Ipayload} from '../types/appTypes'
-
-interface Iprops {
-    results: Ipayload[]
-}
 
 interface Istate {
     hoverOnIdx: string | null, 
@@ -31,8 +29,8 @@ const ulCss:React.CSSProperties = {
     cursor: "pointer"
 }
 
-export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
-    constructor(props:Iprops) {
+export class MaxMiniBLDGArea extends Component<any, Istate> {
+    constructor(props:any) {
         super(props) 
         this.state = {
             hoverOnIdx: null, 
@@ -41,11 +39,11 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     }
 
     private BLDGAddress = (idx:number): null | string => { // returns building address 
-        return this.props.results[idx] === undefined ? null : this.props.results[idx].address
+        return this.props.data[idx] === undefined ? null : this.props.data[idx].address
     }
 
-    private maxMinTotalBLDGArea = (results:Ipayload[]):ImaxMiniInfo => { // returns the max or min BLDG area and index location 
-        const arrOfNumbers = results.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
+    private maxMinTotalBLDGArea = (data:Ipayload[]):ImaxMiniInfo => { // returns the max or min BLDG area and index location 
+        const arrOfNumbers = data.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
         return {
             maxArea: Math.max(...arrOfNumbers), // Math.max(...arrOfNumbers)
             minArea: Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 )),
@@ -60,7 +58,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     }
 
     private renderMaxMinBLDGInfo = ():JSX.Element[] => {
-        const maxMiniInfo = this.maxMinTotalBLDGArea(this.props.results)
+        const maxMiniInfo = this.maxMinTotalBLDGArea(this.props.data)
         const maxBLDGAddress = this.BLDGAddress( maxMiniInfo.maxIdx )
         const minBLDGAddress = this.BLDGAddress( maxMiniInfo.minIdx )
         const volumeBLDGInfoText = ['Biggest Building info', 'Smallest Building info']
@@ -104,7 +102,7 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
         )
     }
 
-    render() {
+    render() {        
         return (
             <div style={utilCompCss}>
                 <h5 style={{padding: "10px 40px"}}>Hover over to show more information</h5>
@@ -116,4 +114,8 @@ export class MaxMiniBLDGArea extends Component<Iprops, Istate> {
     }
 }
 
-export default MaxMiniBLDGArea
+const msp = (state:AppState) => ({
+    data: state.setDataReducer.results
+})
+
+export default connect(msp, null)(MaxMiniBLDGArea)
