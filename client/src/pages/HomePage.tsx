@@ -16,7 +16,6 @@ class HomePage extends Component{
     
     return (
       <div>
-        <h2 className="text-center">Single Agency</h2>
         <table >
           <tbody>
             <tr>

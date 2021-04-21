@@ -60,11 +60,25 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
     }
 
-    render() {
+    private filterSearchResult = ():Ipayload[] => {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
-          
+
+        return currItems.filter((obj:Ipayload):Ipayload | null => {
+            return this.state.searchTerm === '' ? obj :
+            obj.address.toLowerCase().includes(this.state.searchTerm.toLowerCase()) ? obj : 
+            obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
+            obj.building_name.includes(this.state.searchTerm) ? obj : 
+            obj.year_built.includes(this.state.searchTerm) ? obj : 
+            obj.co2eui_breakdown.length === 0 && "no data".includes(this.state.searchTerm.toLowerCase()) ? obj : 
+            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(this.state.searchTerm) ? obj : 
+            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
+            null
+        })
+    }
+
+    render() {          
         return (
             <div>
                 <table>
@@ -79,7 +93,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     onChange={event=>{
                                         if (event.target.value !== '' ) {
                                             this.setState({...this.state, itemsPerPage: 100, searchTerm: event.target.value})
-
                                         } else if (event.target.value === '') {
                                             this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
                                         } 
@@ -90,18 +103,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                         <tr>
                             <td>
                                 <ul style={listCss} className="list-unstyled pl-5">
-                                    {
-                                        currItems.filter((obj:Ipayload):Ipayload | null => {
-                                            return this.state.searchTerm === '' ? obj :
-                                            obj.address.toLowerCase().includes(this.state.searchTerm.toLowerCase()) ? obj : 
-                                            obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
-                                            obj.building_name.includes(this.state.searchTerm) ? obj : 
-                                            obj.year_built.includes(this.state.searchTerm) ? obj : 
-                                            obj.co2eui_breakdown.length === 0 && "no data".includes(this.state.searchTerm.toLowerCase()) ? obj : 
-                                            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(this.state.searchTerm) ? obj : 
-                                            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
-                                            null
-                                        }).map( (obj:any, idx:any) => (//[{},...,{}]
+                                    { this.filterSearchResult().map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx} style={{cursor:"pointer"}}>
                                                 <div onClick={() => this.itemClicked(idx)}>
                                                     <span 
@@ -144,7 +146,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 }
                             </td>
                             <td>
-                                <MaxMiniBLDGArea results={this.props.data}/>
+                                <MaxMiniBLDGArea/>
                             </td>
                         </tr>
                     </tbody>

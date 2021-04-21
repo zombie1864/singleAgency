@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-GKey.js
+.env
 
 # testing
 /coverage
