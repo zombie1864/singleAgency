@@ -19,7 +19,7 @@ interface Istate {
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
     height: "80vh",
-    width: "500px", 
+    width: "35vw", 
 }
 
 const addressCss:React.CSSProperties = {
@@ -29,7 +29,8 @@ const addressCss:React.CSSProperties = {
 }
 
 const searchCss:React.CSSProperties = { 
-    margin: "20px"
+    margin: "20px", 
+    width: "30vw",
 }
 
 interface IPropsFromStore {
@@ -82,7 +83,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     render() {          
         return (
             <div>
-                <table>
+                <table style={{background:"red", width: "60vw"}}>
                     <tbody>
                         <tr>
                             <th> 
@@ -146,7 +147,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     /> : null 
                                 }
                             </td>
-                            <td>
+                            <td style={{background: "yellow"}}>
                                 <MaxMiniBLDGArea/>
                             </td>
                         </tr>
