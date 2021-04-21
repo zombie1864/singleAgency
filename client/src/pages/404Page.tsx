@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
+import img404 from '../images/404.png'
 
 const imgCSS:React.CSSProperties = {
     position: "fixed",
@@ -11,7 +12,7 @@ const imgCSS:React.CSSProperties = {
 
 const btnPositionCss:React.CSSProperties  ={
     position: "absolute",
-    top: "55%", 
+    top: "58%", 
     left: "50%",
 }
 
@@ -20,7 +21,7 @@ export class ErrPage extends Component {
         return (
             <div>
                 <div className="position-relative">
-                    <img width="600px" style={imgCSS} src="https://freefrontend.com/assets/img/html-funny-404-pages/HTML-404-Crying-Baby-Page.png" alt="404"></img>
+                    <img width="600px" style={imgCSS} src={img404} alt="404"/>
                 </div>
                 <Link to={'/'}>
                     <button className="btn btn-info" style={btnPositionCss}>
