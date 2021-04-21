@@ -19,7 +19,6 @@ interface Istate {
 const listCss:React.CSSProperties = {
     overflowY: "scroll", 
     height: "80vh",
-    width: "35vw", 
 }
 
 const addressCss:React.CSSProperties = {
@@ -82,8 +81,8 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     render() {          
         return (
-            <div>
-                <table style={{background:"red", width: "60vw"}}>
+            <div style={{background: "orange", margin: "0", padding: "0 0"}}>
+                <table style={{background: "yellow",width:"75vw"}}>
                     <tbody>
                         <tr>
                             <th> 
@@ -103,7 +102,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             </th>
                         </tr>
                         <tr>
-                            <td>
+                            <td style={{background:"red", width: "30vw"}}>
                                 <ul style={listCss} className="list-unstyled pl-5">
                                     { this.filterSearchResult().map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx} style={{cursor:"pointer"}}>
@@ -147,7 +146,8 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     /> : null 
                                 }
                             </td>
-                            <td style={{background: "yellow"}}>
+                            <td style={{background:"blue",}}> 
+                                <h5 style={{position:"relative", bottom:"25vh", textAlign:"center"}}>Hover over to show more information</h5>
                                 <MaxMiniBLDGArea/>
                             </td>
                         </tr>

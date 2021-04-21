@@ -15,8 +15,8 @@ class HomePage extends Component{
     const comps = [<GoogleMaps/>, <ListComp/>]
     
     return (
-      <div>
-        <table >
+      <div style={{background:"green"}}>
+        <table>
           <tbody>
             <tr>
               {comps.map( (comp, idx) => {

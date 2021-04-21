@@ -16,17 +16,12 @@ interface ImaxMiniInfo {
 }
 
 const utilCompCss:React.CSSProperties = {
-    position: "relative",
-    top: "-200px",  
-    left: '10vh',
-    width: "20vw",
     textAlign: "center",
-    padding: "10px 40px",
-    background: "blue",
 }
 const ulCss:React.CSSProperties = {
     position: "absolute", 
-    left: "-100%",
+    top: "35vh",  
+    left: "47.5vw",
     display: "inline-flex", 
     listStyle: 'none', 
     cursor: "pointer",
@@ -70,14 +65,18 @@ export class MaxMiniBLDGArea extends Component<any, Istate> {
         return (
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 let volumeTypeTextStyling:React.CSSProperties = {
+                    position: "relative",
+                    left: "25%",
                     backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
-                    width: "20vw", 
+                    width: "18vw", 
                     borderRadius: '5px', 
                     display: "block",
-                    padding: "10px 30px"
+                    padding: "10px 30px",
                 }
 
                 let subInfoTextStyling:React.CSSProperties = {
+                    position: "relative",
+                    left: "25%",
                     display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
                     marginTop: '50px', 
                     width: "250px",
@@ -87,7 +86,7 @@ export class MaxMiniBLDGArea extends Component<any, Istate> {
                 }
                 
                 return (
-                    <div key={outterIdx} style={{background: "green",width: "45%", padding: "10px 2vw"}}>
+                    <div key={outterIdx} style={{width: "45%", padding: "10px 2vw",}}>
                         <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
@@ -108,7 +107,6 @@ export class MaxMiniBLDGArea extends Component<any, Istate> {
     render() {        
         return (
             <div style={utilCompCss}>
-                <h5>Hover over to show more information</h5>
                 <ul style={ulCss}>
                     {this.renderMaxMinBLDGInfo()}
                 </ul>
