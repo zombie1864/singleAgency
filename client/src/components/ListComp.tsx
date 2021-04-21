@@ -54,7 +54,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         return prevState.currPage !== this.state.currPage ? this.setState({...this.state, itemBackgroundColor: ''}) : null 
     }
 
-    private paginate = (pageNumber:any) => this.setState({...this.state, currPage: pageNumber}) 
+    private paginate = (pageNumber:any):null | void => this.setState({...this.state, currPage: pageNumber}) 
 
     private itemClicked = (idx:number):void => {
         this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
@@ -64,14 +64,15 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
+        const searchTerm = this.state.searchTerm.toLowerCase()
 
         return currItems.filter((obj:Ipayload):Ipayload | null => {
             return this.state.searchTerm === '' ? obj :
-            obj.address.toLowerCase().includes(this.state.searchTerm.toLowerCase()) ? obj : 
+            obj.address.toLowerCase().includes( searchTerm ) ? obj : 
             obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
-            obj.building_name.includes(this.state.searchTerm) ? obj : 
+            obj.building_name.toLowerCase().includes( searchTerm ) ? obj : 
             obj.year_built.includes(this.state.searchTerm) ? obj : 
-            obj.co2eui_breakdown.length === 0 && "no data".includes(this.state.searchTerm.toLowerCase()) ? obj : 
+            obj.co2eui_breakdown.length === 0 && "no data".includes( searchTerm ) ? obj : 
             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(this.state.searchTerm) ? obj : 
             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
             null
