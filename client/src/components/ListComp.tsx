@@ -64,7 +64,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
         const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
-        // const data = this.props.data
           
         return (
             <div>
@@ -92,7 +91,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             <td>
                                 <ul style={listCss} className="list-unstyled pl-5">
                                     {
-                                        currItems.filter((obj:any) => {
+                                        currItems.filter((obj:Ipayload):Ipayload | null => {
                                             return this.state.searchTerm === '' ? obj :
                                             obj.address.toLowerCase().includes(this.state.searchTerm.toLowerCase()) ? obj : 
                                             obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
@@ -161,7 +160,6 @@ const msp = (state:AppState) => ({
 })
     
 const mdp =(dispatch:any) => ({
-    // fetchData: () => dispatch(fetchData()), 
     updateObj: (payload:Ipayload) => {
         dispatch({
             type: UPDATE_OBJ,
