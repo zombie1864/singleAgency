@@ -4,9 +4,6 @@ import ListComp from '../components/ListComp'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
-  padding:'0 50px', 
-  height:"90vh", 
-  width:"100vw", 
 }
 
 class HomePage extends Component{
@@ -16,7 +13,7 @@ class HomePage extends Component{
     
     return (
       <div>
-        <table >
+        <table>
           <tbody>
             <tr>
               {comps.map( (comp, idx) => {

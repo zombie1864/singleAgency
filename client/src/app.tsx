@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 const appCss:React.CSSProperties = {
     background: "linear-gradient(#d7fadc, #85bed4)",
     height:"100vh",
+    overflow: "hidden",
 }
 
 type Allprops = PropsFromState & any 
