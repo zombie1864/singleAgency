@@ -4,7 +4,6 @@ import ListComp from '../components/ListComp'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
-  height:"90vh", 
 }
 
 class HomePage extends Component{
