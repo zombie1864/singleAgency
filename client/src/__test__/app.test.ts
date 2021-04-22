@@ -13,8 +13,7 @@ describe('setDataReducer', () => {
             fixture:[], 
             obj: null 
         }
-        const newState = setDataReducer(undefined, {}) // pure func, returns new piece of state 
-        expect(newState).toEqual(initialState)
+        expect(setDataReducer(undefined, {})).toEqual(initialState)
     })
 
     it('Should return new state if receiving FETCH_DATA', () => {

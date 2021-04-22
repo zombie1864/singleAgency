@@ -3,14 +3,14 @@ import {Reducer} from 'redux'
 import {SET_DATA,UPDATE_OBJ} from '../actions/index'
 import {InitialState,updateObjAction,SetDataAction} from '../types/appTypes'
 
-const initialState:InitialState =  {
+const initialState:InitialState = {
     results: [], 
     obj: null
-}
+} 
 
-type Action = updateObjAction | SetDataAction | any
+type Action= updateObjAction | SetDataAction
 
-const setDataReducer:Reducer<InitialState, Action> = ( state = initialState, action) => {
+const setDataReducer:Reducer<InitialState, Action> = ( state = initialState, action):InitialState => {
     switch (action.type) {
         case SET_DATA:
             return { ...state, results: action.results}
