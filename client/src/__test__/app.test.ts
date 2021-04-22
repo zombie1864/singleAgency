@@ -1,16 +1,20 @@
-import {SET_DATA} from '../actions/fetchDataAction'
-import setDataReducer from '../reducers/setDataReducer'
+import {SET_DATA} from '../actions/index'
+import setDataReducer from '../reducers/rootReducer'
 import configureMockStore from 'redux-mock-store'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import fetch from 'isomorphic-fetch'
-import {setData} from '../actions/fetchDataAction'
+import {setData} from '../actions/index'
 
 //testing reducer for state change 
 describe('setDataReducer', () => {
     it('should return default state', () => {
+        const initialState = {
+            fixture:[], 
+            obj: null 
+        }
         const newState = setDataReducer(undefined, {}) // pure func, returns new piece of state 
-        expect(newState).toEqual({fixture:[]})
+        expect(newState).toEqual(initialState)
     })
 
     it('Should return new state if receiving FETCH_DATA', () => {
@@ -27,7 +31,7 @@ describe('setDataReducer', () => {
         }
 
         const result = {
-            fixture: [
+            results: [
                 {test1: 'test'},
                 {test2: 'test'},
                 {test3: 'test'}
@@ -36,7 +40,7 @@ describe('setDataReducer', () => {
 
         const newState = setDataReducer(undefined, {
             type: SET_DATA, 
-            fixture:data.results
+            results:data.results
         })
 
         expect(newState).toEqual(result)

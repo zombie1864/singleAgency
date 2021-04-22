@@ -8,7 +8,7 @@ const initialState:InitialState =  {
     obj: null
 }
 
-type Action = updateObjAction | SetDataAction
+type Action = updateObjAction | SetDataAction | any
 
 const setDataReducer:Reducer<InitialState, Action> = ( state = initialState, action) => {
     switch (action.type) {
