@@ -4,9 +4,7 @@ import ListComp from '../components/ListComp'
 
 const tableCss:React.CSSProperties = {
   borderCollapse:'collapse',
-  padding:'0 20px', 
   height:"90vh", 
-  width:"100vw", 
 }
 
 class HomePage extends Component{
@@ -15,7 +13,7 @@ class HomePage extends Component{
     const comps = [<GoogleMaps/>, <ListComp/>]
     
     return (
-      <div style={{background:"green"}}>
+      <div>
         <table>
           <tbody>
             <tr>

@@ -66,9 +66,9 @@ export class MaxMiniBLDGArea extends Component<any, Istate> {
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 let volumeTypeTextStyling:React.CSSProperties = {
                     position: "relative",
-                    left: "25%",
+                    left: "85%",
                     backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
-                    width: "18vw", 
+                    width: "15vw", 
                     borderRadius: '5px', 
                     display: "block",
                     padding: "10px 30px",
@@ -76,17 +76,17 @@ export class MaxMiniBLDGArea extends Component<any, Istate> {
 
                 let subInfoTextStyling:React.CSSProperties = {
                     position: "relative",
-                    left: "25%",
+                    left: "85%",
                     display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
                     marginTop: '50px', 
-                    width: "250px",
+                    width: "15vw",
                     background: '#0f84e8',
                     borderRadius: '5px',
-                    color: "white"
+                    color: "white", 
                 }
                 
                 return (
-                    <div key={outterIdx} style={{width: "45%", padding: "10px 2vw",}}>
+                    <div key={outterIdx} style={{width: "45%", padding: "10px 3vw",}}>
                         <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (

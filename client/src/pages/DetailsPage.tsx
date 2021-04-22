@@ -25,7 +25,7 @@ const breakDownLiCss:React.CSSProperties = {
 }
 
 const breakdownCss:React.CSSProperties = {
-    maxWidth: "1400px", 
+    maxWidth: "50vw", 
     overflowX: "scroll", 
 }
 

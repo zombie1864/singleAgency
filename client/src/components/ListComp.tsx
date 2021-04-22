@@ -81,8 +81,8 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     render() {          
         return (
-            <div style={{background: "orange", margin: "0", padding: "0 0"}}>
-                <table style={{background: "yellow",width:"75vw"}}>
+            <div>
+                <table style={{width:"75vw"}}>
                     <tbody>
                         <tr>
                             <th> 
@@ -102,7 +102,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             </th>
                         </tr>
                         <tr>
-                            <td style={{background:"red", width: "30vw"}}>
+                            <td style={{width: "30vw",}}>
                                 <ul style={listCss} className="list-unstyled pl-5">
                                     { this.filterSearchResult().map( (obj:any, idx:any) => (//[{},...,{}]
                                             <li key={idx} style={{cursor:"pointer"}}>
@@ -146,7 +146,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     /> : null 
                                 }
                             </td>
-                            <td style={{background:"blue",}}> 
+                            <td> 
                                 <h5 style={{position:"relative", bottom:"25vh", textAlign:"center"}}>Hover over to show more information</h5>
                                 <MaxMiniBLDGArea/>
                             </td>

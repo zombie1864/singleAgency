@@ -5,7 +5,8 @@ import React, { Component } from 'react'
 
 const containerStyle = {
   position: 'relative',  
-  height: '90vh'
+  width:"25vw", 
+  height: '90vh', 
 }
 export class MapContainer extends Component {
     state = {
@@ -40,7 +41,7 @@ export class MapContainer extends Component {
     
     render() {
       return (
-        <div>
+        <div style={{padding: "0 20px"}}>
           <Map google={this.props.google}
               onClick={this.onMapClicked}
               containerStyle={containerStyle}
