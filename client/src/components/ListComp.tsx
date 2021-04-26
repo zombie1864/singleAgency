@@ -162,11 +162,12 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         if (event.target.value !== '' ) {
             this.setState({itemsPerPage: 5, searchTerm: event.target.value})
         } else if (event.target.value === '') {
-            this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
+            this.setState({currPage:this.state.currPage, itemsPerPage: 5, searchTerm: event.target.value}) 
         } 
     }
 
-    render() {         
+    render() {
+        
         return (
             <div>
                 <table style={{width:"75vw"}}>
