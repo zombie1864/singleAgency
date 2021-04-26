@@ -157,6 +157,14 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         return { background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : "" }
     }
 
+    private searchBarOnChangeHandler = (event:any):void => {
+        if (event.target.value !== '' ) {
+            this.setState({itemsPerPage: 100, searchTerm: event.target.value})
+        } else if (event.target.value === '') {
+            this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
+        } 
+    }
+
     render() {         
         return (
             <div>
@@ -169,13 +177,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     type="text" 
                                     placeholder="search"
                                     style={{margin: "20px", width: "30vw",}}
-                                    onChange={event=>{
-                                        if (event.target.value !== '' ) {
-                                            this.setState({itemsPerPage: 100, searchTerm: event.target.value})
-                                        } else if (event.target.value === '') {
-                                            this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
-                                        } 
-                                    }}
+                                    onChange={this.searchBarOnChangeHandler}
                                     />
                             </th>
                         </tr>
