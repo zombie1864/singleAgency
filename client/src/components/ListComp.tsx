@@ -153,9 +153,11 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             null
         })
     }
+    private selectedItemCSS = (idx:number):React.CSSProperties => {
+        return { background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : "" }
+    }
 
-    render() {   
-        //        
+    render() {         
         return (
             <div>
                 <table style={{width:"75vw"}}>
@@ -196,12 +198,14 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                                             className="btn btn-info" 
                                                         >Details</button>
                                                     </Link>
-                                                    <div style={{background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : ""}}>
+                                                    <div style={this.selectedItemCSS(idx)}>
                                                         <p>bdbid: {obj.bdbid}</p>
                                                         <p>Building Name: {obj.building_name}</p>
                                                         <p>Year Built: {obj.year_built.slice(0,-2)}</p>
                                                         <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
-                                                        <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "no data" : Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)} Kg</p>
+                                                        <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
+                                                            Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
+                                                        } Kg` }</p>
                                                     </div>
                                                 </div>
                                             </li>
