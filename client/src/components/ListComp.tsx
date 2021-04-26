@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {UPDATE_OBJ} from '../actions/index'
 import {AppState} from '../store/store'
 import React, { Component } from 'react'
-import MaxMiniBLDGArea from './MaxMiniBLDGArea'
 import {updateObjActionCreator} from '../types/appTypes'
 import Pagination from './Pagination'
 import {Ipayload} from '../types/appTypes'
@@ -13,12 +12,20 @@ interface Istate {
     itemsPerPage: number, 
     searchTerm: string, 
     itemBackgroundColor: string, 
-    selectedItem:number | null 
+    selectedItem:number | null ,
+    hoverOnIdx: string | null, 
+    hover: boolean
 } 
 
-const listCss:React.CSSProperties = {
-    overflowY: "scroll", 
-    height: "80vh",
+interface ImaxMiniInfo {
+    maxArea: number,
+    minArea: number,
+    maxIdx: number,
+    minIdx: number
+}
+
+const listCompCss:React.CSSProperties = {
+    overflowY: "scroll", height: "80vh",
 }
 
 const addressCss:React.CSSProperties = {
@@ -27,14 +34,17 @@ const addressCss:React.CSSProperties = {
     textDecoration: "underline" , 
 }
 
-const searchCss:React.CSSProperties = { 
-    margin: "20px", 
-    width: "30vw",
+const ulCss:React.CSSProperties = {
+    position: "absolute", 
+    top: "35vh",  
+    left: "47.5vw",
+    display: "inline-flex", 
+    listStyle: 'none', 
+    cursor: "pointer",
 }
 
 interface IPropsFromStore {
     data: [] | Ipayload[], 
-    obj: null | Ipayload, 
     updateObj: updateObjActionCreator
 }
 
@@ -46,18 +56,83 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             itemsPerPage:5, 
             searchTerm: '',
             itemBackgroundColor: '', 
-            selectedItem: null
+            selectedItem: null, 
+            hoverOnIdx: null, 
+            hover: false
         }
     }
 
-    public componentDidUpdate(prevProps:any, prevState:Istate):void | null {
-        return prevState.currPage !== this.state.currPage ? this.setState({...this.state, itemBackgroundColor: ''}) : null 
+    private BLDGAddress = (idx:number): null | string => this.props.data[idx] === undefined ? null : this.props.data[idx].address // returns building address 
+
+    private maxMinTotalBLDGArea = (data:Ipayload[]):ImaxMiniInfo => { // returns the max or min BLDG area and index location 
+        const arrOfNumbers = data.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
+        return {
+            maxArea: Math.max(...arrOfNumbers), // Math.max(...arrOfNumbers)
+            minArea: Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 )),
+            maxIdx: arrOfNumbers.indexOf(Math.max(...arrOfNumbers)),
+            minIdx: arrOfNumbers.indexOf(Math.min.apply(null, arrOfNumbers.filter((number:number) => number !== 0 )))
+        }
     }
 
-    private paginate = (pageNumber:any):null | void => this.setState({...this.state, currPage: pageNumber}) 
+    private toggleHover = (event:any):void => {
+        (this.state.hoverOnIdx !== null) && (this.state.hoverOnIdx !== event.target.className) ? this.setState({hoverOnIdx: event.target.className, hover: true}) :
+        this.setState({hoverOnIdx: event.target.className, hover: !this.state.hover}) 
+    }
 
-    private itemClicked = (idx:number):void => {
-        this.setState({...this.state, itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
+    private renderMaxMinBLDGInfo = ():JSX.Element[] => {
+        const maxMiniInfo = this.maxMinTotalBLDGArea(this.props.data)
+        const volumeBLDGInfoText = ['Biggest Building info', 'Smallest Building info']
+        const BLDGSubInfoText = ['Building Area', 'Building Address']
+        
+        return (
+            volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
+                const volumeTypeTextStyling:React.CSSProperties = {
+                    position: "relative",
+                    left: "85%",
+                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
+                    width: "15vw", 
+                    borderRadius: '5px', 
+                    display: "block",
+                    padding: "10px 30px",
+                }
+
+                const subInfoTextStyling:React.CSSProperties = {
+                    position: "relative",
+                    left: "85%",
+                    display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
+                    marginTop: '50px', 
+                    width: "15vw",
+                    background: '#0f84e8',
+                    borderRadius: '5px',
+                    color: "white", 
+                }
+                
+                return (
+                    <div key={outterIdx} style={{width: "45%", padding: "10px 3vw",}}>
+                        <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
+                        {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
+                            return (
+                                <li key={innerIdx} style={subInfoTextStyling}>{subInfoText} : {
+                                    outterIdx === 0 && innerIdx === 0 ? maxMiniInfo.maxArea : 
+                                    outterIdx === 1 && innerIdx === 0 ? maxMiniInfo.minArea : 
+                                    outterIdx === 0 && innerIdx === 1 ? this.BLDGAddress( maxMiniInfo.maxIdx ): this.BLDGAddress( maxMiniInfo.minIdx )} {innerIdx === 0 ? 'sq ft' : null
+                                    }
+                                </li>
+                            )
+                        })}
+                    </div>
+                )
+            })
+        )
+    }
+
+    public componentDidUpdate = (prevProps:any, prevState:Istate):void | null => prevState.currPage !== this.state.currPage ? this.setState({itemBackgroundColor: ''}) : null 
+
+    private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
+
+    private itemClicked = (obj:Ipayload, idx:number):void => {
+        this.props.updateObj(obj)
+        return this.setState({itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
     }
 
     private filterSearchResult = ():Ipayload[] => {
@@ -79,7 +154,8 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         })
     }
 
-    render() {          
+    render() {   
+        //        
         return (
             <div>
                 <table style={{width:"75vw"}}>
@@ -90,10 +166,10 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     className="form-control"
                                     type="text" 
                                     placeholder="search"
-                                    style={searchCss}
+                                    style={{margin: "20px", width: "30vw",}}
                                     onChange={event=>{
                                         if (event.target.value !== '' ) {
-                                            this.setState({...this.state, itemsPerPage: 100, searchTerm: event.target.value})
+                                            this.setState({itemsPerPage: 100, searchTerm: event.target.value})
                                         } else if (event.target.value === '') {
                                             this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
                                         } 
@@ -103,17 +179,11 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                         </tr>
                         <tr>
                             <td style={{width: "30vw",}}>
-                                <ul style={listCss} className="list-unstyled pl-5">
-                                    { this.filterSearchResult().map( (obj:any, idx:any) => (//[{},...,{}]
-                                            <li key={idx} style={{cursor:"pointer"}}>
-                                                <div onClick={() => this.itemClicked(idx)}>
-                                                    <span 
-                                                        style={addressCss}
-                                                        onClick={()=>{
-                                                            this.props.updateObj(obj)
-                                                        }}
-                                                        className="alert alert-primary" 
-                                                    >Address: {obj.address}</span>
+                                <ul style={listCompCss} className="list-unstyled pl-5">
+                                    { this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                            <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)}>
+                                                <div>
+                                                    <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
                                                     <Link to={{
                                                         pathname: `/details/${obj.bdbid}`,
                                                         state: {
@@ -148,7 +218,11 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             </td>
                             <td> 
                                 <h5 style={{position:"relative", bottom:"25vh", textAlign:"center"}}>Hover over to show more information</h5>
-                                <MaxMiniBLDGArea/>
+                                <div style={{textAlign: "center",}}>
+                                    <ul style={ulCss}>
+                                        {this.renderMaxMinBLDGInfo()}
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -160,7 +234,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
 const msp = (state:AppState) => ({
     data: state.setDataReducer.results, 
-    obj: state.setDataReducer.obj
 })
     
 const mdp =(dispatch:any) => ({

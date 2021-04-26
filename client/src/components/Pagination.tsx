@@ -44,9 +44,7 @@ class Pagination extends Component<Iprops, Istate> {
     } 
   }
 
-  private changeClassNameBasedOn = (number:any):void | null => {
-    this.setState({...this.state, activeKey: number})
-  }
+  private changeClassNameBasedOn = (number:number):void => this.setState({activeKey: number})
   
   render() {
     const pageNumbers = []
