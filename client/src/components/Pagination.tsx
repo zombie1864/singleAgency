@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 interface Iprops {
   itemsPerPage: number, 
   totalItems: number, 
-  paginate: any 
+  paginate: any, 
+  currPage:null | number, 
+  noResultFromSearch:null | number 
 }
 
 interface Istate {
@@ -52,12 +54,14 @@ class Pagination extends Component<Iprops, Istate> {
       pageNumbers.push(i);
     }
 
+    let paginationRange = this.props.noResultFromSearch === 0 ? [] :this.props.currPage ? [this.props.currPage] : this.range(this.state.firstIdx, this.state.lastIdx -1)
+
     return (
       <nav className="px-5">
         <ul className='pagination'>
           <button className="page-link" name="prev" onClick={this.cycle}>prev</button>
           { 
-            this.range(this.state.firstIdx, this.state.lastIdx -1).map(number => {
+            paginationRange.map(number => {
               return <li key={number} className={this.state.activeKey === number ? 'page-item active' : ''}>
                 <span style={{cursor: "pointer",}} onClick={() => {
                     this.props.paginate(number)

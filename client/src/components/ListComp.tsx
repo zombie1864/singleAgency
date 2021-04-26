@@ -153,19 +153,21 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             null
         })
     }
+
     private selectedItemCSS = (idx:number):React.CSSProperties => {
         return { background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : "" }
     }
 
     private searchBarOnChangeHandler = (event:any):void => {
         if (event.target.value !== '' ) {
-            this.setState({itemsPerPage: 100, searchTerm: event.target.value})
+            this.setState({itemsPerPage: 5, searchTerm: event.target.value})
         } else if (event.target.value === '') {
-            this.setState({currPage:1, itemsPerPage: 5, searchTerm: event.target.value}) 
+            this.setState({currPage:this.state.currPage, itemsPerPage: 5, searchTerm: event.target.value}) 
         } 
     }
 
-    render() {         
+    render() {
+        
         return (
             <div>
                 <table style={{width:"75vw"}}>
@@ -213,13 +215,14 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                             </li>
                                         ))
                                     }
-                                </ul>{
-                                    this.state.searchTerm === '' ? 
+                                </ul>{ // optimize this 
                                     <Pagination 
-                                        itemsPerPage={this.state.itemsPerPage}
-                                        totalItems={this.props.data.length}
-                                        paginate={this.paginate}
-                                    /> : null 
+                                    itemsPerPage={this.state.itemsPerPage}
+                                    totalItems={this.props.data.length}
+                                    paginate={this.paginate}
+                                    currPage={this.state.searchTerm === '' ? null : this.state.currPage}
+                                    noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
+                                    />
                                 }
                             </td>
                             <td> 
