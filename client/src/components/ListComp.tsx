@@ -215,7 +215,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                             </li>
                                         ))
                                     }
-                                </ul>{ // optimize this 
+                                </ul>{ 
                                     <Pagination 
                                     itemsPerPage={this.state.itemsPerPage}
                                     totalItems={this.props.data.length}
