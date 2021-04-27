@@ -136,20 +136,20 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     }
 
     private filterSearchResult = ():Ipayload[] => {
-        const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
-        const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
+        const {currPage, itemsPerPage, searchTerm} = this.state
+        const indexOfLastItem = currPage * itemsPerPage
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
-        const searchTerm = this.state.searchTerm.toLowerCase()
 
         return currItems.filter((obj:Ipayload):Ipayload | null => {
-            return this.state.searchTerm === '' ? obj :
-            obj.address.toLowerCase().includes( searchTerm ) ? obj : 
-            obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
-            obj.building_name.toLowerCase().includes( searchTerm ) ? obj : 
-            obj.year_built.includes(this.state.searchTerm) ? obj : 
-            obj.co2eui_breakdown.length === 0 && "no data".includes( searchTerm ) ? obj : 
-            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(this.state.searchTerm) ? obj : 
-            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
+            return searchTerm === '' ? obj :
+            obj.address.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
+            obj.bdbid.toString().includes(searchTerm) ? obj : 
+            obj.building_name.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
+            obj.year_built.includes(searchTerm) ? obj : 
+            obj.co2eui_breakdown.length === 0 && "no data".includes( searchTerm.toLowerCase() ) ? obj : 
+            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(searchTerm) ? obj : 
+            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(searchTerm) ? obj : 
             null
         })
     }

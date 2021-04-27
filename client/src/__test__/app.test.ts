@@ -114,7 +114,10 @@ describe('testing async action creator', () => {
         type: "SET_DATA", 
         results: mockData.results
     }]
-  beforeEach(() => store = mockStore({}));
+  beforeEach(() => store = mockStore({ // initial store 
+      obj: null,
+      results: [] 
+    }));
   afterEach(() => nock.cleanAll()) // clear all HTTP mocks after each test
 
   it('dispatch setData on succesful api call', () => {
