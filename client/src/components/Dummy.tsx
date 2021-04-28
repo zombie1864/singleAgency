@@ -21,7 +21,7 @@ export class Dummy extends Component<{}, Istate> {
 
     render() {
         return (
-            <div>
+            <div data-test="dummyComp">
                 <button onClick={this.updateStateHandler}></button>
                 <p>{this.state.renderText ? this.returnText : null }</p>
             </div>

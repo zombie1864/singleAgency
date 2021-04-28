@@ -7,6 +7,9 @@ import fetch from 'isomorphic-fetch'
 import {setData} from '../actions/index'
 import Dummy from '../components/Dummy'
 import ListComp from '../components/ListComp'
+import App from '../app'
+import React from 'react'
+import {findByTestAttr, testStore} from '../../Utils'
 import {shallow, configure} from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 configure({ adapter: new Adapter() });
@@ -143,8 +146,11 @@ const setUpDemo = (props={}) => shallow(<Dummy {...props}/>)
 
 describe('dummy comp', () => {
     let wrapper 
-    beforeEach(() => {
-        wrapper = setUpDemo()
+    beforeEach(() => wrapper = setUpDemo() )
+
+    it('should render w.o err', () => {
+        const component = findByTestAttr(wrapper, 'dummyComp')
+        expect(component.length).toBe(1)
     })
     
     test ('updateStateHandler method should update state', () => {
@@ -162,16 +168,189 @@ describe('dummy comp', () => {
     })
 })
 
-// const setUpListComp = (props={}) => shallow(<ListComp {...props}/>)
+const setUpApp = (initialState={}) => {
+    const store = testStore(initialState)
+    const wrapper = shallow(<App store={store}/>).childAt(0).dive()
+    // console.log(wrapper.debug());
+    return wrapper
+}
 
-// describe('ListComp', () => {
-//     let wrapper 
-//     beforeEach( () => {
-//         wrapper = setUpListComp()
-//     })
-//     test("filterSearchResult should return an array of objetcs", () => {
+// for connected comp .childAt(0) rm <Context Provider/> 
+/**
+ * <Context Provider value ={{...}}>
+ *      <App store={{...}} msp={{...}} mdp={{...}}/>
+ * </Context Provider> 
+ */
 
-//     })
-// })
+// .dive() allows to access content inside comp 
 
+// to test connect comp you have to mock the store and dive into the connected comp 
+
+describe('App', () => {
+    let wrapper 
+    beforeEach( () => {
+        const initialState = {
+            setDataReducer: {
+                obj: null, 
+                results: []
+            }
+        }
+        wrapper = setUpApp(initialState)
+    })
+    it("should render w.o err", () => {
+        const component = findByTestAttr(wrapper, "App")
+        expect(component.length).toBe(1)
+    })
+})
+
+
+const setUpListComp = (initialState={}) => {
+    const store = testStore(initialState)
+    const wrapper = shallow(<ListComp store={store}/>).childAt(0).dive()
+    // console.log(wrapper.debug()); // you can see the testData being rendered 
+    return wrapper
+}
+
+
+describe("ListComp", () => {
+    let wrapper 
+    let initialState
+    beforeEach( () => {
+        initialState = {
+            setDataReducer: {
+                obj: null, 
+                results: [
+                    {
+                        address: "addressTest1", 
+                        bdbid: 1234, 
+                        building_name: "buildingNameTest1", 
+                        co2eui_breakdown: [
+                            {
+                            "bdbid": 1217,
+                            "bldg_sqft": 192000,
+                            "co2emissions_kg_sqft_site": 4.6839056,
+                            "co2emissions_kg_sqft_source": 7.383769,
+                            "fiscal_year": 2019,
+                            "id": 145000,
+                            "site_eui": 80.69169,
+                            "source_eui": 117.46657,
+                            "total_co2emissions_kg_site": 899309.8,
+                            "total_co2emissions_kg_source": 1417683.6,
+                            "total_site_energy_kbtu": 15492804,
+                            "total_source_energy_kbtu": 22553582,
+                            "updated_on": "2021-02-10T10:24:53.575000-05:00"
+                            }
+                            ], 
+                        energy_breakdown: "energyBreakdownTest1", 
+                        epapm_primary_function: "epapmTest1", 
+                        latitude: 0.0, 
+                        longitude: 0.0, 
+                        oper_agency_acronym: "operTest1", 
+                        outofservice: false, 
+                        parent_record_id: "parentTest1", 
+                        total_bldg_gross_sq_ft: 1901, 
+                        year_built: "yearBuiltTest1" , 
+                    }, 
+                    {
+                        address: "addressTest2", 
+                        bdbid: 5678, 
+                        building_name: "buildingNameTest2", 
+                        co2eui_breakdown: [
+                            {
+                            "bdbid": 1217,
+                            "bldg_sqft": 192000,
+                            "co2emissions_kg_sqft_site": 4.6839056,
+                            "co2emissions_kg_sqft_source": 7.383769,
+                            "fiscal_year": 2019,
+                            "id": 145000,
+                            "site_eui": 80.69169,
+                            "source_eui": 117.46657,
+                            "total_co2emissions_kg_site": 899309.8,
+                            "total_co2emissions_kg_source": 1417683.6,
+                            "total_site_energy_kbtu": 15492804,
+                            "total_source_energy_kbtu": 22553582,
+                            "updated_on": "2021-02-10T10:24:53.575000-05:00"
+                            }
+                            ], 
+                        energy_breakdown: "energyBreakdownTest2", 
+                        epapm_primary_function: "epapmTest2", 
+                        latitude: 0.0, 
+                        longitude: 0.0, 
+                        oper_agency_acronym: "operTest2", 
+                        outofservice: false, 
+                        parent_record_id: "parentTest2", 
+                        total_bldg_gross_sq_ft: 1902, 
+                        year_built: "yearBuiltTest2" , 
+                    }, 
+                    {
+                        address: "addressTest3", 
+                        bdbid: 9012, 
+                        building_name: "buildingNameTest3", 
+                        co2eui_breakdown: [
+                            {
+                            "bdbid": 1217,
+                            "bldg_sqft": 192000,
+                            "co2emissions_kg_sqft_site": 4.6839056,
+                            "co2emissions_kg_sqft_source": 7.383769,
+                            "fiscal_year": 2019,
+                            "id": 145000,
+                            "site_eui": 80.69169,
+                            "source_eui": 117.46657,
+                            "total_co2emissions_kg_site": 899309.8,
+                            "total_co2emissions_kg_source": 1417683.6,
+                            "total_site_energy_kbtu": 15492804,
+                            "total_source_energy_kbtu": 22553582,
+                            "updated_on": "2021-02-10T10:24:53.575000-05:00"
+                            }
+                            ], 
+                        energy_breakdown: "energyBreakdownTest3", 
+                        epapm_primary_function: "epapmTest3", 
+                        latitude: 0.0, 
+                        longitude: 0.0, 
+                        oper_agency_acronym: "operTest3", 
+                        outofservice: false, 
+                        parent_record_id: "parentTest3", 
+                        total_bldg_gross_sq_ft: 1903, 
+                        year_built: "yearBuiltTest3" , 
+                    }, 
+                ]
+            }
+        }
+        wrapper = setUpListComp(initialState)
+    })
+
+    it('Should render w.o err', () => {
+        const component = findByTestAttr(wrapper, "ListComp")
+        expect(component.length).toBe(1)
+    })
+
+    test('searchBarOnChangeHandler, should update searchTerm', () => {
+        const classInstance = wrapper.instance()
+        classInstance.searchBarOnChangeHandler({target: { value: 'addressTest3'} })
+        const updatedSearchTerm = classInstance.state.searchTerm 
+        expect(updatedSearchTerm).toBe('addressTest3')
+
+    })
+
+    test('filterSearchResult, should return an array w a single object that match the searchTerm addressTest3', () => {
+        const classInstance = wrapper.instance()
+        classInstance.searchBarOnChangeHandler({target: { value: 'addressTest3'} })
+        const returnedArray = classInstance.filterSearchResult()
+        expect(returnedArray).toEqual([ initialState.setDataReducer.results[2] ])
+    })
+
+    test('filterSearchResult, should return an array of objects that match the searchTerm addressTest', () => {
+        const classInstance = wrapper.instance()
+        classInstance.searchBarOnChangeHandler({target: { value: 'addressTest'} })
+        const returnedArray = classInstance.filterSearchResult()
+        expect(returnedArray).toEqual(initialState.setDataReducer.results)
+    })
+
+    test('filterSearchResult, should return an empty array for searchTerm MX3', () => {
+        const classInstance = wrapper.instance()
+        classInstance.searchBarOnChangeHandler({target: { value: 'MX3'} })
+        const returnedArray = classInstance.filterSearchResult()
+        expect(returnedArray).toEqual([])
+    })
+})
 export default test 

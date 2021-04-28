@@ -24,7 +24,7 @@ class App extends Component<Allprops>{
 
     render() {
         return (
-            <div style={appCss}>
+            <div style={appCss} data-test="App">
                 <Switch>
                     <Route exact path="/" component={HomePage}/>
                     <Route path="/details/:id" component={DetailsPage}/>
@@ -46,4 +46,3 @@ const mdp = (dispatch:any) => ({
 })
 
 export default connect(msp, mdp)(App)
-// export default App

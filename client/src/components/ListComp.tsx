@@ -169,7 +169,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     render() {
         
         return (
-            <div>
+            <div data-test="ListComp">
                 <table style={{width:"75vw"}}>
                     <tbody>
                         <tr>
