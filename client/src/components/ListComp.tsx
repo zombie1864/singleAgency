@@ -186,7 +186,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                         <tr>
                             <td style={{width: "30vw",}}>
                                 <ul style={listCompCss} className="list-unstyled pl-5">
-                                    { this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                    { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
                                             <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)}>
                                                 <div>
                                                     <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
@@ -215,15 +215,18 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                             </li>
                                         ))
                                     }
-                                </ul>{ 
-                                    <Pagination 
-                                    itemsPerPage={this.state.itemsPerPage}
-                                    totalItems={this.props.data.length}
-                                    paginate={this.paginate}
-                                    currPage={this.state.searchTerm === '' ? null : this.state.currPage}
-                                    noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
-                                    />
-                                }
+                                </ul>
+                                <span>
+                                    { 
+                                        <Pagination 
+                                        itemsPerPage={this.state.itemsPerPage}
+                                        totalItems={this.props.data.length}
+                                        paginate={this.paginate}
+                                        currPage={this.state.searchTerm === '' ? null : this.state.currPage}
+                                        noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
+                                        />
+                                    }
+                                </span>
                             </td>
                             <td> 
                                 <h5 style={{position:"relative", bottom:"25vh", textAlign:"center"}}>Hover over to show more information</h5>

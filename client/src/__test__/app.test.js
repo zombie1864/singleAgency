@@ -5,6 +5,11 @@ import nock from 'nock'
 import thunk from 'redux-thunk'
 import fetch from 'isomorphic-fetch'
 import {setData} from '../actions/index'
+import Dummy from '../components/Dummy'
+import ListComp from '../components/ListComp'
+import {shallow, configure} from 'enzyme'
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+configure({ adapter: new Adapter() });
 
 //testing reducer for state change 
 describe('setDataReducer', () => {
@@ -79,14 +84,14 @@ const mockStore = configureMockStore([thunk])
 
 // different from fetchData in fetchDataActions.ts
 // requires THIS function signature 
-const fetchData = () => async (dispatch:any) => {
+const fetchData = () => async (dispatch) => {
     const response = await fetch("http://127.0.0.1:5000/")
     const json = await response.json()
     dispatch(setData(json))
 }
 
 describe('testing async action creator', () => {
-  let store:any;
+  let store;
   const mockData = {
       count: 1, 
       next: null, 
@@ -132,5 +137,41 @@ describe('testing async action creator', () => {
     )
   })
 });
+
+const setUpDemo = (props={}) => shallow(<Dummy {...props}/>)
+
+
+describe('dummy comp', () => {
+    let wrapper 
+    beforeEach(() => {
+        wrapper = setUpDemo()
+    })
+    
+    test ('updateStateHandler method should update state', () => {
+        const classInstance = wrapper.instance()
+        classInstance.updateStateHandler()
+        const updatedState = classInstance.state.renderText
+        expect(updatedState).toBe(true)
+        
+    })
+    
+    test('returnText method should returns a str', () => {
+        const classInstance = wrapper.instance()
+        const strValue = classInstance.returnText()
+        expect(strValue).toBe('Some txt here')
+    })
+})
+
+// const setUpListComp = (props={}) => shallow(<ListComp {...props}/>)
+
+// describe('ListComp', () => {
+//     let wrapper 
+//     beforeEach( () => {
+//         wrapper = setUpListComp()
+//     })
+//     test("filterSearchResult should return an array of objetcs", () => {
+
+//     })
+// })
 
 export default test 

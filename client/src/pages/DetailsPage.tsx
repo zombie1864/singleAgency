@@ -4,6 +4,7 @@ import {Ipayload, PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
 import {AppState} from '../store/store'
 import {Redirect} from 'react-router-dom'
+import ErrPage from '../pages/404Page'
 
 interface Iprops {
     match:any, 
@@ -107,7 +108,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         }
     } // checking if user puts url address and if /:id !isIdFoundInData(id)
 
-    render() {     
+    render() {             
         const {id} = this.props.match.params
         const objFromReduxStore = this.getObjFromReduxStore(+id) 
         let obj
