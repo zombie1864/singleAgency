@@ -4,7 +4,6 @@ import {Ipayload, PropsFromState} from '../types/appTypes'
 import {connect} from 'react-redux'
 import {AppState} from '../store/store'
 import {Redirect} from 'react-router-dom'
-import ErrPage from '../pages/404Page'
 
 interface Iprops {
     match:any, 
@@ -118,7 +117,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         return (
             <div>
                 {
-                    this.state.shouldCompRender404 ? <Redirect to="/404"/> : 
+                    this.state.shouldCompRender404 ? <Redirect to={"/404"}/> : 
                     obj === undefined ? null: 
                     <div>
                         <Link to={"/"}>
