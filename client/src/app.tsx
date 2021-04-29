@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Route,Switch} from 'react-router-dom'
+import {Route,Switch, Redirect} from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import DetailsPage from './pages/DetailsPage'
 import ErrPage from './pages/404Page'
@@ -24,11 +24,12 @@ class App extends Component<Allprops>{
 
     render() {
         return (
-            <div style={appCss}>
+            <div style={appCss} data-test="App">
                 <Switch>
                     <Route exact path="/" component={HomePage}/>
                     <Route path="/details/:id" component={DetailsPage}/>
                     <Route path="/404" component={ErrPage}/>
+                    <Redirect to="/404"/>
                 </Switch>
             </div>
 
@@ -45,4 +46,3 @@ const mdp = (dispatch:any) => ({
 })
 
 export default connect(msp, mdp)(App)
-// export default App

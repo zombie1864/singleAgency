@@ -136,20 +136,20 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     }
 
     private filterSearchResult = ():Ipayload[] => {
-        const indexOfLastItem = this.state.currPage * this.state.itemsPerPage
-        const indexOfFirstItem = indexOfLastItem - this.state.itemsPerPage
+        const {currPage, itemsPerPage, searchTerm} = this.state
+        const indexOfLastItem = currPage * itemsPerPage
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
-        const searchTerm = this.state.searchTerm.toLowerCase()
 
         return currItems.filter((obj:Ipayload):Ipayload | null => {
-            return this.state.searchTerm === '' ? obj :
-            obj.address.toLowerCase().includes( searchTerm ) ? obj : 
-            obj.bdbid.toString().includes(this.state.searchTerm) ? obj : 
-            obj.building_name.toLowerCase().includes( searchTerm ) ? obj : 
-            obj.year_built.includes(this.state.searchTerm) ? obj : 
-            obj.co2eui_breakdown.length === 0 && "no data".includes( searchTerm ) ? obj : 
-            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(this.state.searchTerm) ? obj : 
-            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(this.state.searchTerm) ? obj : 
+            return searchTerm === '' ? obj :
+            obj.address.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
+            obj.bdbid.toString().includes(searchTerm) ? obj : 
+            obj.building_name.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
+            obj.year_built.includes(searchTerm) ? obj : 
+            obj.co2eui_breakdown.length === 0 && "no data".includes( searchTerm.toLowerCase() ) ? obj : 
+            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].site_eui.toString().includes(searchTerm) ? obj : 
+            obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(searchTerm) ? obj : 
             null
         })
     }
@@ -169,7 +169,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     render() {
         
         return (
-            <div>
+            <div data-test="ListComp">
                 <table style={{width:"75vw"}}>
                     <tbody>
                         <tr>
@@ -186,7 +186,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                         <tr>
                             <td style={{width: "30vw",}}>
                                 <ul style={listCompCss} className="list-unstyled pl-5">
-                                    { this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                    { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
                                             <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)}>
                                                 <div>
                                                     <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
@@ -215,15 +215,18 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                             </li>
                                         ))
                                     }
-                                </ul>{ 
-                                    <Pagination 
-                                    itemsPerPage={this.state.itemsPerPage}
-                                    totalItems={this.props.data.length}
-                                    paginate={this.paginate}
-                                    currPage={this.state.searchTerm === '' ? null : this.state.currPage}
-                                    noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
-                                    />
-                                }
+                                </ul>
+                                <span>
+                                    { 
+                                        <Pagination 
+                                        itemsPerPage={this.state.itemsPerPage}
+                                        totalItems={this.props.data.length}
+                                        paginate={this.paginate}
+                                        currPage={this.state.searchTerm === '' ? null : this.state.currPage}
+                                        noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
+                                        />
+                                    }
+                                </span>
                             </td>
                             <td> 
                                 <h5 style={{position:"relative", bottom:"25vh", textAlign:"center"}}>Hover over to show more information</h5>

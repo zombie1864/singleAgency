@@ -107,7 +107,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         }
     } // checking if user puts url address and if /:id !isIdFoundInData(id)
 
-    render() {     
+    render() {             
         const {id} = this.props.match.params
         const objFromReduxStore = this.getObjFromReduxStore(+id) 
         let obj
@@ -117,7 +117,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
         return (
             <div>
                 {
-                    this.state.shouldCompRender404 ? <Redirect to="/404"/> : 
+                    this.state.shouldCompRender404 ? <Redirect to={"/404"}/> : 
                     obj === undefined ? null: 
                     <div>
                         <Link to={"/"}>
