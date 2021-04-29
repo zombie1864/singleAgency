@@ -40,7 +40,7 @@ const ulCss:React.CSSProperties = {
     left: "47.5vw",
     display: "inline-flex", 
     listStyle: 'none', 
-    cursor: "pointer",
+    cursor: "pointer", 
 }
 
 interface IPropsFromStore {
@@ -88,9 +88,9 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 const volumeTypeTextStyling:React.CSSProperties = {
                     position: "relative",
-                    left: "85%",
+                    left: "165%",
                     backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
-                    width: "15vw", 
+                    width: "13vw", 
                     borderRadius: '5px', 
                     display: "block",
                     padding: "10px 30px",
@@ -98,17 +98,17 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
                 const subInfoTextStyling:React.CSSProperties = {
                     position: "relative",
-                    left: "85%",
+                    left: "165%",
                     display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
                     marginTop: '50px', 
-                    width: "15vw",
+                    width: "13vw",
                     background: '#0f84e8',
                     borderRadius: '5px',
                     color: "white", 
                 }
                 
                 return (
-                    <div key={outterIdx} style={{width: "45%", padding: "10px 3vw",}}>
+                    <div key={outterIdx} style={{width: "45%", padding: "10px 2vw",}}>
                         <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
@@ -228,9 +228,9 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     }
                                 </span>
                             </td>
-                            <td> 
-                                <h5 style={{position:"relative", bottom:"25vh", textAlign:"center"}}>Hover over to show more information</h5>
-                                <div style={{textAlign: "center",}}>
+                            <td style={{width: "35vw",}}> 
+                                <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw"}}>Hover over to show more information</h5>
+                                <div style={{textAlign: "center"}}>
                                     <ul style={ulCss}>
                                         {this.renderMaxMinBLDGInfo()}
                                     </ul>
