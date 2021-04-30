@@ -8,6 +8,7 @@ import {Redirect} from 'react-router-dom'
 interface Iprops {
     match:any, 
     location: {
+        pathname: string, 
         state: {
             obj: Ipayload
         }
@@ -100,7 +101,11 @@ export class DetailsPage extends Component<Allprops, Istate> {
     private isIdFoundInData = (id:string):boolean => Object.values(this.props.data).map( (objFromData:Ipayload) => objFromData.bdbid).includes(+id) 
 
     public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
-        if ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) {
+        if ( 
+            ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) || 
+            this.props.location.pathname.length > 13
+
+        ) {
             return this.setState({...this.state, shouldCompRender404: true})
         } else {
             return null 

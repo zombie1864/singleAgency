@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 
 const containerStyle = {
   position: 'relative',  
-  width:"25vw", 
+  width:"30vw", 
   height: '90vh', 
 }
 export class MapContainer extends Component {
