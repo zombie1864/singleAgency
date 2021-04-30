@@ -11,10 +11,6 @@ interface Istate {
     currPage: number, 
     itemsPerPage: number, 
     searchTerm: string, 
-    itemBackgroundColor: string, 
-    selectedItem:number | null ,
-    hoverOnIdx: string | null, 
-    hover: boolean
 } 
 
 interface ImaxMiniInfo {
@@ -42,6 +38,7 @@ const ulCss:React.CSSProperties = {
     width:"100%",
 }
 
+
 interface IPropsFromStore {
     data: [] | Ipayload[], 
     updateObj: updateObjActionCreator
@@ -54,10 +51,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             currPage: 1, 
             itemsPerPage:5, 
             searchTerm: '',
-            itemBackgroundColor: '', 
-            selectedItem: null, 
-            hoverOnIdx: null, 
-            hover: false
         }
     }
 
@@ -73,11 +66,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         }
     }
 
-    private toggleHover = (event:any):void => {
-        (this.state.hoverOnIdx !== null) && (this.state.hoverOnIdx !== event.target.className) ? this.setState({hoverOnIdx: event.target.className, hover: true}) :
-        this.setState({hoverOnIdx: event.target.className, hover: !this.state.hover}) 
-    }
-
     private renderMaxMinBLDGInfo = ():JSX.Element[] => {
         const maxMiniInfo = this.maxMinTotalBLDGArea(this.props.data)
         const volumeBLDGInfoText = ['Biggest Building info', 'Smallest Building info']
@@ -86,7 +74,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         return (
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 const volumeTypeTextStyling:React.CSSProperties = {
-                    backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
                     width: "13vw", 
                     borderRadius: '5px', 
                     display: "block",
@@ -94,7 +81,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                 }
 
                 const subInfoTextStyling:React.CSSProperties = {
-                    display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
                     marginTop: '50px', 
                     width: "13vw",
                     background: '#0f84e8',
@@ -103,11 +89,11 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                 }
                 
                 return (
-                    <div key={outterIdx} style={{width: "45%", padding: "10px 2vw",}}>
-                        <li style={volumeTypeTextStyling} className={`${outterIdx}`} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>{volumeTypeText}</li> 
+                    <div key={outterIdx} style={{width: "45%", padding: "10px 1.9vw",}}>
+                        <li style={volumeTypeTextStyling} className={`outterItem${outterIdx}`}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
-                                <li key={innerIdx} style={subInfoTextStyling}>{subInfoText} : {
+                                <li key={innerIdx} style={subInfoTextStyling} className={`innerItem${innerIdx}`}>{subInfoText} : {
                                     outterIdx === 0 && innerIdx === 0 ? maxMiniInfo.maxArea : 
                                     outterIdx === 1 && innerIdx === 0 ? maxMiniInfo.minArea : 
                                     outterIdx === 0 && innerIdx === 1 ? this.BLDGAddress( maxMiniInfo.maxIdx ): this.BLDGAddress( maxMiniInfo.minIdx )} {innerIdx === 0 ? 'sq ft' : null
@@ -121,13 +107,10 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         )
     }
 
-    public componentDidUpdate = (prevProps:any, prevState:Istate):void | null => prevState.currPage !== this.state.currPage ? this.setState({itemBackgroundColor: ''}) : null 
-
     private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
 
     private itemClicked = (obj:Ipayload, idx:number):void => {
         this.props.updateObj(obj)
-        return this.setState({itemBackgroundColor: "linear-gradient(#F4FF11, #85bed4)", selectedItem: idx})
     }
 
     private filterSearchResult = ():Ipayload[] => {
@@ -147,10 +130,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(searchTerm) ? obj : 
             null
         })
-    }
-
-    private selectedItemCSS = (idx:number):React.CSSProperties => {
-        return { background: this.state.selectedItem === idx ? this.state.itemBackgroundColor : "" }
     }
 
     private searchBarOnChangeHandler = (event:any):void => {
@@ -182,7 +161,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             <td style={{width: "30vw",}}>
                                 <ul style={listCompCss} className="list-unstyled pl-5">
                                     { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
-                                            <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)}>
+                                            <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)} tabIndex={idx}>
                                                 <div>
                                                     <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
                                                     <Link to={{
@@ -197,7 +176,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                                             className="btn btn-info" 
                                                         >Details</button>
                                                     </Link>
-                                                    <div style={this.selectedItemCSS(idx)}>
+                                                    <div>
                                                         <p>bdbid: {obj.bdbid}</p>
                                                         <p>Building Name: {obj.building_name}</p>
                                                         <p>Year Built: {obj.year_built.slice(0,-2)}</p>

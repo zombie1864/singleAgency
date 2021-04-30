@@ -12,7 +12,7 @@ const imgCSS:React.CSSProperties = {
 
 const btnPositionCss:React.CSSProperties  ={
     position: "absolute",
-    top: "58%", 
+    top: "70vh", 
     left: "50%",
 }
 
