@@ -35,12 +35,11 @@ const addressCss:React.CSSProperties = {
 }
 
 const ulCss:React.CSSProperties = {
-    position: "absolute", 
-    top: "35vh",  
-    left: "47.5vw",
     display: "inline-flex", 
     listStyle: 'none', 
     cursor: "pointer", 
+    padding: "0 0",
+    width:"100%",
 }
 
 interface IPropsFromStore {
@@ -87,8 +86,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         return (
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 const volumeTypeTextStyling:React.CSSProperties = {
-                    position: "relative",
-                    left: "165%",
                     backgroundColor: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? " #add8e6" :'#d86969', 
                     width: "13vw", 
                     borderRadius: '5px', 
@@ -97,8 +94,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                 }
 
                 const subInfoTextStyling:React.CSSProperties = {
-                    position: "relative",
-                    left: "165%",
                     display: (this.state.hoverOnIdx === `${outterIdx}` && this.state.hover) ? "block" : "none", 
                     marginTop: '50px', 
                     width: "13vw",
@@ -230,7 +225,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             </td>
                             <td style={{width: "35vw",}}> 
                                 <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw",}}>Hover over to show more information</h5>
-                                <div style={{textAlign: "center",}}>
+                                <div style={{textAlign: "center", position:"absolute", top:"40vh",}}>
                                     <ul style={ulCss}>
                                         {this.renderMaxMinBLDGInfo()}
                                     </ul>
