@@ -11,7 +11,6 @@ interface Istate {
     currPage: number, 
     itemsPerPage: number, 
     searchTerm: string, 
-    selectedItem:number | null ,
 } 
 
 interface ImaxMiniInfo {
@@ -39,6 +38,7 @@ const ulCss:React.CSSProperties = {
     width:"100%",
 }
 
+
 interface IPropsFromStore {
     data: [] | Ipayload[], 
     updateObj: updateObjActionCreator
@@ -51,7 +51,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             currPage: 1, 
             itemsPerPage:5, 
             searchTerm: '',
-            selectedItem: null, 
         }
     }
 
@@ -108,13 +107,10 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         )
     }
 
-    public componentDidUpdate = (prevProps:any, prevState:Istate):void | null => prevState.currPage !== this.state.currPage ? this.setState({selectedItem: null}) : null 
-
     private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
 
     private itemClicked = (obj:Ipayload, idx:number):void => {
         this.props.updateObj(obj)
-        return this.setState({selectedItem: idx})
     }
 
     private filterSearchResult = ():Ipayload[] => {
@@ -134,10 +130,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(searchTerm) ? obj : 
             null
         })
-    }
-
-    private selectedItemCSS = (idx:number):React.CSSProperties => {
-        return { background: this.state.selectedItem === idx ? "linear-gradient(#F4FF11, #85bed4)" : "" }
     }
 
     private searchBarOnChangeHandler = (event:any):void => {
@@ -169,7 +161,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             <td style={{width: "30vw",}}>
                                 <ul style={listCompCss} className="list-unstyled pl-5">
                                     { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
-                                            <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)}>
+                                            <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)} tabIndex={idx}>
                                                 <div>
                                                     <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
                                                     <Link to={{
@@ -184,7 +176,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                                             className="btn btn-info" 
                                                         >Details</button>
                                                     </Link>
-                                                    <div style={this.selectedItemCSS(idx)}>
+                                                    <div>
                                                         <p>bdbid: {obj.bdbid}</p>
                                                         <p>Building Name: {obj.building_name}</p>
                                                         <p>Year Built: {obj.year_built.slice(0,-2)}</p>
