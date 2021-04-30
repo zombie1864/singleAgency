@@ -6,7 +6,7 @@ const trCss:React.CSSProperties = {
   borderCollapse:'collapse',
 }
 
-const tableCss:React.CSSProperties = { // on large windows : aids in scaling 
+const tableCss:React.CSSProperties = { // on large windows : aids in scaling  
   position:"absolute", 
   top: 0, 
   bottom: 0, 
@@ -14,6 +14,7 @@ const tableCss:React.CSSProperties = { // on large windows : aids in scaling
   right: 0, 
   height:"100%", 
   width:"100%",
+  overflow:"hidden"
 }
 
 class HomePage extends Component{
@@ -22,7 +23,7 @@ class HomePage extends Component{
     const comps = [<GoogleMaps/>, <ListComp/>]
     
     return (
-      <div>
+      <div style={tableCss}>
         <table style={tableCss}>
           <tbody>
             <tr>
