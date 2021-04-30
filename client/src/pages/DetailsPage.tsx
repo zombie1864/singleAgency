@@ -102,7 +102,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
 
     public componentDidUpdate():null | void { // does final checking of two conditionals on line 84
         if ( 
-            this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) || 
+            ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) || 
             this.props.location.pathname.length > 13
 
         ) {

@@ -25,7 +25,7 @@ interface ImaxMiniInfo {
 }
 
 const listCompCss:React.CSSProperties = {
-    overflowY: "scroll", height: "80vh",
+    overflowY: "scroll", height: "80vh", 
 }
 
 const addressCss:React.CSSProperties = {
@@ -170,7 +170,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         
         return (
             <div data-test="ListComp">
-                <table style={{width:"75vw"}}>
+                <table style={{width:"75vw",}}>
                     <tbody>
                         <tr>
                             <th> 
@@ -229,8 +229,8 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 </span>
                             </td>
                             <td style={{width: "35vw",}}> 
-                                <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw"}}>Hover over to show more information</h5>
-                                <div style={{textAlign: "center"}}>
+                                <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw",}}>Hover over to show more information</h5>
+                                <div style={{textAlign: "center",}}>
                                     <ul style={ulCss}>
                                         {this.renderMaxMinBLDGInfo()}
                                     </ul>
