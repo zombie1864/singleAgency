@@ -1,0 +1,28 @@
+.outterItem0, .outterItem1 {
+    background: #d86969; 
+}
+
+.innerItem0, .innerItem1 {
+    display: none
+}
+
+.outterItem0:hover, .outterItem1:hover {
+    background: #add8e6;
+}
+
+.outterItem0:hover + .innerItem0 {
+    display: block
+}
+
+.outterItem0:hover ~ .innerItem1 {
+    display: block
+}
+
+.outterItem1:hover + .innerItem0 {
+    display: block
+}
+
+.outterItem1:hover ~ .innerItem1 {
+    display: block
+}
+
