@@ -8,7 +8,6 @@ import {setData} from '../actions/index'
 import ListComp from '../components/ListComp'
 import DetailsPage from '../pages/DetailsPage'
 import App from '../app'
-import React from 'react'
 import {findByTestAttr, testStore, initialState, mockData} from '../../Utils'
 import {shallow, configure} from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
