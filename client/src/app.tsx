@@ -28,8 +28,7 @@ class App extends Component<Allprops>{
                 <Switch>
                     <Route exact path="/" component={HomePage}/>
                     <Route path="/details/:id" component={DetailsPage}/>
-                    <Route path="/404" component={ErrPage}/>
-                    <Redirect to="/404"/>
+                    <Route path="*" component={ErrPage}/>
                 </Switch>
             </div>
 
