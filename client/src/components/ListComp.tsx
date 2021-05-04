@@ -162,29 +162,27 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 <ul style={listCompCss} className="list-unstyled pl-5">
                                     { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
                                             <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)} tabIndex={idx}>
+                                                <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
+                                                <Link to={{
+                                                    pathname: `/details/${obj.bdbid}`,
+                                                    state: {
+                                                        obj,
+                                                    }
+                                                }}
+                                                >
+                                                <button
+                                                    type="button" 
+                                                    className="btn btn-info" 
+                                                >Details</button>
+                                                </Link>
                                                 <div>
-                                                    <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
-                                                    <Link to={{
-                                                        pathname: `/details/${obj.bdbid}`,
-                                                        state: {
-                                                            obj,
-                                                        }
-                                                    }}
-                                                    >
-                                                        <button
-                                                            type="button" 
-                                                            className="btn btn-info" 
-                                                        >Details</button>
-                                                    </Link>
-                                                    <div>
-                                                        <p>bdbid: {obj.bdbid}</p>
-                                                        <p>Building Name: {obj.building_name}</p>
-                                                        <p>Year Built: {obj.year_built.slice(0,-2)}</p>
-                                                        <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
-                                                        <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
-                                                            Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
-                                                        } Kg` }</p>
-                                                    </div>
+                                                    <p>bdbid: {obj.bdbid}</p>
+                                                    <p>Building Name: {obj.building_name}</p>
+                                                    <p>Year Built: {obj.year_built.slice(0,-2)}</p>
+                                                    <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
+                                                    <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
+                                                        Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
+                                                    } Kg` }</p>
                                                 </div>
                                             </li>
                                         ))
@@ -196,6 +194,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                         itemsPerPage={this.state.itemsPerPage}
                                         totalItems={this.props.data.length}
                                         paginate={this.paginate}
+                                        searchTerm={this.state.searchTerm}
                                         currPage={this.state.searchTerm === '' ? null : this.state.currPage}
                                         noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
                                         />

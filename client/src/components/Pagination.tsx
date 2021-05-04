@@ -4,6 +4,7 @@ interface Iprops {
   itemsPerPage: number, 
   totalItems: number, 
   paginate: any, 
+  searchTerm: string, 
   currPage:null | number, 
   noResultFromSearch:null | number 
 }
@@ -11,7 +12,8 @@ interface Iprops {
 interface Istate {
   firstIdx: number, 
   lastIdx: number, 
-  activeKey: number | null 
+  activeKey: number, 
+  paginationBtnClicked: boolean 
 }
 
 class Pagination extends Component<Iprops, Istate> {
@@ -20,7 +22,8 @@ class Pagination extends Component<Iprops, Istate> {
     this.state = {
       firstIdx: 1, 
       lastIdx: 6, 
-      activeKey: null 
+      activeKey: 0, 
+      paginationBtnClicked: false 
     }
   }
 
@@ -28,20 +31,29 @@ class Pagination extends Component<Iprops, Istate> {
     return Array(end - start + 1).fill(0, 0).map((_, idx) => start + idx)
   }
 
-  private cycle = (event:any) => {
-    if ( (this.state.firstIdx === 1 && event.target.name ==="prev")  || (this.state.lastIdx === 21 && event.target.name === "next") ) return null 
-    if (event.target.name === "prev") {
+  private cycle = (event:any):void | null => {
+    if ( (this.state.firstIdx === 1 && event.target.name ==="prev") || (this.state.lastIdx === 21 && event.target.name === "next") ) return null 
+    if (event.target.name === "prev" && this.state.paginationBtnClicked) {
       this.props.paginate(this.state.firstIdx - 5)
       return this.setState({
         firstIdx: this.state.firstIdx - 5, 
-        lastIdx: this.state.lastIdx - 5
+        lastIdx: this.state.lastIdx - 5, 
+        activeKey: this.state.activeKey - 5
       })  
-
-    } else if (event.target.name === "next") {
+    } else if (event.target.name === "next" && !this.state.paginationBtnClicked) {
       this.props.paginate(this.state.firstIdx + 5)
       return this.setState({
         firstIdx: this.state.firstIdx + 5, 
-        lastIdx: this.state.lastIdx + 5
+        lastIdx: this.state.lastIdx + 5, 
+        activeKey: this.state.activeKey + 6, 
+        paginationBtnClicked: !this.state.paginationBtnClicked
+      }) 
+    } else if (event.target.name === "next" && this.state.paginationBtnClicked) {
+      this.props.paginate(this.state.firstIdx + 5)
+      return this.setState({
+        firstIdx: this.state.firstIdx + 5, 
+        lastIdx: this.state.lastIdx + 5, 
+        activeKey: this.state.activeKey + 5, 
       }) 
     } 
   }
@@ -55,11 +67,11 @@ class Pagination extends Component<Iprops, Istate> {
     }
 
     let paginationRange = this.props.noResultFromSearch === 0 ? [] :this.props.currPage ? [this.props.currPage] : this.range(this.state.firstIdx, this.state.lastIdx -1)
-
+    
     return (
       <nav className="px-5">
         <ul className='pagination'>
-          <button className="page-link" name="prev" onClick={this.cycle}>prev</button>
+          { this.props.searchTerm.length > 0 ? null : <button className="page-link" name="prev" onClick={this.cycle}>prev</button>}
           { 
             paginationRange.map(number => {
               return <li key={number} className={this.state.activeKey === number ? 'page-item active' : ''}>
@@ -72,7 +84,7 @@ class Pagination extends Component<Iprops, Istate> {
               </li>
             })
           }
-          <button className="page-link" name="next" onClick={this.cycle}>next</button>
+          { this.props.searchTerm.length > 0 ? null : <button className="page-link" name="next" onClick={this.cycle}>next</button>}
         </ul>
       </nav>
     );
