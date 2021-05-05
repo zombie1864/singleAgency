@@ -144,75 +144,75 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         
         return (
             <div data-test="ListComp">
-                <table style={{width:"75vw",}}>
-                    <tbody>
-                        <tr>
-                            <th> 
-                                <input // search bar 
-                                    className="form-control"
-                                    type="text" 
-                                    placeholder="search"
-                                    style={{margin: "20px", width: "30vw",}}
-                                    onChange={this.searchBarOnChangeHandler}
+            <table style={{width:"75vw",}}>
+                <tbody>
+                    <tr>
+                        <th> 
+                            <input // search bar 
+                                className="form-control"
+                                type="text" 
+                                placeholder="search"
+                                style={{margin: "20px", width: "30vw",}}
+                                onChange={this.searchBarOnChangeHandler}
+                                />
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style={{width: "30vw",}}>
+                            <ul style={listCompCss} className="list-unstyled pl-5">
+                                { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                        <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)} tabIndex={idx}>
+                                            <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
+                                            <Link to={{
+                                                pathname: `/details/${obj.bdbid}`,
+                                                state: {
+                                                    obj,
+                                                }
+                                            }}
+                                            >
+                                            <button
+                                                type="button" 
+                                                className="btn btn-info" 
+                                            >Details</button>
+                                            </Link>
+                                            <div>
+                                            <p>bdbid: {obj.bdbid}</p>
+                                            <p>Building Name: {obj.building_name}</p>
+                                            <p>Year Built: {obj.year_built.slice(0,-2)}</p>
+                                            <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
+                                            <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
+                                                Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
+                                            } Kg` }</p>
+                                            </div>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                            <span>
+                                { 
+                                    <Pagination 
+                                    itemsPerPage={this.state.itemsPerPage}
+                                    totalItems={this.props.data.length}
+                                    paginate={this.paginate} // function prop
+                                    searchTerm={this.state.searchTerm}
+                                    currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
+                                    noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
+                                    currPage={this.state.currPage}
                                     />
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style={{width: "30vw",}}>
-                                <ul style={listCompCss} className="list-unstyled pl-5">
-                                    { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
-                                            <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)} tabIndex={idx}>
-                                                <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
-                                                <Link to={{
-                                                    pathname: `/details/${obj.bdbid}`,
-                                                    state: {
-                                                        obj,
-                                                    }
-                                                }}
-                                                >
-                                                <button
-                                                    type="button" 
-                                                    className="btn btn-info" 
-                                                >Details</button>
-                                                </Link>
-                                                <div>
-                                                    <p>bdbid: {obj.bdbid}</p>
-                                                    <p>Building Name: {obj.building_name}</p>
-                                                    <p>Year Built: {obj.year_built.slice(0,-2)}</p>
-                                                    <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
-                                                    <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
-                                                        Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
-                                                    } Kg` }</p>
-                                                </div>
-                                            </li>
-                                        ))
-                                    }
-                                </ul>
-                                <span>
-                                    { 
-                                        <Pagination 
-                                        itemsPerPage={this.state.itemsPerPage}
-                                        totalItems={this.props.data.length}
-                                        paginate={this.paginate} // function prop
-                                        searchTerm={this.state.searchTerm}
-                                        currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
-                                        noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
-                                        currPage={this.state.currPage}
-                                        />
-                                    }
-                                </span>
-                            </td>
-                            <td style={{width: "35vw",}}> 
-                                <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw",}}>Hover over to show more information</h5>
-                                <div style={{textAlign: "center", position:"absolute", top:"40vh",}}>
-                                    <ul style={ulCss}>
-                                        {this.renderMaxMinBLDGInfo()}
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                }
+                            </span>
+                        </td>
+                        <td style={{width: "35vw",}}> 
+                            <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw",}}>Hover over to show more information</h5>
+                            <div style={{textAlign: "center", position:"absolute", top:"40vh",}}>
+                            <ul style={ulCss}>
+                                {this.renderMaxMinBLDGInfo()}
+                            </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             </div>
         )
     }
