@@ -146,52 +146,13 @@ describe("ListComp", () => {
     beforeEach( () => {
         wrapper = setUpListComp(initialState)
         classInstance = wrapper.instance()
-    })
-
-    it('Should render w.o err', () => {
-        const component = findByTestAttr(wrapper, "ListComp")
-        expect(component.length).toBe(1)
-    })
-
-    describe("searchBarOnChangeHandler", () => {
-        test('searchBarOnChangeHandler, should update searchTerm', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: 'addressTest3'} })
-            const updatedSearchTerm = classInstance.state.searchTerm 
-            expect(updatedSearchTerm).toBe('addressTest3')
-    
-        })
-    })    
+    })   
 
     describe("filterSearchResult", () => {
-        test('filterSearchResult, should return an array w a single object that match the searchTerm addressTest3', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: 'addressTest3'} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual([ initialState.setDataReducer.results[2] ])
-        })
-
-        test('filterSearchResult, should return an array of objects that match the searchTerm addressTest', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: 'addressTest'} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual(initialState.setDataReducer.results)
-        })
-
         test('filterSearchResult, should return an empty array for searchTerm MX3', () => {
             classInstance.searchBarOnChangeHandler({target: { value: 'MX3'} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        })
-    })
-
-    describe("maxMinTotalBLDGArea", () => {
-        test('maxMinTotalBLDGArea, takes in data props and return an obj with 4 properties: max and min BLDG area. The indincies of the max and min BLDG area when obtaining an array of just the total_bldg_gross_sq_ft', () => {
-            const returnedObj = classInstance.maxMinTotalBLDGArea(initialState.setDataReducer.results)
-            expect(returnedObj).toEqual({
-                maxArea: 200000, 
-                minArea: 50000, 
-                maxIdx: 2, 
-                minIdx: 0
-            })
-            
         })
     })
 
