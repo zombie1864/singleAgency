@@ -7,8 +7,7 @@ import fetch from 'isomorphic-fetch'
 import {setData} from '../actions/index'
 import ListComp from '../components/ListComp'
 import DetailsPage from '../pages/DetailsPage'
-import App from '../app'
-import {findByTestAttr, testStore, initialState, mockData} from '../../Utils'
+import { testStore, initialState, mockData } from '../../Utils'
 import {shallow, configure} from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 configure({ adapter: new Adapter() });
@@ -96,42 +95,6 @@ describe('testing async action creator', () => {
   })
 });
 
-const setUpApp = (initialState={}) => {
-    const store = testStore(initialState)
-    const wrapper = shallow(<App store={store}/>).childAt(0).dive()
-    // console.log(wrapper.debug());
-    return wrapper
-}
-
-// for connected comp .childAt(0) rm <Context Provider/> 
-/**
- * <Context Provider value ={{...}}>
- *      <App store={{...}} msp={{...}} mdp={{...}}/>
- * </Context Provider> 
- */
-
-// .dive() allows to access content inside comp 
-
-// to test connect comp you have to mock the store and dive into the connected comp 
-
-describe('App', () => {
-    let wrapper 
-    beforeEach( () => {
-        const initialState = {
-            setDataReducer: {
-                obj: null, 
-                results: []
-            }
-        }
-        wrapper = setUpApp(initialState)
-    })
-    it("should render w.o err", () => {
-        const component = findByTestAttr(wrapper, "App")
-        expect(component.length).toBe(1)
-    })
-})
-
-
 const setUpListComp = (initialState={}) => {
     const store = testStore(initialState)
     const wrapper = shallow(<ListComp store={store}/>).childAt(0).dive()
@@ -153,7 +116,32 @@ describe("ListComp", () => {
             classInstance.searchBarOnChangeHandler({target: { value: 'MX3'} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        })
+        }) // address testing 
+        test('filterSearchResult, should return an empty array for searchTerm "  "', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: '  '} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) // address testing 
+        test('filterSearchResult, should return an empty array for searchTerm address  Test4', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: 'address  Test4'} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) // address testing 
+        test('filterSearchResult, should return an empty array for searchTerm 0000', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: '0000'} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) // bdbid testing 
+        test('filterSearchResult, should return an empty array for searchTerm 2089', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: '2089'} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) // year_built testing 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: 'true'} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) // misc testing 
     })
 
     describe('BLDGAddress', () => {
@@ -163,7 +151,7 @@ describe("ListComp", () => {
         })
     
         test("BLDGAddress, should return null if the index argument is outside the range of the data", () => {
-            const returnedBLDGAddress = classInstance.BLDGAddress(3)
+            const returnedBLDGAddress = classInstance.BLDGAddress(4)
             expect(returnedBLDGAddress).toBe(null)
         })
     })
