@@ -7,6 +7,7 @@ import fetch from 'isomorphic-fetch'
 import {setData} from '../actions/index'
 import ListComp from '../components/ListComp'
 import DetailsPage from '../pages/DetailsPage'
+import Pagination from '../components/Pagination'
 import { testStore, initialState, mockData } from '../../Utils'
 import {shallow, configure} from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -63,14 +64,14 @@ const mockStore = configureMockStore([thunk])
 
 // different from fetchData in fetchDataActions.ts
 // requires THIS function signature 
-const fetchData = () => async (dispatch) => {
+const fetchData = () => async (dispatch:any) => {
     const response = await fetch("http://127.0.0.1:5000/")
     const json = await response.json()
     dispatch(setData(json))
 }
 
 describe('testing async action creator', () => {
-  let store;
+  let store:any;
 
     const mockSetData = [{
         type: "SET_DATA", 
@@ -102,9 +103,20 @@ const setUpListComp = (initialState={}) => {
     return wrapper
 }
 
+const searchInputTest = {
+    case: [
+        'MX3', 
+        '  ', 
+        'address  Test4', 
+        '0000', 
+        '2089', 
+        'true'
+    ]
+}
+
 describe("ListComp", () => {
     let wrapper,
-        classInstance
+        classInstance:any
 
     beforeEach( () => {
         wrapper = setUpListComp(initialState)
@@ -113,35 +125,35 @@ describe("ListComp", () => {
 
     describe("filterSearchResult", () => {
         test('filterSearchResult, should return an empty array for searchTerm MX3', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: 'MX3'} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[0]} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        }) // address testing 
+        }) 
         test('filterSearchResult, should return an empty array for searchTerm "  "', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: '  '} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[1]} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        }) // address testing 
+        }) 
         test('filterSearchResult, should return an empty array for searchTerm address  Test4', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: 'address  Test4'} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[2]} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        }) // address testing 
+        }) 
         test('filterSearchResult, should return an empty array for searchTerm 0000', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: '0000'} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[3]} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        }) // bdbid testing 
+        }) 
         test('filterSearchResult, should return an empty array for searchTerm 2089', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: '2089'} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[4]} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        }) // year_built testing 
+        }) 
         test('filterSearchResult, should return an empty array for searchTerm true', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: 'true'} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[5]} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
-        }) // misc testing 
+        }) 
     })
 
     describe('BLDGAddress', () => {
@@ -155,6 +167,22 @@ describe("ListComp", () => {
             expect(returnedBLDGAddress).toBe(null)
         })
     })
+
+    describe('maxMinTotalBLDGArea', () => {
+        test('maxMinTotalBLDGArea should return an object with all properties having out of bound values', () => {
+            const returnedValue = classInstance.maxMinTotalBLDGArea([])
+            expect(returnedValue).toEqual({
+                maxArea: -Infinity, 
+                minArea: Infinity, 
+                maxIdx: -1, 
+                minIdx: -1
+            })
+        })
+    })
+})
+
+describe('pagination', () => {
+
 })
 
 const setUpDetailsPage = (initialState={}, props={
@@ -176,7 +204,7 @@ const setUpDetailsPage = (initialState={}, props={
 
 describe('DetailsPage', () => {
     let wrapper, 
-        classInstance
+        classInstance:any 
     
     beforeEach( () => {
         wrapper = setUpDetailsPage(initialState)

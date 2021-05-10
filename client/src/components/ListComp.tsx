@@ -76,10 +76,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
 
-    // private itemClicked = (obj:Ipayload):any => () => this.props.updateObj(obj)
     private itemClicked = (event:any):any => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
-    
-    // private itemClicked = (obj:Ipayload):any => this.props.updateObj(obj)
     
     private filterSearchResult = ():Ipayload[] => {
         const {currPage, itemsPerPage, searchTerm} = this.state
@@ -109,6 +106,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     }
 
     render() {
+        let searchResultLength = this.filterSearchResult().length
         
         return (
             <div data-test="ListComp">
@@ -127,7 +125,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                     <tr>
                         <td className='listCompTdWidth'>
                             <ul className="list-unstyled pl-5 listCompCss">
-                                { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                { searchResultLength === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
                                         <li key={idx} className='listCompLiStyle' data-obj={JSON.stringify(obj)} onClick={this.itemClicked} tabIndex={idx}> 
                                         {/* tabIndex is for css li:focus */}
                                             <span className="alert alert-primary addressCss">Address: {obj.address}</span>
@@ -164,7 +162,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                     paginate={this.paginate} // function prop
                                     searchTerm={this.state.searchTerm}
                                     currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
-                                    noResultFromSearch={this.state.searchTerm === '' ? null : this.filterSearchResult().length}
+                                    noResultFromSearch={this.state.searchTerm === '' ? null : searchResultLength}
                                     currPage={this.state.currPage}
                                     />
                                 }

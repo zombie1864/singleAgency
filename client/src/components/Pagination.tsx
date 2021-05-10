@@ -26,7 +26,7 @@ class Pagination extends Component<Iprops, Istate> {
     }
   }
 
-  private range(start:number, end:number) {
+  private range(start:number, end:number):number[] {
     return Array(end - start + 1).fill(0, 0).map((_, idx) => start + idx)
   }
 
