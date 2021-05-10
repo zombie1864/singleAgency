@@ -59,8 +59,6 @@ class Pagination extends Component<Iprops, Istate> {
     }
 
     let paginationRange = noResultFromSearch === 0 ? [] : currPageForSearchTerm ? [currPageForSearchTerm] : this.range(this.state.firstIdx, this.state.lastIdx -1)
-    console.log(this.props.currPage);
-    
     
     return (
       <nav className="px-5">

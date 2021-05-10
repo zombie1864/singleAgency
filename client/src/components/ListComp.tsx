@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import {updateObjActionCreator} from '../types/appTypes'
 import Pagination from './Pagination'
 import {Ipayload} from '../types/appTypes'
+import '../styles/index.css'
 
 interface Istate {
     currPage: number, 
@@ -19,25 +20,6 @@ interface ImaxMiniInfo {
     maxIdx: number,
     minIdx: number
 }
-
-const listCompCss:React.CSSProperties = {
-    overflowY: "scroll", height: "80vh", 
-}
-
-const addressCss:React.CSSProperties = {
-    cursor:"pointer", 
-    color: "darkblue", 
-    textDecoration: "underline" , 
-}
-
-const ulCss:React.CSSProperties = {
-    display: "inline-flex", 
-    listStyle: 'none', 
-    cursor: "pointer", 
-    padding: "0 0",
-    width:"100%",
-}
-
 
 interface IPropsFromStore {
     data: [] | Ipayload[], 
@@ -68,32 +50,17 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     private renderMaxMinBLDGInfo = ():JSX.Element[] => {
         const maxMiniInfo = this.maxMinTotalBLDGArea(this.props.data)
-        const volumeBLDGInfoText = ['Biggest Building info', 'Smallest Building info']
+        const volumeBLDGInfoText = ['Largest Building info', 'Smallest Building info']
         const BLDGSubInfoText = ['Building Area', 'Building Address']
         
         return (
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
-                const volumeTypeTextStyling:React.CSSProperties = {
-                    width: "13vw", 
-                    borderRadius: '5px', 
-                    display: "block",
-                    padding: "10px 30px",
-                }
-
-                const subInfoTextStyling:React.CSSProperties = {
-                    marginTop: '50px', 
-                    width: "13vw",
-                    background: '#0f84e8',
-                    borderRadius: '5px',
-                    color: "white", 
-                }
-                
                 return (
-                    <div key={outterIdx} style={{width: "45%", padding: "10px 1.9vw",}}>
-                        <li style={volumeTypeTextStyling} className={`outterItem${outterIdx}`}>{volumeTypeText}</li> 
+                    <div key={outterIdx} className='maxMinBLDGInfoWrapper'>
+                        <li className={`outterItem${outterIdx} volumeTypeTextStyling`}>{volumeTypeText}</li> 
                         {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
                             return (
-                                <li key={innerIdx} style={subInfoTextStyling} className={`innerItem${innerIdx}`}>{subInfoText} : {
+                                <li key={innerIdx} className={`innerItem${innerIdx} subInfoTextStyling`}>{subInfoText} : {
                                     outterIdx === 0 && innerIdx === 0 ? maxMiniInfo.maxArea : 
                                     outterIdx === 1 && innerIdx === 0 ? maxMiniInfo.minArea : 
                                     outterIdx === 0 && innerIdx === 1 ? this.BLDGAddress( maxMiniInfo.maxIdx ): this.BLDGAddress( maxMiniInfo.minIdx )} {innerIdx === 0 ? 'sq ft' : null
@@ -109,10 +76,11 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
 
-    private itemClicked = (obj:Ipayload, idx:number):void => {
-        this.props.updateObj(obj)
-    }
-
+    // private itemClicked = (obj:Ipayload):any => () => this.props.updateObj(obj)
+    private itemClicked = (event:any):any => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
+    
+    // private itemClicked = (obj:Ipayload):any => this.props.updateObj(obj)
+    
     private filterSearchResult = ():Ipayload[] => {
         const {currPage, itemsPerPage, searchTerm} = this.state
         const indexOfLastItem = currPage * itemsPerPage
@@ -144,25 +112,25 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         
         return (
             <div data-test="ListComp">
-            <table style={{width:"75vw",}}>
+            <table className='tableWidth'>
                 <tbody>
                     <tr>
                         <th> 
                             <input // search bar 
-                                className="form-control"
+                                className="form-control inputSize"
                                 type="text" 
                                 placeholder="search"
-                                style={{margin: "20px", width: "30vw",}}
                                 onChange={this.searchBarOnChangeHandler}
                                 />
                         </th>
                     </tr>
                     <tr>
-                        <td style={{width: "30vw",}}>
-                            <ul style={listCompCss} className="list-unstyled pl-5">
+                        <td className='listCompTdWidth'>
+                            <ul className="list-unstyled pl-5 listCompCss">
                                 { this.filterSearchResult().length === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
-                                        <li key={idx} style={{cursor:"pointer",}} onClick={()=>this.itemClicked(obj, idx)} tabIndex={idx}>
-                                            <span className="alert alert-primary" style={addressCss}>Address: {obj.address}</span>
+                                        <li key={idx} className='listCompLiStyle' data-obj={JSON.stringify(obj)} onClick={this.itemClicked} tabIndex={idx}> 
+                                        {/* tabIndex is for css li:focus */}
+                                            <span className="alert alert-primary addressCss">Address: {obj.address}</span>
                                             <Link to={{
                                                 pathname: `/details/${obj.bdbid}`,
                                                 state: {
@@ -202,10 +170,10 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 }
                             </span>
                         </td>
-                        <td style={{width: "35vw",}}> 
-                            <h5 style={{position:"relative", bottom:"25vh", textAlign:"center", width:"33vw",}}>Hover over to show more information</h5>
-                            <div style={{textAlign: "center", position:"absolute", top:"40vh",}}>
-                            <ul style={ulCss}>
+                        <td className='utilCompTdWidth'> 
+                            <h5 className='utilTitleStyle'>Hover over to show more information</h5>
+                            <div className='utilWrapperStyle'>
+                            <ul className='ulCss'>
                                 {this.renderMaxMinBLDGInfo()}
                             </ul>
                             </div>

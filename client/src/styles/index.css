@@ -1,0 +1,108 @@
+.outterItem0, .outterItem1 {
+    background: #d86969; 
+}
+
+.innerItem0, .innerItem1 {
+    display: none
+}
+
+.outterItem0:hover, .outterItem1:hover {
+    background: #add8e6;
+}
+
+.outterItem0:hover + .innerItem0 {
+    display: block
+}
+
+.outterItem0:hover ~ .innerItem1 {
+    display: block
+}
+
+.outterItem1:hover + .innerItem0 {
+    display: block
+}
+
+.outterItem1:hover ~ .innerItem1 {
+    display: block
+}
+
+li:hover {
+    background: #add8e6;
+}
+
+li:focus { /*  onClick this changes background color*/
+    background: linear-gradient(#01b8f5, #85bed4);
+}
+
+.listCompCss {
+    overflow-y: scroll;
+    height: 80vh;
+}
+
+.addressCss {
+    cursor:pointer; 
+    color: darkblue; 
+    text-decoration: underline; 
+}
+
+.ulCss {
+    display: inline-flex; 
+    list-style: none; 
+    cursor: pointer; 
+    padding: 0 0;
+    width: 100%;
+}
+
+.tableWidth {
+    width: 75vw;
+}
+
+.inputSize {
+    margin: 20px;
+    width: 30vw
+}
+
+.listCompTdWidth {
+    width: 30vw;
+}
+
+.listCompLiStyle {
+    cursor: pointer;
+}
+
+.utilCompTdWidth {
+    width: 35vw;
+}
+
+.utilTitleStyle {
+    position: relative;
+    bottom: 25vh;
+    text-align: center;
+    width: 33vw;
+}
+
+.utilWrapperStyle {
+    text-align: center;
+    position: absolute;
+    top: 40vh;
+}
+
+.maxMinBLDGInfoWrapper {
+    width: 45%;
+    padding: 10px 1.9vw;
+}
+
+.volumeTypeTextStyling {
+    width: 13vw; 
+    border-radius: 5px; 
+    display: block;
+    padding: 10px 30px;
+}
+
+.subInfoTextStyling {
+    margin-top: 50px; 
+    width: 13vw;
+    background: #0f84e8;
+    border-radius: 5px;
+    color: white; 
+}
