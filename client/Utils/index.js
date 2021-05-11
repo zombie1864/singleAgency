@@ -46,7 +46,7 @@ export const initialState = {
                 building_name: "buildingNameTest1", 
                 co2eui_breakdown: [
                     {
-                    "bdbid": 1217,
+                    "bdbid": 1234,
                     "bldg_sqft": 192000,
                     "co2emissions_kg_sqft_site": 4.6839056,
                     "co2emissions_kg_sqft_source": 7.383769,
@@ -77,7 +77,7 @@ export const initialState = {
                 building_name: "buildingNameTest2", 
                 co2eui_breakdown: [
                     {
-                    "bdbid": 1217,
+                    "bdbid": 5678,
                     "bldg_sqft": 192000,
                     "co2emissions_kg_sqft_site": 4.6839056,
                     "co2emissions_kg_sqft_source": 7.383769,
@@ -108,7 +108,7 @@ export const initialState = {
                 building_name: "buildingNameTest3", 
                 co2eui_breakdown: [
                     {
-                    "bdbid": 1217,
+                    "bdbid": 9012,
                     "bldg_sqft": 192000,
                     "co2emissions_kg_sqft_site": 4.6839056,
                     "co2emissions_kg_sqft_source": 7.383769,
@@ -139,7 +139,7 @@ export const initialState = {
                 building_name: "buildingNameTest4", 
                 co2eui_breakdown: [
                     {
-                    "bdbid": 1217,
+                    "bdbid": 9123,
                     "bldg_sqft": 192000,
                     "co2emissions_kg_sqft_site": 4.6839056,
                     "co2emissions_kg_sqft_source": 7.383769,

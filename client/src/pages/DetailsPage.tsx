@@ -6,13 +6,19 @@ import {AppState} from '../store/store'
 import {Redirect} from 'react-router-dom'
 
 interface Iprops {
+    store?:any,
     match:any, 
     location: {
         pathname: string, 
         state: {
             obj: Ipayload
-        }
+        },
     }, 
+}
+
+
+interface IPropsFromStore {
+    data: [] | Ipayload[], 
 }
 
 interface Istate { 
@@ -39,7 +45,7 @@ const tableCSS:React.CSSProperties = {
     width: "95%"
 }
 
-type Allprops = PropsFromState & Iprops 
+type Allprops = IPropsFromStore & Iprops
 
 export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {

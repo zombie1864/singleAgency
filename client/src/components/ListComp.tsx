@@ -23,7 +23,8 @@ interface ImaxMiniInfo {
 
 interface IPropsFromStore {
     data: [] | Ipayload[], 
-    updateObj: updateObjActionCreator
+    updateObj: updateObjActionCreator, 
+    store?: any 
 }
 
 export class ListComp extends Component<IPropsFromStore, Istate> {

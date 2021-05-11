@@ -7,7 +7,6 @@ import fetch from 'isomorphic-fetch'
 import {setData} from '../actions/index'
 import ListComp from '../components/ListComp'
 import DetailsPage from '../pages/DetailsPage'
-import Pagination from '../components/Pagination'
 import { testStore, initialState, mockData } from '../../Utils'
 import {shallow, configure} from 'enzyme'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -104,14 +103,22 @@ const setUpListComp = (initialState={}) => {
 }
 
 const searchInputTest = {
-    case: [
-        'MX3', 
-        '  ', 
-        'address  Test4', 
-        '0000', 
-        '2089', 
-        'true'
-    ]
+    case: {
+        _1 : 'MX3', 
+        _2 : '  ', 
+        _3 : 'address  Test4', 
+        _4 : '0000', 
+        _5 : '2089', 
+        _6 : 'true',
+        _7 : '@addressTest2',
+        _8 : 'AddressTest1',
+        _9 : 'addRESStest1',
+        _10 : 'addressTe',
+        _11 : ' address', 
+        _12 : 'address Test4 ',
+        _13 : '123 4', 
+        _14 : '1234E', 
+    }
 }
 
 describe("ListComp", () => {
@@ -125,39 +132,79 @@ describe("ListComp", () => {
 
     describe("filterSearchResult", () => {
         test('filterSearchResult, should return an empty array for searchTerm MX3', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[0]} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._1} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
         test('filterSearchResult, should return an empty array for searchTerm "  "', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[1]} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._2} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
         test('filterSearchResult, should return an empty array for searchTerm address  Test4', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[2]} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._3} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
         test('filterSearchResult, should return an empty array for searchTerm 0000', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[3]} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._4} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
         test('filterSearchResult, should return an empty array for searchTerm 2089', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[4]} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._5} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
         test('filterSearchResult, should return an empty array for searchTerm true', () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case[5]} })
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._6} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._7} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._8} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._9} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._10} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(0,3) )
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._11} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._12} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._13} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._14} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
     })
 
     describe('BLDGAddress', () => {
-        test('BLDGAddress, takes in an index that it receives from an interaction. It returns a string of the BLDGAddress', () => {
+        test('BLDGAddress, takes in an index that it receives from a fixture. It returns a string of the BLDGAddress', () => {
             const returnedBLDGAddress = classInstance.BLDGAddress(1)
             expect(returnedBLDGAddress).toBe("addressTest2")
         })
@@ -179,23 +226,21 @@ describe("ListComp", () => {
             })
         })
     })
-})
-
-describe('pagination', () => {
 
 })
-
-const setUpDetailsPage = (initialState={}, props={
+const setUpDetailsPage = (initialState:any={}, props={
         match: {
             params: {
                 id: "1234"
             }
         }, 
         location: {
+            pathname: '/test',
             state: {
                 obj: initialState.setDataReducer.results[0]
             }
-        }
+        },
+        data: []
     }) => {
     const store = testStore(initialState)
     const wrapper = shallow(<DetailsPage store={store} {...props}/>).childAt(0).dive()
