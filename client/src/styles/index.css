@@ -126,3 +126,43 @@ li:focus { /*  onClick this changes background color*/
     height: 100vh;
     overflow: hidden;
 }
+
+.tableCss { /* on large windows : aids in scaling */ 
+    position:absolute; 
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    height:100%; 
+    width:100%;
+    overflow:hidden
+}
+
+.trCss { border-collapse:collapse } 
+
+.breakdownCss {
+    max-width: 50vw; 
+    overflow-x: scroll; 
+}
+
+.homeBtnCss {
+    margin-left: 50px;
+    margin-top: 10px
+}
+
+.DetailsPageDivWrapper {
+    padding-left: 50px
+}
+
+.tableCSS {
+    width: 95%
+}
+
+.DetailsPageRow {
+    width:450px
+}
+
+.breakDownLiCss {
+    cursor: pointer; 
+    color: blue
+}

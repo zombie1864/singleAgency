@@ -26,25 +26,6 @@ interface Istate {
     shouldCompRender404: boolean 
 }
 
-const breakDownLiCss:React.CSSProperties = {
-    cursor: "pointer", 
-    color: "blue"
-}
-
-const breakdownCss:React.CSSProperties = {
-    maxWidth: "50vw", 
-    overflowX: "scroll", 
-}
-
-const homeBtnCss:React.CSSProperties = {
-    marginLeft: "50px", 
-    marginTop: "10px"
-}
-
-const tableCSS:React.CSSProperties = {
-    width: "95%"
-}
-
 type Allprops = IPropsFromStore & Iprops
 
 export class DetailsPage extends Component<Allprops, Istate> {
@@ -59,7 +40,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
     private toggle = (breakDownType:string):null | void => this.setState({ ...this.state, renderBreakdown: breakDownType })
 
     private renderBreakdown = (obj:Ipayload):JSX.Element => (
-        <div style={breakdownCss}>{
+        <div className='breakdownCss'>{
             this.state.renderBreakdown.length !== 0 ? this.iterateThrBreakdown(obj): "Click on either breakdown to view details"
         }</div>
     )
@@ -132,11 +113,11 @@ export class DetailsPage extends Component<Allprops, Istate> {
                     obj === undefined ? null: 
                     <div>
                         <Link to={"/"}>
-                            <button className="btn btn-primary" style={homeBtnCss}>Home Page</button>
+                            <button className="btn btn-primary homeBtnCss">Home Page</button>
                         </Link>
                         <h1 className="text-center">DETAILS PAGE</h1>
-                        <div style={{paddingLeft: "50px"}}>
-                            <table className="table table-bordered table-hover" style={tableCSS}>
+                        <div className='DetailsPageDivWrapper'>
+                            <table className="table table-bordered table-hover tableCSS">
                                 <thead className="thead-dark">
                                     <tr>
                                         <th colSpan={2}><h3>Viewing bdbid#: {obj.bdbid}</h3></th>
@@ -144,7 +125,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row" style={{width:"450px"}}>
+                                        <th scope="row" className='DetailsPageRow'>
                                             <ul>
                                                 {Object.entries(obj).map( (pair, idx) => {
                                                     return pair[0] === "co2eui_breakdown" ? null :
@@ -152,11 +133,11 @@ export class DetailsPage extends Component<Allprops, Istate> {
                                                     <li key={idx}>{pair[0]} : {pair[1]}</li>
                                                 })}
                                                 <li 
-                                                    style={breakDownLiCss}
+                                                    className='breakDownLiCss'
                                                     onClick={()=> this.toggle("co2eui_breakdown")}
                                                 >co2eui_breakdown</li>
                                                 <li 
-                                                    style={breakDownLiCss}
+                                                    className='breakDownLiCss'
                                                     onClick={()=> this.toggle("energy_breakdown")}
                                                 >energy_breakdown</li>
                                             </ul>
