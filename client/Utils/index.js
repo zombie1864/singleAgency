@@ -74,7 +74,7 @@ export const initialState = {
             {
                 address: "addressTest2", 
                 bdbid: 5678, 
-                building_name: "buildingNameTest2", 
+                building_name: "buildingNameTest2 M50 (MK9)", 
                 co2eui_breakdown: [
                     {
                     "bdbid": 5678,
@@ -105,7 +105,7 @@ export const initialState = {
             {
                 address: "addressTest3", 
                 bdbid: 9012, 
-                building_name: "buildingNameTest3", 
+                building_name: "buildingNameTest3 (LL84)", 
                 co2eui_breakdown: [
                     {
                     "bdbid": 9012,

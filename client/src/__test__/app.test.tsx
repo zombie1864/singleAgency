@@ -98,7 +98,7 @@ describe('testing async action creator', () => {
 const setUpListComp = (initialState={}) => {
     const store = testStore(initialState)
     const wrapper = shallow(<ListComp store={store}/>).childAt(0).dive()
-    // console.log(wrapper.debug()); // you can see the testData being rendered 
+    // console.log(wrapper.debug()); // 
     return wrapper
 }
 
@@ -118,6 +118,8 @@ const searchInputTest = {
         _12 : 'address Test4 ',
         _13 : '123 4', 
         _14 : '1234E', 
+        _15: ' ', 
+        _16: ' (',
     }
 }
 
@@ -200,6 +202,16 @@ describe("ListComp", () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._14} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._15} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(1) )
+        }) 
+        test('filterSearchResult, should return an empty array for searchTerm true', () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._16} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(1,3) )
         }) 
     })
 
