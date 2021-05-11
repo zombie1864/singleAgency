@@ -7,6 +7,7 @@ import { AppState } from './store/store'
 import {fetchData} from './actions/index'
 import { PropsFromState } from './types/appTypes'
 import { connect } from 'react-redux'
+import './styles/index.css'
 
 const appCss:React.CSSProperties = {
     background: "linear-gradient(#d7fadc, #85bed4)",
