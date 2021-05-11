@@ -35,8 +35,14 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             searchTerm: '',
         }
     }
-
+    
     private BLDGAddress = (idx:number): null | string => this.props.data[idx] === undefined ? null : this.props.data[idx].address // returns building address 
+
+    private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
+
+    private itemClicked = (event:any):any => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
+    
+    private searchBarOnChangeHandler = (event:any):void => this.setState({searchTerm: event.target.value})
 
     private maxMinTotalBLDGArea = (data:Ipayload[]):ImaxMiniInfo => { // returns the max or min BLDG area and index location 
         const arrOfNumbers = data.map( (obj:Ipayload) => obj.total_bldg_gross_sq_ft ) 
@@ -74,10 +80,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         )
     }
 
-    private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
-
-    private itemClicked = (event:any):any => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
-    
     private filterSearchResult = ():Ipayload[] => {
         const {currPage, itemsPerPage, searchTerm} = this.state
         const indexOfLastItem = currPage * itemsPerPage
@@ -95,14 +97,6 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             obj.co2eui_breakdown.length !== 0 && obj.co2eui_breakdown[0].total_co2emissions_kg_site.toString().includes(searchTerm) ? obj : 
             null
         })
-    }
-
-    private searchBarOnChangeHandler = (event:any):void => {
-        if (event.target.value !== '' ) {
-            this.setState({itemsPerPage: 5, searchTerm: event.target.value})
-        } else if (event.target.value === '') {
-            this.setState({currPage:this.state.currPage, itemsPerPage: 5, searchTerm: event.target.value}) 
-        } 
     }
 
     render() {
