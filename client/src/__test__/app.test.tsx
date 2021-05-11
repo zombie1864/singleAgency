@@ -215,30 +215,6 @@ describe("ListComp", () => {
         }) 
     })
 
-    describe('BLDGAddress', () => {
-        test('BLDGAddress, takes in an index that it receives from a fixture. It returns a string of the BLDGAddress', () => {
-            const returnedBLDGAddress = classInstance.BLDGAddress(1)
-            expect(returnedBLDGAddress).toBe("addressTest2")
-        })
-    
-        test("BLDGAddress, should return null if the index argument is outside the range of the data", () => {
-            const returnedBLDGAddress = classInstance.BLDGAddress(4)
-            expect(returnedBLDGAddress).toBe(null)
-        })
-    })
-
-    describe('maxMinTotalBLDGArea', () => {
-        test('maxMinTotalBLDGArea should return an object with all properties having out of bound values', () => {
-            const returnedValue = classInstance.maxMinTotalBLDGArea([])
-            expect(returnedValue).toEqual({
-                maxArea: -Infinity, 
-                minArea: Infinity, 
-                maxIdx: -1, 
-                minIdx: -1
-            })
-        })
-    })
-
 })
 const setUpDetailsPage = (initialState:any={}, props={
         match: {
@@ -272,6 +248,10 @@ describe('DetailsPage', () => {
         test('getObjFromReduxStore takes in a valid bdbid as an argument and returns an object from props.data that matches the id', () => {
             const returnedObj = classInstance.getObjFromReduxStore(1234)
             expect(returnedObj).toEqual(initialState.setDataReducer.results[0])
+        })
+        test('getObjFromReduxStore takes in an invalid bdbid as an argument and returns undefined', () => {
+            const returnedObj = classInstance.getObjFromReduxStore(0o00)
+            expect(returnedObj).toBeUndefined()
         })
     })
 
