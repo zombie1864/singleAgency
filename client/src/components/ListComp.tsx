@@ -57,17 +57,17 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
             volumeBLDGInfoText.map( (volumeTypeText:string, outterIdx:number) => {
                 return (
                     <div key={outterIdx} className='maxMinBLDGInfoWrapper'>
-                        <li className={`outterItem${outterIdx} volumeTypeTextStyling`}>{volumeTypeText}</li> 
-                        {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
-                            return (
-                                <li key={innerIdx} className={`innerItem${innerIdx} subInfoTextStyling`}>{subInfoText} : {
-                                    outterIdx === 0 && innerIdx === 0 ? maxMiniInfo.maxArea : 
-                                    outterIdx === 1 && innerIdx === 0 ? maxMiniInfo.minArea : 
-                                    outterIdx === 0 && innerIdx === 1 ? this.BLDGAddress( maxMiniInfo.maxIdx ): this.BLDGAddress( maxMiniInfo.minIdx )} {innerIdx === 0 ? 'sq ft' : null
-                                    }
-                                </li>
-                            )
-                        })}
+                    <li className={`outterItem${outterIdx} volumeTypeTextStyling`}>{volumeTypeText}</li> 
+                    {BLDGSubInfoText.map( (subInfoText:string, innerIdx:number) => {
+                        return (
+                            <li key={innerIdx} className={`innerItem${innerIdx} subInfoTextStyling`}>{subInfoText} : {
+                                outterIdx === 0 && innerIdx === 0 ? maxMiniInfo.maxArea : 
+                                outterIdx === 1 && innerIdx === 0 ? maxMiniInfo.minArea : 
+                                outterIdx === 0 && innerIdx === 1 ? this.BLDGAddress( maxMiniInfo.maxIdx ): this.BLDGAddress( maxMiniInfo.minIdx )} {innerIdx === 0 ? 'sq ft' : null
+                                }
+                            </li>
+                        )
+                    })}
                     </div>
                 )
             })
@@ -125,46 +125,47 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                     <tr>
                         <td className='listCompTdWidth'>
                             <ul className="list-unstyled pl-5 listCompCss">
-                                { searchResultLength === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
-                                        <li key={idx} className='listCompLiStyle' data-obj={JSON.stringify(obj)} onClick={this.itemClicked} tabIndex={idx}> 
-                                        {/* tabIndex is for css li:focus */}
-                                            <span className="alert alert-primary addressCss">Address: {obj.address}</span>
-                                            <Link to={{
-                                                pathname: `/details/${obj.bdbid}`,
-                                                state: {
-                                                    obj,
-                                                }
-                                            }}
-                                            >
-                                            <button
-                                                type="button" 
-                                                className="btn btn-info" 
-                                            >Details</button>
-                                            </Link>
-                                            <div>
-                                            <p>bdbid: {obj.bdbid}</p>
-                                            <p>Building Name: {obj.building_name}</p>
-                                            <p>Year Built: {obj.year_built.slice(0,-2)}</p>
-                                            <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
-                                            <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
-                                                Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
-                                            } Kg` }</p>
-                                            </div>
-                                        </li>
-                                    ))
+                                { 
+                                searchResultLength === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                    <li key={idx} className='listCompLiStyle' data-obj={JSON.stringify(obj)} onClick={this.itemClicked} tabIndex={idx}> 
+                                    {/* tabIndex is for css li:focus */}
+                                        <span className="alert alert-primary addressCss">Address: {obj.address}</span>
+                                        <Link to={{
+                                            pathname: `/details/${obj.bdbid}`,
+                                            state: {
+                                                obj,
+                                            }
+                                        }}
+                                        >
+                                        <button
+                                            type="button" 
+                                            className="btn btn-info" 
+                                        >Details</button>
+                                        </Link>
+                                        <div>
+                                        <p>bdbid: {obj.bdbid}</p>
+                                        <p>Building Name: {obj.building_name}</p>
+                                        <p>Year Built: {obj.year_built.slice(0,-2)}</p>
+                                        <p>Site EUI: {obj.co2eui_breakdown.length === 0 ? "no data" : obj.co2eui_breakdown[0].site_eui}</p>
+                                        <p>Total CO2 Emissions Kg site: {obj.co2eui_breakdown.length === 0 ? "No Data" : `${
+                                            Math.floor(obj.co2eui_breakdown[0].total_co2emissions_kg_site)
+                                        } Kg` }</p>
+                                        </div>
+                                    </li>
+                                ))
                                 }
                             </ul>
                             <span>
                                 { 
-                                    <Pagination 
-                                    itemsPerPage={this.state.itemsPerPage}
-                                    totalItems={this.props.data.length}
-                                    paginate={this.paginate} // function prop
-                                    searchTerm={this.state.searchTerm}
-                                    currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
-                                    noResultFromSearch={this.state.searchTerm === '' ? null : searchResultLength}
-                                    currPage={this.state.currPage}
-                                    />
+                                <Pagination 
+                                itemsPerPage={this.state.itemsPerPage}
+                                totalItems={this.props.data.length}
+                                paginate={this.paginate} // function prop
+                                searchTerm={this.state.searchTerm}
+                                currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
+                                noResultFromSearch={this.state.searchTerm === '' ? null : searchResultLength}
+                                currPage={this.state.currPage}
+                                />
                                 }
                             </span>
                         </td>

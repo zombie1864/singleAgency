@@ -51,33 +51,33 @@ export class DetailsPage extends Component<Allprops, Istate> {
         return (
             <div>
                 { 
-                    breakdownArr.length === 0 ? <p>No data</p> : 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th colSpan={Object.keys(breakdownArr[0]).length}>
-                                <h5>{`${this.state.renderBreakdown}`}</h5> 
-                                </th>
-                            </tr>
-                        </thead> 
-                        <tbody>
-                        <tr className="table-danger">
-                            {Object.keys(breakdownArr[0]).map( (key:string, idx:number) => {
-                                return <th key={idx}>{`${key}`}</th>
-                            })}
+                breakdownArr.length === 0 ? <p>No data</p> : 
+                <table>
+                    <thead>
+                        <tr>
+                            <th colSpan={Object.keys(breakdownArr[0]).length}>
+                            <h5>{`${this.state.renderBreakdown}`}</h5> 
+                            </th>
                         </tr>
-                            {
-                                breakdownArr.map( (obj:any, idx:number) => {
-                                    return <tr key={idx}>{
-                                            Object.values(obj).map((value:any, idx:number) => {
-                                                return <td key={idx}>{`${value}`}</td>
-                                            })
-                                        }
-                                    </tr>
-                                })
-                            }
-                        </tbody>
-                    </table>
+                    </thead> 
+                    <tbody>
+                    <tr className="table-danger">
+                        {Object.keys(breakdownArr[0]).map( (key:string, idx:number) => {
+                            return <th key={idx}>{`${key}`}</th>
+                        })}
+                    </tr>
+                        {
+                            breakdownArr.map( (obj:any, idx:number) => {
+                                return <tr key={idx}>{
+                                        Object.values(obj).map((value:any, idx:number) => {
+                                            return <td key={idx}>{`${value}`}</td>
+                                        })
+                                    }
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
                 }
             </div>
         )
@@ -109,45 +109,45 @@ export class DetailsPage extends Component<Allprops, Istate> {
         return (
             <div>
                 {
-                    this.state.shouldCompRender404 ? <Redirect to={"/404"}/> : 
-                    obj === undefined ? null: 
-                    <div>
-                        <Link to={"/"}>
-                            <button className="btn btn-primary homeBtnCss">Home Page</button>
-                        </Link>
-                        <h1 className="text-center">DETAILS PAGE</h1>
-                        <div className='DetailsPageDivWrapper'>
-                            <table className="table table-bordered table-hover tableCSS">
-                                <thead className="thead-dark">
-                                    <tr>
-                                        <th colSpan={2}><h3>Viewing bdbid#: {obj.bdbid}</h3></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" className='DetailsPageRow'>
-                                            <ul>
-                                                {Object.entries(obj).map( (pair, idx) => {
-                                                    return pair[0] === "co2eui_breakdown" ? null :
-                                                    pair[0] === "energy_breakdown" ? null : 
-                                                    <li key={idx}>{pair[0]} : {pair[1]}</li>
-                                                })}
-                                                <li 
-                                                    className='breakDownLiCss'
-                                                    onClick={()=> this.toggle("co2eui_breakdown")}
-                                                >co2eui_breakdown</li>
-                                                <li 
-                                                    className='breakDownLiCss'
-                                                    onClick={()=> this.toggle("energy_breakdown")}
-                                                >energy_breakdown</li>
-                                            </ul>
-                                        </th>
-                                        <td>{this.renderBreakdown(obj)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>  
+                this.state.shouldCompRender404 ? <Redirect to={"/404"}/> : 
+                obj === undefined ? null: 
+                <div>
+                    <Link to={"/"}>
+                        <button className="btn btn-primary homeBtnCss">Home Page</button>
+                    </Link>
+                    <h1 className="text-center">DETAILS PAGE</h1>
+                    <div className='DetailsPageDivWrapper'>
+                        <table className="table table-bordered table-hover tableCSS">
+                            <thead className="thead-dark">
+                                <tr>
+                                    <th colSpan={2}><h3>Viewing bdbid#: {obj.bdbid}</h3></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" className='DetailsPageRow'>
+                                        <ul>
+                                            {Object.entries(obj).map( (pair, idx) => {
+                                                return pair[0] === "co2eui_breakdown" ? null :
+                                                pair[0] === "energy_breakdown" ? null : 
+                                                <li key={idx}>{pair[0]} : {pair[1]}</li>
+                                            })}
+                                            <li 
+                                                className='breakDownLiCss'
+                                                onClick={()=> this.toggle("co2eui_breakdown")}
+                                            >co2eui_breakdown</li>
+                                            <li 
+                                                className='breakDownLiCss'
+                                                onClick={()=> this.toggle("energy_breakdown")}
+                                            >energy_breakdown</li>
+                                        </ul>
+                                    </th>
+                                    <td>{this.renderBreakdown(obj)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>  
                 }
             </div>
         )
