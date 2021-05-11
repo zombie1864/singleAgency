@@ -9,12 +9,6 @@ import { PropsFromState } from './types/appTypes'
 import { connect } from 'react-redux'
 import './styles/index.css'
 
-const appCss:React.CSSProperties = {
-    background: "linear-gradient(#d7fadc, #85bed4)",
-    height:"100vh",
-    overflow: "hidden",
-}
-
 type Allprops = PropsFromState & any 
 
 class App extends Component<Allprops>{
