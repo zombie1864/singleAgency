@@ -67,10 +67,10 @@ class Pagination extends Component<Iprops, Istate> {
         { 
           paginationRange.map(number => { // renders pagination
             return <li key={number} className={this.state.activeKey === number ? 'page-item active' : ''}>
-              <span style={{cursor: "pointer",}} onClick={() => {
+              <span className='page-link paginationSpanTag' onClick={() => {
                   paginate(number)
                   this.changeClassNameBasedOn(number)
-                  }} className='page-link'> {/**this.props.paginate(number) => changing state to parent comp */}
+                  }}> {/**this.props.paginate(number) => changing state to parent comp */}
                 {number}
               </span>
             </li>

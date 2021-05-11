@@ -166,3 +166,7 @@ li:focus { /*  onClick this changes background color*/
     cursor: pointer; 
     color: blue
 }
+
+.paginationSpanTag {
+    cursor: pointer;
+}
