@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import {updateObjActionCreator} from '../types/appTypes'
 import Pagination from './Pagination'
 import {Ipayload} from '../types/appTypes'
-import '../styles/index.css'
 
 interface Istate {
     currPage: number, 

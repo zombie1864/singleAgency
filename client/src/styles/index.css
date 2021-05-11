@@ -106,3 +106,17 @@ li:focus { /*  onClick this changes background color*/
     border-radius: 5px;
     color: white; 
 }
+
+.imgCSS {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btnPositionCss {
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
