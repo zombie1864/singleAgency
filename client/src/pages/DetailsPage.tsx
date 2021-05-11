@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {Ipayload, PropsFromState} from '../types/appTypes'
+import {Ipayload} from '../types/appTypes'
 import {connect} from 'react-redux'
 import {AppState} from '../store/store'
 import {Redirect} from 'react-router-dom'
