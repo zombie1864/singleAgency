@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {UPDATE_OBJ} from '../actions/index'
 import {AppState} from '../store/store'
 import React, { Component } from 'react'
-import {updateObjActionCreator} from '../types/appTypes'
+import {updateObjAction, updateObjActionCreator} from '../types/appTypes'
 import Pagination from './Pagination'
 import {Ipayload} from '../types/appTypes'
 
@@ -40,7 +40,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
 
-    private itemClicked = (event:any):any => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
+    private itemClicked = (event:any):updateObjAction => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
     
     private searchBarOnChangeHandler = (event:any):void => this.setState({searchTerm: event.target.value})
 
