@@ -22,7 +22,7 @@ interface IPropsFromStore {
 }
 
 interface Istate { 
-    renderBreakdown: string,
+    renderBreakdownType: string,
     shouldCompRender404: boolean 
 }
 
@@ -32,21 +32,21 @@ export class DetailsPage extends Component<Allprops, Istate> {
     constructor(props:any) {
         super(props) 
         this.state = {
-            renderBreakdown: "",
+            renderBreakdownType: "",
             shouldCompRender404: false 
         }
     }
 
-    private toggle = (breakDownType:string):null | void => this.setState({ ...this.state, renderBreakdown: breakDownType })
+    private toggle = (event:any):void => this.setState({ renderBreakdownType: event.target.dataset.breakdowntype })
 
     private renderBreakdown = (obj:Ipayload):JSX.Element => (
         <div className='breakdownCss'>{
-            this.state.renderBreakdown.length !== 0 ? this.iterateThrBreakdown(obj): "Click on either breakdown to view details"
+            this.state.renderBreakdownType.length !== 0 ? this.iterateThrBreakdown(obj): "Click on either breakdown to view details"
         }</div>
     )
     
     private iterateThrBreakdown = (obj:Ipayload):JSX.Element => {
-        let breakdownArr = this.state.renderBreakdown === "co2eui_breakdown" ? obj.co2eui_breakdown : obj.energy_breakdown // DT: [{},...,{}]
+        let breakdownArr = this.state.renderBreakdownType === "co2eui_breakdown" ? obj.co2eui_breakdown : obj.energy_breakdown // DT: [{},...,{}]
             
         return (
             <div>
@@ -56,7 +56,7 @@ export class DetailsPage extends Component<Allprops, Istate> {
                     <thead>
                         <tr>
                             <th colSpan={Object.keys(breakdownArr[0]).length}>
-                            <h5>{`${this.state.renderBreakdown}`}</h5> 
+                            <h5>{`${this.state.renderBreakdownType}`}</h5> 
                             </th>
                         </tr>
                     </thead> 
@@ -91,9 +91,8 @@ export class DetailsPage extends Component<Allprops, Istate> {
         if ( 
             ( this.props.location.state === undefined && !this.isIdFoundInData(this.props.match.params.id) ) || 
             this.props.location.pathname.length > 13
-
         ) {
-            return this.setState({...this.state, shouldCompRender404: true})
+            return this.setState({ shouldCompRender404: true })
         } else {
             return null 
         }
@@ -134,11 +133,13 @@ export class DetailsPage extends Component<Allprops, Istate> {
                                             })}
                                             <li 
                                                 className='breakDownLiCss'
-                                                onClick={()=> this.toggle("co2eui_breakdown")}
+                                                data-breakdowntype={"co2eui_breakdown"}
+                                                onClick={this.toggle}
                                             >co2eui_breakdown</li>
                                             <li 
                                                 className='breakDownLiCss'
-                                                onClick={()=> this.toggle("energy_breakdown")}
+                                                data-breakdowntype={"energy_breakdown"}
+                                                onClick={this.toggle}
                                             >energy_breakdown</li>
                                         </ul>
                                     </th>

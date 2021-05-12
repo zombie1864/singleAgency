@@ -19,7 +19,7 @@ class App extends Component<Allprops>{
 
     render() {
         return (
-            <div className='appCss' data-test="App">
+            <div className='appCss'>
                 <Switch>
                     <Route exact path="/" component={HomePage}/>
                     <Route path="/details/:id" component={DetailsPage}/>

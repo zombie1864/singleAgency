@@ -5,19 +5,17 @@ import ListComp from '../components/ListComp'
 class HomePage extends Component{
   
   render() {
-    const comps = [<GoogleMaps/>, <ListComp/>]
+    const components = [<GoogleMaps/>, <ListComp/>]
     
     return (
       <div className='tableCss'>
-        <table className='tableCss'>
-          <tbody>
-            <tr>
-              {comps.map( (comp, idx) => {
-                return <td key={idx} className='trCss'>{comp}</td>
-              })}
-            </tr>
-          </tbody>
-        </table>
+      <table className='tableCss'>
+        <tbody>
+          <tr>
+            {components.map( (comp, idx) => <td key={idx} className='trCss'>{comp}</td>)}
+          </tr>
+        </tbody>
+      </table>
       </div>
     );
   }
