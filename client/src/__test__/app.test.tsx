@@ -104,26 +104,40 @@ const setUpListComp = (initialState={}) => {
 
 const searchInputTest = {
     case: {
-        _1 : 'MX3', 
-        _2 : '  ', 
-        _3 : 'address  Test4', 
-        _4 : '0000', 
-        _5 : '2089', 
+        _1 : 'MX3', // building_name
+        _2 : '  ', // generic 
+        _3 : 'address  Test4', // address
+        _4 : '0000', // bdbid 
+        _5 : '2089', // year_built 
         _6 : 'true',
-        _7 : '@addressTest2',
-        _8 : 'AddressTest1',
-        _9 : 'addRESStest1',
-        _10 : 'addressTe',
-        _11 : ' address', 
-        _12 : 'address Test4 ',
-        _13 : '123 4', 
-        _14 : '1234E', 
-        _15: ' ', 
-        _16: ' (',
+        _7 : '@addressTest2', // address
+        _8 : 'AddressTest1', // address
+        _9 : 'addRESStest1', // address
+        _10 : 'addressTe', // address
+        _11 : ' address', // address
+        _12 : 'address Test4 ', // address
+        _13 : '123 4', // bdbid 
+        _14 : '1234E', // bdbid 
+        _15: ' ', // generic 
+        _16: ' (', // building_name
+        _17: ' 1234', // bdbid 
+        _18: 'null', 
+        _19: '1901.0', // year_built 
+        _20: '1901.5', // year_built 
+        _21: '-80.69169', // site_eui
+        _22: '80.69169', // site_eui
+        _23: ' 80.69169', // site_eui
+        _24: '-899309.8', // total_co2emissions_kg_site 
+        _25: '899309.8', // total_co2emissions_kg_site 
+        _26: ' 899309.8', // total_co2emissions_kg_site, 
+        _27: ', ', // building_name
+        _28: ': ', // building_name
+        _29: ' , ', // building_name
+        _30: ' : ' // building_name
     }
 }
 
-//bdbid, building_name, address, year_built,site_eui,total_co2emissions_kg_site
+//bdbid, building_name, address, year_built, site_eui,total_co2emissions_kg_site
 
 describe("ListComp", () => {
     let wrapper,
@@ -170,17 +184,17 @@ describe("ListComp", () => {
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
-        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._8}`, () => {
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._8}`, () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._8} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
         }) 
-        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._9}`, () => {
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._9}`, () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._9} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
         }) 
-        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._10}`, () => {
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._10}`, () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._10} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(0,3) )
@@ -205,19 +219,89 @@ describe("ListComp", () => {
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual([])
         }) 
-        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._15}`, () => {
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._15}`, () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._15} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(1) )
         }) 
-        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._16}`, () => {
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._16}`, () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._16} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(1,3) )
         }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._17}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._17} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._18}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._18} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._19}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._19} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._20}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._20} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._21}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._21} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._22}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._22} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual(initialState.setDataReducer.results)
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._23}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._23} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._24}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._24} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._25}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._25} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual(initialState.setDataReducer.results)
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._26}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._26} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._27}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._27} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([initialState.setDataReducer.results[3]])
+        }) 
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTest.case._28}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._28} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([initialState.setDataReducer.results[3]])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._29}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._29} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
+        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._30}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._30} })
+            const returnedArray = classInstance.filterSearchResult()
+            expect(returnedArray).toEqual([])
+        }) 
     })
-
 })
+
 const setUpDetailsPage = (initialState:any={}, props={
         match: {
             params: {

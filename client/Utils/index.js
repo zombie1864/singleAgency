@@ -69,7 +69,7 @@ export const initialState = {
                 outofservice: false, 
                 parent_record_id: "parentTest1", 
                 total_bldg_gross_sq_ft: 50000, 
-                year_built: "1901" , 
+                year_built: "1901.0" , 
             }, 
             {
                 address: "addressTest2", 
@@ -100,7 +100,7 @@ export const initialState = {
                 outofservice: false, 
                 parent_record_id: "parentTest2", 
                 total_bldg_gross_sq_ft: 100000, 
-                year_built: "1902" , 
+                year_built: "1902.0" , 
             }, 
             {
                 address: "addressTest3", 
@@ -131,12 +131,12 @@ export const initialState = {
                 outofservice: false, 
                 parent_record_id: "parentTest3", 
                 total_bldg_gross_sq_ft: 200000, 
-                year_built: "1903" , 
+                year_built: "1903.0" , 
             }, 
             {
                 address: "address Test4", 
                 bdbid: 9123, 
-                building_name: "buildingNameTest4", 
+                building_name: "buildingNameTest4, K052 Campus: M183", 
                 co2eui_breakdown: [
                     {
                     "bdbid": 9123,
@@ -162,7 +162,7 @@ export const initialState = {
                 outofservice: false, 
                 parent_record_id: "parentTest4", 
                 total_bldg_gross_sq_ft: 200000, 
-                year_built: "1903" , 
+                year_built: "1904.0" , 
             }, 
         ]
     }
