@@ -123,6 +123,8 @@ const searchInputTest = {
     }
 }
 
+//bdbid, building_name, address, year_built,site_eui,total_co2emissions_kg_site
+
 describe("ListComp", () => {
     let wrapper,
         classInstance:any
