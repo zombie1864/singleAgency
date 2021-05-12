@@ -31,20 +31,20 @@ class Pagination extends Component<Iprops, Istate> {
   }
 
   private paginationCycle = (event:any):void | null => {
-    if ( (this.state.firstIdx === 1 && event.target.name ==="prev") || (this.state.lastIdx === 21 && event.target.name === "next") ) return null // boundary conditions 
+    if ( (this.state.firstIdx === 1 && event.target.name ==="prev") || (this.state.lastIdx === 11 && event.target.name === "next") ) return null // boundary conditions 
     if (event.target.name === "prev") {
-      this.props.currPage !== 1 ? this.props.paginate(this.props.currPage - 5 ) : this.props.paginate(this.state.firstIdx - 5)
+      this.props.currPage !== 1 ? this.props.paginate(this.props.currPage - 1 ) : this.props.paginate(this.state.firstIdx - 1)
       this.setState({
-        firstIdx: this.state.firstIdx - 5, 
-        lastIdx: this.state.lastIdx - 5, 
-        activeKey: this.state.activeKey - 5
+        firstIdx: this.state.firstIdx - 1, 
+        lastIdx: this.state.lastIdx - 1, 
+        activeKey: this.state.activeKey - 1
       })  
     } else if (event.target.name === "next") {
-      this.props.currPage !== 1 ? this.props.paginate(this.props.currPage + 5 ) : this.props.paginate(this.state.firstIdx + 5)
+      this.props.currPage !== 1 ? this.props.paginate(this.props.currPage + 1 ) : this.props.paginate(this.state.firstIdx + 1)
       this.setState({
-        firstIdx: this.state.firstIdx + 5, 
-        lastIdx: this.state.lastIdx + 5, 
-        activeKey: this.state.activeKey === 0 ? this.state.activeKey + 6 : this.state.activeKey + 5, 
+        firstIdx: this.state.firstIdx + 1, 
+        lastIdx: this.state.lastIdx + 1, 
+        activeKey: this.state.activeKey === 0 ? this.state.activeKey + 2 : this.state.activeKey + 1, 
       }) 
     } 
   }

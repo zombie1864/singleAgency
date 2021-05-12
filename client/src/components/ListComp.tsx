@@ -31,7 +31,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         super(props) 
         this.state = {
             currPage: 1, 
-            itemsPerPage:5, 
+            itemsPerPage:10, 
             searchTerm: '',
         }
     }
