@@ -86,9 +86,8 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         const indexOfFirstItem = indexOfLastItem - itemsPerPage
         const currItems = this.props.data.slice(indexOfFirstItem, indexOfLastItem) 
 
-        return currItems.filter((obj:Ipayload):Ipayload | null => {
-            return searchTerm === '' ? obj :
-            obj.address.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
+        return searchTerm === '' ? currItems : this.props.data.filter((obj:Ipayload):Ipayload | null => {
+            return obj.address.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
             obj.bdbid.toString().includes(searchTerm) ? obj : 
             obj.building_name.toLowerCase().includes( searchTerm.toLowerCase() ) ? obj : 
             obj.year_built.includes(searchTerm) ? obj : 
@@ -100,7 +99,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     }
 
     render() {
-        let searchResultLength = this.filterSearchResult().length
+        let searchResult = this.filterSearchResult()
         
         return (
             <div data-test="ListComp">
@@ -120,7 +119,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                         <td className='listCompTdWidth'>
                             <ul className="list-unstyled pl-5 listCompCss">
                                 { 
-                                searchResultLength === 0 ? "No Results" : this.filterSearchResult().map( (obj:Ipayload, idx:number) => (//[{},...,{}]
+                                searchResult.length === 0 ? "No Results" : searchResult.map( (obj:Ipayload, idx:number) => (//[{},...,{}]
                                     <li key={idx} className='listCompLiStyle' data-obj={JSON.stringify(obj)} onClick={this.itemClicked} tabIndex={idx}> 
                                     {/* tabIndex is for css li:focus */}
                                         <span className="alert alert-primary addressCss">Address: {obj.address}</span>
@@ -157,7 +156,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 paginate={this.paginate} // function prop
                                 searchTerm={this.state.searchTerm}
                                 currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
-                                noResultFromSearch={this.state.searchTerm === '' ? null : searchResultLength}
+                                noResultFromSearch={this.state.searchTerm === '' ? null : searchResult.length}
                                 currPage={this.state.currPage}
                                 />
                                 }
