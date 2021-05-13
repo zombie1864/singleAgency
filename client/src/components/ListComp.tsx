@@ -99,7 +99,13 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
     }
 
     render() {
-        let searchResult = this.filterSearchResult()
+        const {currPage, itemsPerPage} = this.state
+        let searchResult = this.filterSearchResult(), 
+            totalSearchResultLength = searchResult.length
+        
+        if (searchResult.length > 10 ) {
+            searchResult = searchResult.slice(currPage * itemsPerPage - itemsPerPage, currPage * itemsPerPage)
+        } // breaks searchResults into sections of data <= length(10)
         
         return (
             <div data-test="ListComp">
@@ -155,9 +161,10 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 totalItems={this.props.data.length}
                                 paginate={this.paginate} // function prop
                                 searchTerm={this.state.searchTerm}
-                                currPageForSearchTerm={this.state.searchTerm === '' ? null : this.state.currPage}
+                                searchTermPagination={this.state.searchTerm === '' ? null : this.state.currPage}
                                 noResultFromSearch={this.state.searchTerm === '' ? null : searchResult.length}
                                 currPage={this.state.currPage}
+                                totalSearchResultLength={totalSearchResultLength}
                                 />
                                 }
                             </span>

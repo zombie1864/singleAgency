@@ -5,9 +5,10 @@ interface Iprops {
   totalItems: number, 
   paginate: any, 
   searchTerm: string, 
-  currPageForSearchTerm:null | number, 
+  searchTermPagination:null | number, 
   noResultFromSearch:null | number, 
-  currPage:number 
+  currPage:number, 
+  totalSearchResultLength:number 
 }
 
 interface Istate {
@@ -52,18 +53,24 @@ class Pagination extends Component<Iprops, Istate> {
   private changeClassNameBasedOn = (number:number):void => this.setState({activeKey: number})
   
   render() {
-    const {totalItems, itemsPerPage, noResultFromSearch, currPageForSearchTerm, searchTerm, paginate} = this.props
+    const {totalItems, itemsPerPage, noResultFromSearch, searchTermPagination, searchTerm, paginate, currPage, totalSearchResultLength} = this.props
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
-
-    let paginationRange = noResultFromSearch === 0 ? [] : currPageForSearchTerm ? [currPageForSearchTerm] : this.range(this.state.firstIdx, this.state.lastIdx -1)
+    console.log(this.state.firstIdx, this.state.lastIdx);
     
+    let paginationRange 
+    if ( searchTerm ) {
+      paginationRange = noResultFromSearch === 0 ? [] : this.range(1, Math.ceil(totalSearchResultLength / itemsPerPage) )
+    } else {
+      paginationRange = this.range(this.state.firstIdx, this.state.lastIdx -1)
+    }
+
     return (
       <nav className="px-5">
       <ul className='pagination'>
-        { searchTerm.length > 0 ? null : <button className="page-link" name="prev" onClick={this.paginationCycle}>prev</button>}
+        { <button className="page-link" name="prev" onClick={this.paginationCycle}>prev</button>}
         { 
           paginationRange.map(number => { // renders pagination
             return <li key={number} className={this.state.activeKey === number ? 'page-item active' : ''}>
@@ -76,7 +83,7 @@ class Pagination extends Component<Iprops, Istate> {
             </li>
           })
         }
-        { searchTerm.length > 0 ? null : <button className="page-link" name="next" onClick={this.paginationCycle}>next</button>}
+        { <button className="page-link" name="next" onClick={this.paginationCycle}>next</button>}
       </ul>
       </nav>
     );
