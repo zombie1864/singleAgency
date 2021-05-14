@@ -30,27 +30,34 @@ class Pagination extends Component<Iprops, Istate> {
   private range(start:number, end:number):number[] {
     return Array(end - start + 1).fill(0, 0).map((_, idx) => start + idx)
   }
-
+  
   private paginationCycle = (event:any):void | null => {
-    if ( (this.state.firstIdx === 1 && event.target.name ==="prev") || this.state.activePaginationSquare === 10 ) return null // boundary conditions 
-    if ( (this.state.lastIdx === 10 && event.target.name === "next") ) {
+    let {firstIdx, activePaginationSquare, lastIdx} = this.state
+    const {name} = event.target
+    const {paginate, currPage} = this.props
+    if ( ( firstIdx === 1 && name ==="prev" && activePaginationSquare === 0 ) || 
+    ( activePaginationSquare === 10 && name === "next") || 
+    ( firstIdx === 1 && name ==="prev" && activePaginationSquare === 1 )
+    ) return null // boundary conditions 
+    if ( ( lastIdx === 10 && name === "next") || ( lastIdx === 5 && name === "prev") ) {
       this.setState({
-        activePaginationSquare: this.state.activePaginationSquare + 1, 
-      }, () => this.props.paginate(this.state.activePaginationSquare)) 
+        activePaginationSquare: lastIdx === 10 ? activePaginationSquare + 1 : activePaginationSquare - 1, 
+      })
+      paginate(lastIdx === 10 ? activePaginationSquare + 1 : activePaginationSquare - 1) 
     }
-    if (event.target.name === "prev") {
-      this.props.currPage !== 1 ? this.props.paginate(this.props.currPage - 1 ) : this.props.paginate(this.state.firstIdx - 1)
+    if (name === "prev" && activePaginationSquare > 5) {
+      currPage !== 1 ? paginate(currPage - 1 ) : paginate( firstIdx - 1)
       this.setState({
-        firstIdx: this.state.firstIdx - 1, 
-        lastIdx: this.state.lastIdx - 1, 
-        activePaginationSquare: this.state.activePaginationSquare - 1
+        firstIdx: firstIdx - 1, 
+        lastIdx: lastIdx - 1, 
+        activePaginationSquare: activePaginationSquare - 1
       })  
-    } else if (event.target.name === "next" && this.state.firstIdx !== 6) {
-      this.props.currPage !== 1 ? this.props.paginate(this.props.currPage + 1 ) : this.props.paginate(this.state.firstIdx + 1)
+    } else if (name === "next" &&  firstIdx !== 6) {
+      currPage !== 1 ? paginate(currPage + 1 ) : paginate( firstIdx + 1)
       this.setState({
-        firstIdx: this.state.firstIdx + 1, 
-        lastIdx: this.state.lastIdx + 1, 
-        activePaginationSquare: this.state.activePaginationSquare === 0 ? this.state.activePaginationSquare + 2 : this.state.activePaginationSquare + 1, 
+        firstIdx: firstIdx + 1, 
+        lastIdx: lastIdx + 1, 
+        activePaginationSquare: activePaginationSquare === 0 ? activePaginationSquare + 2 : activePaginationSquare + 1, 
       }) 
     } 
   }
