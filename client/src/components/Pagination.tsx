@@ -17,6 +17,8 @@ interface Istate {
   activePaginationSquare: number, 
 }
 
+let paginationRange 
+
 class Pagination extends Component<Iprops, Istate> {
   constructor(props:any){
     super(props) 
@@ -63,18 +65,30 @@ class Pagination extends Component<Iprops, Istate> {
   }
 
   private changeClassNameBasedOn = (number:number):void => this.setState({activePaginationSquare: number})
+
+  // public componentDidUpdate(nextProps:any) {
+  //   const { itemsPerPage, paginate, totalSearchResultLength} = this.props
+
+  //   if ( ( nextProps.currPage > Math.ceil(totalSearchResultLength / itemsPerPage) ) && this.state.activePaginationSquare > 1  ) {
+  //     paginate( Math.ceil(totalSearchResultLength / itemsPerPage) )
+  //     paginationRange = this.range(1, Math.ceil(totalSearchResultLength / itemsPerPage) )
+  //     this.setState({activePaginationSquare: Math.ceil(totalSearchResultLength / itemsPerPage)})
+  //   }
+  // }
   
   render() {
-    const {totalItems, itemsPerPage, noResultFromSearch, searchTermPagination, searchTerm, paginate, currPage, totalSearchResultLength} = this.props
+    const {totalItems, itemsPerPage, noResultFromSearch, searchTerm, paginate, currPage, totalSearchResultLength} = this.props
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
     console.log(
-      `firstIdx: ${this.state.firstIdx}, lastIdx: ${this.state.lastIdx} \nactivePaginationSquare: ${this.state.activePaginationSquare}`
+      `firstIdx: ${this.state.firstIdx}, lastIdx: ${this.state.lastIdx} \nactivePaginationSquare: ${this.state.activePaginationSquare}
+      \ntotalSearchResultLength: ${Math.ceil(totalSearchResultLength / itemsPerPage)}
+      \ncurrPage: ${currPage}`,
+      currPage > Math.ceil(totalSearchResultLength / itemsPerPage)
     );
-    
-    let paginationRange 
+     
     if ( searchTerm ) {
       paginationRange = noResultFromSearch === 0 ? [] : this.range(1, Math.ceil(totalSearchResultLength / itemsPerPage) )
     } else {

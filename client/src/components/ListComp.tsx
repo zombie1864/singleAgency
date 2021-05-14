@@ -102,7 +102,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         const {currPage, itemsPerPage} = this.state
         let searchResult = this.filterSearchResult(), 
             totalSearchResultLength = searchResult.length
-        
+    
         if (searchResult.length > 10 ) {
             searchResult = searchResult.slice(currPage * itemsPerPage - itemsPerPage, currPage * itemsPerPage)
         } // breaks searchResults into sections of data <= length(10)
