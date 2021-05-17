@@ -17,7 +17,7 @@ interface Istate {
   activePaginationSquare: number, 
 }
 
-let searchResultLength:number 
+let searchResultPaginationLength:number 
 
 class Pagination extends Component<Iprops, Istate> {
   constructor(props:any){
@@ -29,7 +29,7 @@ class Pagination extends Component<Iprops, Istate> {
     }
   }
   
-  public searchResultLength = ():number => Math.ceil(this.props.totalSearchResultLength / this.props.itemsPerPage)
+  public searchResultPaginationLength = ():number => Math.ceil(this.props.totalSearchResultLength / this.props.itemsPerPage)
   
   private range(start:number, end:number):number[] {
     if ( start > end ) end = start 
@@ -43,19 +43,19 @@ class Pagination extends Component<Iprops, Istate> {
     if ( 
       ( firstIdx === 1 && name === "prev" && ( activePaginationSquare === 0 || activePaginationSquare === 1) ) || 
       ( activePaginationSquare === 10 && name === "next") || 
-      ( searchTerm && name === "next" && activePaginationSquare === searchResultLength)
+      ( searchTerm && name === "next" && activePaginationSquare === searchResultPaginationLength)
     ) return null // boundary conditions 
     if ( ( lastIdx === 10 && name === "next") || ( lastIdx === 5 && name === "prev") ) {
       this.setState({ activePaginationSquare: lastIdx === 10 ? activePaginationSquare + 1 : activePaginationSquare - 1 })
       paginate(lastIdx === 10 ? activePaginationSquare + 1 : activePaginationSquare - 1) 
     } // moves activePaginationSquare to the end or front of range for 6 <= range <= 10 and 1 <= range <= 5 
-    if ( searchTerm && ( name === "prev" || name === "next" || (name === "next" && searchResultLength <= 5 ) ) ) {
+    if ( searchTerm && ( name === "prev" || name === "next" || (name === "next" && searchResultPaginationLength <= 5 ) ) ) {
       this.setState({ activePaginationSquare: name === "prev" ? activePaginationSquare - 1 : activePaginationSquare + 1 })
       paginate(name === "prev" ? activePaginationSquare - 1 : activePaginationSquare + 1) 
     } // moves activePaginationSquare to the end or front of range for 1 <= range <= searchResultLength  
     if ( 
       (name === "prev" && firstIdx > 1) || 
-      (name === "next" && firstIdx !== 6 && lastIdx !== searchResultLength && !(searchTerm && searchResultLength < lastIdx))
+      (name === "next" && firstIdx !== 6 && lastIdx !== searchResultPaginationLength && !(searchTerm && searchResultPaginationLength < lastIdx))
     ) { 
       name === "prev" ? paginate(currPage - 1 ) : paginate(currPage + 1 )  // moves currPage back along with activePaginationSquare 
       this.setState({
@@ -64,19 +64,19 @@ class Pagination extends Component<Iprops, Istate> {
         activePaginationSquare: name === "prev" ? activePaginationSquare - 1 : activePaginationSquare === 0 ? activePaginationSquare + 2 : activePaginationSquare + 1
       }) // changes the range and moves activePaginationSquare, starting range does not go below 1 
     }
-  }
+  } // 1 is the lowerLimit and 10 is the upperLimit, boundary limits are defined by dev design 
 
   private changeClassNameBasedOn = (number:number):void => this.setState({activePaginationSquare: number})
 
   public componentDidUpdate(prevProps:any, prevState:any) { // user updates search term => range change && activePaginationSquare to last paginate number 
     const { paginate, searchTerm} = this.props    
 
-    if ( ( prevProps.currPage > searchResultLength ) && this.state.activePaginationSquare > 1  && searchTerm) {
-      paginate( searchResultLength )
+    if ( ( prevProps.currPage > searchResultPaginationLength ) && this.state.activePaginationSquare > 1  && searchTerm) {
+      paginate( searchResultPaginationLength )
       this.setState({
         firstIdx: 1, 
-        lastIdx: searchResultLength, 
-        activePaginationSquare: searchResultLength
+        lastIdx: searchResultPaginationLength, 
+        activePaginationSquare: searchResultPaginationLength
       })
     } 
     if (prevProps.searchTerm !== searchTerm && prevState.lastIdx < 5) {      
@@ -89,37 +89,27 @@ class Pagination extends Component<Iprops, Istate> {
     } 
   } // searchTerm updates => shorter range => placing activePaginationSquare to lastIdx of shorter range 
   
-  
   render() {
-    const {totalItems, itemsPerPage, noResultFromSearch, searchTerm, paginate, currPage} = this.props
-    const pageNumbers = []
-    searchResultLength = this.searchResultLength()
+    const { noResultFromSearch, searchTerm, paginate} = this.props
+    searchResultPaginationLength = this.searchResultPaginationLength()
     let paginationRange
-    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-      pageNumbers.push(i);
-    }
-    console.log(
-      `firstIdx: ${this.state.firstIdx}, lastIdx: ${this.state.lastIdx} \nactivePaginationSquare: ${this.state.activePaginationSquare}
-      \nsearchResultLength: ${searchResultLength}
-      \ncurrPage: ${currPage}`,
-    );
      
     if ( searchTerm ) {
-      if (searchResultLength > 5) {
+      if (searchResultPaginationLength > 5) {
         paginationRange = noResultFromSearch === 0 ? [] : this.range(this.state.firstIdx, this.state.lastIdx )
       } else {
-        paginationRange = noResultFromSearch === 0 ? [] : this.range(this.state.firstIdx, searchResultLength )
+        paginationRange = noResultFromSearch === 0 ? [] : this.range(this.state.firstIdx, searchResultPaginationLength )
       }
     } else {
       paginationRange = this.range(this.state.firstIdx, this.state.lastIdx )
-    }
+    }    
 
     return (
       <nav className="px-5">
       <ul className='pagination'>
-        { searchResultLength <= 1 && searchTerm ? null : <button className="page-link" name="prev" onClick={this.paginationCycle}>prev</button>}
+        { searchResultPaginationLength <= 1 && searchTerm ? null : <button className="page-link" name="prev" onClick={this.paginationCycle}>prev</button>}
         { 
-          paginationRange.map(number => { // renders pagination
+          paginationRange.length === 1 ? null : paginationRange.map(number => { // renders pagination
             return <li key={number} className={this.state.activePaginationSquare === number ? 'page-item active' : ''}>
               <span className='page-link paginationSpanTag' onClick={() => {
                   paginate(number) // this.props.paginate(number) => changing state to parent comp 
@@ -130,7 +120,7 @@ class Pagination extends Component<Iprops, Istate> {
             </li>
           })
         }
-        { searchResultLength <= 1 && searchTerm ? null : <button className="page-link" name="next" onClick={this.paginationCycle}>next</button>}
+        { searchResultPaginationLength <= 1 && searchTerm ? null : <button className="page-link" name="next" onClick={this.paginationCycle}>next</button>}
       </ul>
       </nav>
     );
