@@ -89,7 +89,7 @@ export class MapContainer extends Component {
 }
 
 const msp = (state) => ({
-  obj: state.setDataReducer.obj, 
+  obj: state.setDataReducer.objFromResults, 
 })
 
 export default connect(msp, null)(GoogleApiWrapper({apiKey:process.env.REACT_APP_API_KEY})(MapContainer))

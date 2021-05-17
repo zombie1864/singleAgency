@@ -45,12 +45,12 @@ export type updateObjActionCreator = (payload:Ipayload) => updateObjAction
 
 export interface InitialState { // used for defining initial and after of state in reducer 
     results: [] | Ipayload[], 
-    obj: null | Ipayload
+    objFromResults: null | Ipayload
 } 
 
 export interface PropsFromState {
     data: [] | Ipayload[], // data.results => (100)[{...},...,{...}]
-    obj: null | Ipayload, 
+    objFromResults: null | Ipayload, 
     fetchData: fetchDataActionCreator, 
     updateObj: updateObjActionCreator
 } // state shape of app 

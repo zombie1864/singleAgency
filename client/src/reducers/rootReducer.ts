@@ -3,7 +3,7 @@ import {SET_DATA,UPDATE_OBJ} from '../actions/index'
 import {InitialState,updateObjAction,SetDataAction} from '../types/appTypes'
 
 const initialState:InitialState = {
-    obj: null,
+    objFromResults: null,
     results: [] 
 } 
 
@@ -20,7 +20,7 @@ const setDataReducer:Reducer<InitialState, Action> = ( state = initialState, act
         case SET_DATA:
             return { ...state, results: action.results}
         case UPDATE_OBJ:
-            return {...state, obj: action.payload}
+            return {...state, objFromResults: action.payload}
         default:
             return state 
     }
