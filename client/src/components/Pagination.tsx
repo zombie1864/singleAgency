@@ -88,9 +88,14 @@ class Pagination extends Component<Iprops, Istate> {
       })
     } 
   } // searchTerm updates => shorter range => placing activePaginationSquare to lastIdx of shorter range 
+
+  private onClick = (event:any):void => {
+    this.props.paginate(parseInt(event.currentTarget.dataset.number)) // this.props.paginate(number) => changing state to parent comp 
+    this.changeClassNameBasedOn(parseInt(event.currentTarget.dataset.number))
+  }
   
   render() {
-    const { noResultFromSearch, searchTerm, paginate} = this.props
+    const { noResultFromSearch, searchTerm} = this.props
     searchResultPaginationLength = this.searchResultPaginationLength()
     let paginationRange
      
@@ -111,10 +116,7 @@ class Pagination extends Component<Iprops, Istate> {
         { 
           paginationRange.length === 1 ? null : paginationRange.map(number => { // renders pagination
             return <li key={number} className={this.state.activePaginationSquare === number ? 'page-item active' : ''}>
-              <span className='page-link paginationSpanTag' onClick={() => {
-                  paginate(number) // this.props.paginate(number) => changing state to parent comp 
-                  this.changeClassNameBasedOn(number)
-                  }}> 
+              <span className='page-link paginationSpanTag' data-number={number} onClick={this.onClick}> 
                 {number}
               </span>
             </li>
