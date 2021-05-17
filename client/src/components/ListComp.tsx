@@ -40,7 +40,9 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
 
     private paginate = (pageNumber:number):void => this.setState({currPage: pageNumber}) 
 
-    private itemClicked = (event:any):updateObjAction => this.props.updateObj( JSON.parse( event.currentTarget.dataset.obj ) )
+    private getObjFromReduxStore = (id:number):Ipayload => this.props.data.filter( (obj:Ipayload) => obj.bdbid === id)[0] 
+
+    private itemClicked = (event:any):updateObjAction => this.props.updateObj(this.getObjFromReduxStore( parseInt(event.currentTarget.dataset.objid) ))
     
     private searchBarOnChangeHandler = (event:any):void => this.setState({searchTerm: event.target.value})
 
@@ -106,7 +108,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
         if (searchResult.length > 10 ) {
             searchResult = searchResult.slice(currPage * itemsPerPage - itemsPerPage, currPage * itemsPerPage)
         } // breaks searchResults into sections of data <= length(10)
-        
+                
         return (
             <div data-test="ListComp">
             <table className='tableWidth'>
@@ -126,7 +128,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                             <ul className="list-unstyled pl-5 listCompCss">
                                 { 
                                 searchResult.length === 0 ? "No Results" : searchResult.map( (obj:Ipayload, idx:number) => (//[{},...,{}]
-                                    <li key={idx} className='listCompLiStyle' data-obj={JSON.stringify(obj)} onClick={this.itemClicked} tabIndex={idx}> 
+                                    <li key={idx} className='listCompLiStyle' data-objid={obj.bdbid} onClick={this.itemClicked} tabIndex={idx}>
                                     {/* tabIndex is for css li:focus */}
                                         <span className="alert alert-primary addressCss">Address: {obj.address}</span>
                                         <Link to={{
