@@ -49,25 +49,21 @@ class Pagination extends Component<Iprops, Istate> {
       this.setState({ activePaginationSquare: lastIdx === 10 ? activePaginationSquare + 1 : activePaginationSquare - 1 })
       paginate(lastIdx === 10 ? activePaginationSquare + 1 : activePaginationSquare - 1) 
     } // moves activePaginationSquare to the end or front of range for 6 <= range <= 10 and 1 <= range <= 5 
-    if ( ( searchTerm && name === "prev" ) || ( ( searchTerm && name === "next" ) || searchResultLength <= 5) ) {
+    if ( searchTerm && ( name === "prev" || name === "next" || (name === "next" && searchResultLength <= 5 ) ) ) {
       this.setState({ activePaginationSquare: name === "prev" ? activePaginationSquare - 1 : activePaginationSquare + 1 })
       paginate(name === "prev" ? activePaginationSquare - 1 : activePaginationSquare + 1) 
-    } // moves activePaginationSquare to the end or front of range for 1 <= range <= searchResultLength    
+    } // moves activePaginationSquare to the end or front of range for 1 <= range <= searchResultLength  
     if ( 
       (name === "prev" && firstIdx > 1) || 
       (name === "next" && firstIdx !== 6 && lastIdx !== searchResultLength && !(searchTerm && searchResultLength < lastIdx))
     ) { 
-      currPage !== 1 && name === "prev" ? paginate(currPage - 1 ) : currPage !== 1 && name === "next" ? paginate(currPage + 1 ) : name === "prev" ? paginate( firstIdx - 1) : paginate( firstIdx + 1) // moves currPage back along with activePaginationSquare 
+      name === "prev" ? paginate(currPage - 1 ) : paginate(currPage + 1 )  // moves currPage back along with activePaginationSquare 
       this.setState({
         firstIdx: name === "prev" ? firstIdx - 1 : firstIdx + 1, 
         lastIdx: name === "prev" ? lastIdx - 1 : lastIdx + 1, 
         activePaginationSquare: name === "prev" ? activePaginationSquare - 1 : activePaginationSquare === 0 ? activePaginationSquare + 2 : activePaginationSquare + 1
       }) // changes the range and moves activePaginationSquare, starting range does not go below 1 
-    } 
-    else if (name === "next" && searchTerm && searchResultLength <= 5 ) {
-      this.setState({ activePaginationSquare: activePaginationSquare + 1 })
-      paginate(activePaginationSquare + 1) 
-    } 
+    }
   }
 
   private changeClassNameBasedOn = (number:number):void => this.setState({activePaginationSquare: number})
