@@ -103,37 +103,39 @@ const setUpListComp = (initialState={}) => {
 }
 
 const searchInputTest = {
-    case: {
-        _1 : 'MX3', // building_name
-        _2 : '  ', // generic 
-        _3 : 'address  Test4', // address
-        _4 : '0000', // bdbid 
-        _5 : '2089', // year_built 
-        _6 : 'true',
-        _7 : '@addressTest2', // address
-        _8 : 'AddressTest1', // address
-        _9 : 'addRESStest1', // address
-        _10 : 'addressTe', // address
-        _11 : ' address', // address
-        _12 : 'address Test4 ', // address
-        _13 : '123 4', // bdbid 
-        _14 : '1234E', // bdbid 
-        _15: ' ', // generic 
-        _16: ' (', // building_name
-        _17: ' 1234', // bdbid 
-        _18: 'null', 
-        _19: '1901.0', // year_built 
-        _20: '1901.5', // year_built 
-        _21: '-80.69169', // site_eui
-        _22: '80.69169', // site_eui
-        _23: ' 80.69169', // site_eui
-        _24: '-899309.8', // total_co2emissions_kg_site 
-        _25: '899309.8', // total_co2emissions_kg_site 
-        _26: ' 899309.8', // total_co2emissions_kg_site, 
-        _27: ', ', // building_name
-        _28: ': ', // building_name
-        _29: ' , ', // building_name
-        _30: ' : ' // building_name
+    passingCase: {
+        _1 : 'AddressTest1', // address
+        _2 : 'addRESStest1', // address
+        _3 : 'addressTe', // address
+        _4 : ' ', // generic 
+        _5 : ' (', // building_name
+        _6 : '1901.0', // year_built 
+        _7 : '80.69169', // site_eui
+        _8 : ', ', // building_name
+        _9 : ': ', // building_name
+        _10 : '899309.8', // total_co2emissions_kg_site 
+    },
+    failingCase: {
+        _1 : 'MX3', // building_name  
+        _2 : '  ', // generic  
+        _3 : 'address  Test4', // address 
+        _4 : '0000', // bdbid  
+        _5 : '2089', // year_built  
+        _6 : 'true', // 
+        _7 : '@addressTest2', // address 
+        _8 : ' address', // address 
+        _9 : 'address Test4 ', // address 
+        _10 : '123 4', // bdbid  
+        _11 : '1234E', // bdbid  
+        _12 : ' 1234', // bdbid  
+        _13 : 'null',  // 
+        _14 : '1901.5', // year_built  
+        _15 : '-80.69169', // site_eui 
+        _16 : ' 80.69169', // site_eui 
+        _17 : '-899309.8', // total_co2emissions_kg_site 
+        _18 : ' 899309.8', // total_co2emissions_kg_site, 
+        _19 : ' , ', // building_name 
+        _20 : ' : ' // building_name 
     }
 }
 
@@ -149,6 +151,10 @@ describe("ListComp", () => {
     })   
 
     describe("filterSearchResult", () => {
+        for ( let i = 0; i < 10; i ++) {
+            console.log('LOOP!');
+            
+        }
         test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTest.case._1}`, () => {
             classInstance.searchBarOnChangeHandler({target: { value: searchInputTest.case._1} })
             const returnedArray = classInstance.filterSearchResult()
