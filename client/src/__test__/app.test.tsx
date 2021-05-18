@@ -22,7 +22,7 @@ describe('setDataReducer', () => {
     it('should return default state', () => {
         const reduxStoreState = {
             setDataReducer: {
-                obj: null,
+                objFromResults: null,
                 results: [] 
             }
         }
@@ -34,7 +34,7 @@ describe('setDataReducer', () => {
     it('Should return new state if receiving SET_DATA', () => {
         const reduxStoreState = {
             setDataReducer: {
-                obj: null,
+                objFromResults: null,
                 results: [
                     {
                         address: "test", 
@@ -81,7 +81,7 @@ describe('testing async action creator', () => {
         results: mockData.results
     }]
   beforeEach(() => store = mockStore({ // initial store 
-      obj: null,
+      objFromResults: null,
       results: [] 
     }));
   afterEach(() => nock.cleanAll()) // clear all HTTP mocks after each test
@@ -146,7 +146,7 @@ const searchInputTestCases:IsearchInputTestCases = {
 //bdbid, building_name, address, year_built, site_eui,total_co2emissions_kg_site
 
 describe("ListComp", () => {
-    let wrapper,
+    let wrapper:any,
         classInstance:any
 
     beforeEach( () => {
@@ -157,61 +157,52 @@ describe("ListComp", () => {
     describe("filterSearchResult", () => {
         for ( const _number in searchInputTestCases.failingCase ) {
             test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTestCases.failingCase[_number]}`, () => {
+                let wrapper:any = setUpListComp(initialState)
+                let classInstance:any = wrapper.instance()
                 classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.failingCase[_number]} })
-                const returnedArray = classInstance.filterSearchResult()
+                let returnedArray = classInstance.filterSearchResult()
                 expect(returnedArray).toEqual([])
             })
         } 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
-        }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
-        }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
+        for ( const _number in searchInputTestCases.passingCase ) {
+            let wrapper:any = setUpListComp(initialState)
+            let classInstance:any = wrapper.instance()
+
+            if ( ['_1', '_2', '_6'].includes(_number) ) {
+                test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases.passingCase[_number]}`, () => {
+                    classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.passingCase[_number]} })
+                    let returnedArray = classInstance.filterSearchResult()
+                    expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
+                })
+            } else if ( ['_8', '_9'].includes(_number) ) {
+                test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases.passingCase[_number]}`, () => {
+                    classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.passingCase[_number]} })
+                    let returnedArray = classInstance.filterSearchResult()
+                    expect(returnedArray).toEqual([initialState.setDataReducer.results[3]])
+                })
+            } else if ( ['_7', '_10'].includes(_number) ) {
+                test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases.passingCase[_number]}`, () => {
+                    classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.passingCase[_number]} })
+                    let returnedArray = classInstance.filterSearchResult()
+                    expect(returnedArray).toEqual(initialState.setDataReducer.results)
+                })
+            }
+        } 
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases.passingCase._3}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.passingCase._3} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(0,3) )
         }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases.passingCase._4}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.passingCase._4} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(1) )
         }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
+        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases.passingCase._5}`, () => {
+            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases.passingCase._5} })
             const returnedArray = classInstance.filterSearchResult()
             expect(returnedArray).toEqual( initialState.setDataReducer.results.slice(1,3) )
         })  
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual([initialState.setDataReducer.results[0]])
-        }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual(initialState.setDataReducer.results)
-        }) 
-        test(`filterSearchResult, should return an empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual(initialState.setDataReducer.results)
-        }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual([initialState.setDataReducer.results[3]])
-        }) 
-        test(`filterSearchResult, should return a non-empty array for searchTerm ${searchInputTestCases}`, () => {
-            classInstance.searchBarOnChangeHandler({target: { value: searchInputTestCases} })
-            const returnedArray = classInstance.filterSearchResult()
-            expect(returnedArray).toEqual([initialState.setDataReducer.results[3]])
-        }) 
     })
 })
 

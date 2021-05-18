@@ -38,7 +38,7 @@ export const mockData = {
 
 export const initialState = {
     setDataReducer: {
-        obj: null, 
+        objFromResults: null, 
         results: [
             {
                 address: "addressTest1", 
