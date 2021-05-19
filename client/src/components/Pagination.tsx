@@ -69,74 +69,21 @@ class Pagination extends Component<Iprops, Istate> {
   private changeClassNameBasedOn = (number:number):void => this.setState({activePaginationSquare: number})
 
   public componentDidUpdate(prevProps:any, prevState:any) { // user updates search term => range change && activePaginationSquare to last paginate number 
-    const { paginate, searchTerm} = this.props    
-    const { activePaginationSquare } = this.state 
+    const { paginate, searchTerm, noResultFromSearch, currPage } = this.props    
 
-    if ( ( prevProps.currPage > searchResultPaginationLength ) && this.state.activePaginationSquare > 1  && searchTerm && searchResultPaginationLength !== this.state.activePaginationSquare) {
-      paginate( 1 )
-      this.setState({
-        firstIdx: 1, 
-        lastIdx: searchResultPaginationLength, 
-        activePaginationSquare: 1
-      })
-      console.log(`first condition`);
-    } 
-    if (prevProps.searchTerm !== searchTerm && prevState.lastIdx < 5) {      
+    if ( 
+      prevProps.currPage !== 1 && prevProps.searchTerm !== searchTerm && 
+      ( ( prevProps.noResultFromSearch !== noResultFromSearch ) || 
+      ( prevProps.currPage === currPage && prevProps.noResultFromSearch === noResultFromSearch ) ) 
+    ) {
       paginate( 1 )
       this.setState({
         firstIdx: 1, 
         lastIdx: 5, 
         activePaginationSquare: 1, 
       })
-      console.log(`second condition`);
-    } 
-    if ( prevProps.currPage !== 1 && prevProps.noResultFromSearch !== null && this.props.noResultFromSearch === null && prevProps.searchTerm !== '' && this.props.searchTerm === '' ) {
-      paginate( 1 )
-      this.setState({
-        firstIdx: 1, 
-        lastIdx: 5, 
-        activePaginationSquare: 1, 
-      })
-      console.log(`third condition`);
     }
-    if ( prevProps.currPage !== 1 && prevProps.noResultFromSearch !== this.props.noResultFromSearch && prevProps.searchTerm !== searchTerm ) {
-      paginate( 1 )
-      this.setState({
-        firstIdx: 1, 
-        lastIdx: 5, 
-        activePaginationSquare: 1, 
-      })
-      console.log(`fourth condition`);
-    }
-
-    // PREVPROPS! 
-    // currPage: 2
-    // itemsPerPage: 10
-    // noResultFromSearch: 10
-    // totalItems: 100
-    // totalSearchResultLength: 21
-    // searchTerm: 80
-
-    // CURRPROPS! 
-    // currPage: 2
-    // itemsPerPage: 10
-    // noResultFromSearch: 10
-    // totalItems: 100
-    // totalSearchResultLength: 100
-    // searchTerm: 8
-
-    console.log(
-      // `cdup`,
-      `cdup 
-      1st cond: ${( prevProps.currPage > searchResultPaginationLength ) && this.state.activePaginationSquare > 1  && searchTerm && searchResultPaginationLength !== this.state.activePaginationSquare}
-      2nd cond: ${prevProps.searchTerm !== searchTerm && prevState.lastIdx < 5}
-      3rd cond: ${prevProps.currPage !== 1 && prevProps.noResultFromSearch !== null && this.props.noResultFromSearch === null && prevProps.searchTerm !== '' && this.props.searchTerm === ''}
-      4th cond: ${prevProps.currPage !== 1 && prevProps.noResultFromSearch !== this.props.noResultFromSearch && prevProps.searchTerm !== searchTerm}
-      5th cond: ${ prevProps.currPage !== 1 && prevProps.currPage === this.props.currPage && prevProps.noResultFromSearch === this.props.noResultFromSearch && prevProps.searchTerm !== searchTerm }
-      `
-    );
-    
-  } // searchTerm updates => shorter range => placing activePaginationSquare to lastIdx of shorter range 
+  }
 
   private onClick = (event:any):void => {
     this.props.paginate(parseInt(event.currentTarget.dataset.number)) // this.props.paginate(number) => changing state to parent comp 
@@ -157,20 +104,6 @@ class Pagination extends Component<Iprops, Istate> {
     } else {
       paginationRange = this.range(this.state.firstIdx, this.state.lastIdx )
     }   
-    
-    console.log(
-      // `render`, 
-      `
-render
-currPage: ${this.props.currPage}
-itemsPerPage: ${this.props.itemsPerPage}
-noResultFromSearch: ${this.props.noResultFromSearch}
-totalItems: ${this.props.totalItems}
-totalSearchResultLength: ${this.props.totalSearchResultLength}
-searchTerm: ${this.props.searchTerm}
-      `
-    );
-    
 
     return (
       <nav className="px-5">
