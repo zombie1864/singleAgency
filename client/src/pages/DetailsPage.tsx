@@ -16,7 +16,6 @@ interface Iprops {
     }, 
 }
 
-
 interface IPropsFromStore {
     data: [] | Ipayload[], 
 }
