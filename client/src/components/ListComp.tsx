@@ -164,7 +164,7 @@ export class ListComp extends Component<IPropsFromStore, Istate> {
                                 paginate={this.paginate} // function prop
                                 searchTerm={this.state.searchTerm}
                                 searchTermPagination={this.state.searchTerm === '' ? null : this.state.currPage}
-                                noResultFromSearch={this.state.searchTerm === '' ? null : searchResult.length}
+                                searchResultLength={searchResult.length}
                                 currPage={this.state.currPage}
                                 totalSearchResultLength={totalSearchResultLength}
                                 />
