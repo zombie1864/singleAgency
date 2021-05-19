@@ -25,7 +25,7 @@ class Pagination extends Component<Iprops, Istate> {
     this.state = {
       firstIdx: 1, 
       lastIdx: 5, 
-      activePaginationSquare: 0, 
+      activePaginationSquare: 1, 
     }
   }
   
@@ -41,7 +41,7 @@ class Pagination extends Component<Iprops, Istate> {
     const {name} = event.target,
           {paginate, currPage, searchTerm} = this.props
     if ( 
-      ( firstIdx === 1 && name === "prev" && ( activePaginationSquare === 0 || activePaginationSquare === 1) ) || 
+      ( firstIdx === 1 && name === "prev" && activePaginationSquare === 1) || 
       ( activePaginationSquare === 10 && name === "next") || 
       ( searchTerm && name === "next" && activePaginationSquare === searchResultPaginationLength)
     ) return null // boundary conditions 
@@ -70,23 +70,72 @@ class Pagination extends Component<Iprops, Istate> {
 
   public componentDidUpdate(prevProps:any, prevState:any) { // user updates search term => range change && activePaginationSquare to last paginate number 
     const { paginate, searchTerm} = this.props    
+    const { activePaginationSquare } = this.state 
 
-    if ( ( prevProps.currPage > searchResultPaginationLength ) && this.state.activePaginationSquare > 1  && searchTerm) {
-      paginate( searchResultPaginationLength )
+    if ( ( prevProps.currPage > searchResultPaginationLength ) && this.state.activePaginationSquare > 1  && searchTerm && searchResultPaginationLength !== this.state.activePaginationSquare) {
+      paginate( 1 )
       this.setState({
         firstIdx: 1, 
         lastIdx: searchResultPaginationLength, 
-        activePaginationSquare: searchResultPaginationLength
+        activePaginationSquare: 1
       })
+      console.log(`first condition`);
     } 
     if (prevProps.searchTerm !== searchTerm && prevState.lastIdx < 5) {      
       paginate( 1 )
       this.setState({
         firstIdx: 1, 
         lastIdx: 5, 
-        activePaginationSquare: 0, 
+        activePaginationSquare: 1, 
       })
+      console.log(`second condition`);
     } 
+    if ( prevProps.currPage !== 1 && prevProps.noResultFromSearch !== null && this.props.noResultFromSearch === null && prevProps.searchTerm !== '' && this.props.searchTerm === '' ) {
+      paginate( 1 )
+      this.setState({
+        firstIdx: 1, 
+        lastIdx: 5, 
+        activePaginationSquare: 1, 
+      })
+      console.log(`third condition`);
+    }
+    if ( prevProps.currPage !== 1 && prevProps.noResultFromSearch !== this.props.noResultFromSearch && prevProps.searchTerm !== searchTerm ) {
+      paginate( 1 )
+      this.setState({
+        firstIdx: 1, 
+        lastIdx: 5, 
+        activePaginationSquare: 1, 
+      })
+      console.log(`fourth condition`);
+    }
+
+    // PREVPROPS! 
+    // currPage: 2
+    // itemsPerPage: 10
+    // noResultFromSearch: 10
+    // totalItems: 100
+    // totalSearchResultLength: 21
+    // searchTerm: 80
+
+    // CURRPROPS! 
+    // currPage: 2
+    // itemsPerPage: 10
+    // noResultFromSearch: 10
+    // totalItems: 100
+    // totalSearchResultLength: 100
+    // searchTerm: 8
+
+    console.log(
+      // `cdup`,
+      `cdup 
+      1st cond: ${( prevProps.currPage > searchResultPaginationLength ) && this.state.activePaginationSquare > 1  && searchTerm && searchResultPaginationLength !== this.state.activePaginationSquare}
+      2nd cond: ${prevProps.searchTerm !== searchTerm && prevState.lastIdx < 5}
+      3rd cond: ${prevProps.currPage !== 1 && prevProps.noResultFromSearch !== null && this.props.noResultFromSearch === null && prevProps.searchTerm !== '' && this.props.searchTerm === ''}
+      4th cond: ${prevProps.currPage !== 1 && prevProps.noResultFromSearch !== this.props.noResultFromSearch && prevProps.searchTerm !== searchTerm}
+      5th cond: ${ prevProps.currPage !== 1 && prevProps.currPage === this.props.currPage && prevProps.noResultFromSearch === this.props.noResultFromSearch && prevProps.searchTerm !== searchTerm }
+      `
+    );
+    
   } // searchTerm updates => shorter range => placing activePaginationSquare to lastIdx of shorter range 
 
   private onClick = (event:any):void => {
@@ -107,7 +156,21 @@ class Pagination extends Component<Iprops, Istate> {
       }
     } else {
       paginationRange = this.range(this.state.firstIdx, this.state.lastIdx )
-    }    
+    }   
+    
+    console.log(
+      // `render`, 
+      `
+render
+currPage: ${this.props.currPage}
+itemsPerPage: ${this.props.itemsPerPage}
+noResultFromSearch: ${this.props.noResultFromSearch}
+totalItems: ${this.props.totalItems}
+totalSearchResultLength: ${this.props.totalSearchResultLength}
+searchTerm: ${this.props.searchTerm}
+      `
+    );
+    
 
     return (
       <nav className="px-5">
